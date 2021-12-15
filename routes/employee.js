@@ -146,7 +146,7 @@ router.post("/getattendance/:id", authemp, async (req, res) => {
       .send({ data: `get emp attendance by id -->${error}` });
   }
 });
-//route for emp login-
+//route for emp login..
 router.post(
   "/login",
   queue({ activeLimit: 1, queuedLimit: -1 }),

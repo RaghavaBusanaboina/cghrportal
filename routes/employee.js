@@ -149,7 +149,7 @@ router.post("/getattendance/:id", authemp, async (req, res) => {
 //route for emp login
 router.post(
   "/login",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
+  queue({ activeLimit: 0, queuedLimit: -1 }),
   async (req, res) => {
     console.log("login route------------");
     try {

@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "PrivateKey",
+  "db": "mongodb+srv://hrportal:12345@cluster0.6tmaf.mongodb.net/Hr_portal?retryWrites=true&w=majority"
+}

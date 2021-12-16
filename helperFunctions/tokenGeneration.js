@@ -4,16 +4,15 @@ var jwt = require("jsonwebtoken");
 const config = require("config");
 
 var { EmployeeLogin } = require("../models/userLogin");
-
-var createToken = async function (
-  req,
-  EmployeeId,
-  device,
-  EmployeeName,
-  Password,
-  organisation
-) {
-  try {
+try {
+  var createToken = async function (
+    req,
+    EmployeeId,
+    device,
+    EmployeeName,
+    Password,
+    organisation
+  ) {
     var ip = req.socket.remoteAddress; //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
 
     const user_logins = await EmployeeLogin.find({
@@ -45,9 +44,8 @@ var createToken = async function (
       config.get("jwtPrivateKey")
     );
     return accessToken;
-
-    exports.createToken = createToken;
-  } catch (error) {
-    console.log(new Error(error));
-  }
-};
+  };
+  exports.createToken = createToken;
+} catch (error) {
+  console.log(new Error(error));
+}

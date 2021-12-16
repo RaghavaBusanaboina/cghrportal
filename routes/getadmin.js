@@ -207,7 +207,10 @@ router.post("/getemployeetermination", auth, async (req, res) => {
       .limit(limit);
     if (emptermination.length > 0)
       return res.status(200).send({ data: emptermination });
-    else return res.status(400).send({ data: [], skip: req.body.skip * limit });
+    else
+      return res
+        .status(400)
+        .send({ data: [], skip: req.body.skip - 2 * limit });
   } catch (error) {
     console.log(error);
     return res

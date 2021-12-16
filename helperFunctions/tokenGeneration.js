@@ -34,9 +34,10 @@ try {
       ip_address: ip,
       device: device,
     });
+    token.save();
     console.log("000000000000000000000000000000000000000000000000");
     console.log(token);
-    const accessToken = await jwt.sign(
+    const accessToken = jwt.sign(
       {
         EmployeeId: EmployeeId,
         EmployeeName: EmployeeName,
@@ -45,6 +46,7 @@ try {
       },
       config.get("jwtPrivateKey")
     );
+    console.log(accessToken);
     return accessToken;
   };
   exports.createToken = createToken;

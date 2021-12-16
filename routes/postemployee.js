@@ -1,4 +1,6 @@
 /** @format */
+var requestIp = require("request-ip");
+
 var CronJob1 = require("cron").CronJob;
 var CronJob2 = require("cron").CronJob;
 const config = require("config");
@@ -116,7 +118,8 @@ router.post("/login", async (req, res) => {
     const validpass = await bcrypt.compare(data.Password, emp.Password);
     if (!validpass) return res.status(400).send({ data: "Invalid Password!" });
     console.log("before ip");
-    var ip = req.connection.remoteAddress || req.socket.remoteAddress;
+    // var ip = req.connection.remoteAddress || req.socket.remoteAddress;
+    var ip = requestIp.getClientIp(req);
     console.log(ip);
     console.log("after ip-----------");
     const token = await createToken(

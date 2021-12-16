@@ -147,162 +147,144 @@ router.post("/getattendance/:id", authemp, async (req, res) => {
   }
 });
 //route for emp login
-router.post(
-  "/login",
-  queue({ activeLimit: 0, queuedLimit: -1 }),
-  async (req, res) => {
-    console.log("login route------------");
-    try {
-      console.log("login route");
-      const data = req.body;
-      const { error } = validateLogin(data);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      const emp = await EmployeeRegisters.findOne({
-        Email: data.Email,
-      });
-      if (!emp) return res.status(400).send({ data: "Invalid credentials..!" });
-      const validpass = await bcrypt.compare(data.Password, emp.Password);
-      if (!validpass)
-        return res.status(400).send({ data: "Invalid Password!" });
-      const token = generateAuthToken(
-        emp.EmployeeId,
-        emp.EmployeeName,
-        emp.Password,
-        emp.organisation
-      );
-      return res
-        .header("x-auth-token", token)
-        .send({ token: token, message: "login successfull..!" });
-    } catch (error) {
-      console.log(error);
-      return res.status(400).send({ data: `emplogin -->${error}` });
-    }
+router.post("/login", async (req, res) => {
+  console.log("login route------------");
+  try {
+    console.log("login route");
+    const data = req.body;
+    const { error } = validateLogin(data);
+    if (error) return res.status(400).send({ data: error.details[0].message });
+    const emp = await EmployeeRegisters.findOne({
+      Email: data.Email,
+    });
+    if (!emp) return res.status(400).send({ data: "Invalid credentials..!" });
+    const validpass = await bcrypt.compare(data.Password, emp.Password);
+    if (!validpass) return res.status(400).send({ data: "Invalid Password!" });
+    const token = generateAuthToken(
+      emp.EmployeeId,
+      emp.EmployeeName,
+      emp.Password,
+      emp.organisation
+    );
+    return res
+      .header("x-auth-token", token)
+      .send({ token: token, message: "login successfull..!" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ data: `emplogin -->${error}` });
   }
-);
+});
 //checkin time
-router.post(
-  "/inTime",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
-  authemp,
-  async (req, res) => {
-    try {
-      const data = req.body;
-      console.log("intime------------------");
-      function date() {
-        let date = new Date();
-        let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        return moment(d1).format("DD/MM/YYYY");
-      }
-      const { error } = validateinTime(data);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      const findEmp = await EmployeeAttendance.findOne({
+router.post("/inTime", authemp, async (req, res) => {
+  try {
+    const data = req.body;
+    console.log("intime------------------");
+    function date() {
+      let date = new Date();
+      let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      return moment(d1).format("DD/MM/YYYY");
+    }
+    const { error } = validateinTime(data);
+    if (error) return res.status(400).send({ data: error.details[0].message });
+    const findEmp = await EmployeeAttendance.findOne({
+      EmployeeId: req.user.EmployeeId,
+      Date: date(),
+    });
+    console.log("findemp");
+    console.log(findEmp);
+    data["organisation"] = req.user.organisation;
+    if (findEmp === null) {
+      if (data.inTime > data.timelimit)
+        return res.status(401).send({ data: "please contact your Admin" });
+      const attendance = new EmployeeAttendance({
         EmployeeId: req.user.EmployeeId,
-        Date: date(),
+        EmployeeName: req.user.EmployeeName,
+        inTime: data.inTime,
+        organisation: req.user.organisation,
       });
-      console.log("findemp");
-      console.log(findEmp);
-      data["organisation"] = req.user.organisation;
-      if (findEmp === null) {
-        if (data.inTime > data.timelimit)
-          return res.status(401).send({ data: "please contact your Admin" });
-        const attendance = new EmployeeAttendance({
+      await attendance.save();
+      return res.send(attendance);
+    }
+    if (findEmp.inTime === "pending") {
+      if (data.inTime > data.timelimit)
+        return res.status(401).send({ data: "please contact your Admin" });
+      const attendance = await EmployeeAttendance.findOneAndUpdate(
+        {
           EmployeeId: req.user.EmployeeId,
           EmployeeName: req.user.EmployeeName,
+          Date: date(),
+        },
+        {
           inTime: data.inTime,
-          organisation: req.user.organisation,
-        });
-        await attendance.save();
-        return res.send(attendance);
-      }
-      if (findEmp.inTime === "pending") {
-        if (data.inTime > data.timelimit)
-          return res.status(401).send({ data: "please contact your Admin" });
-        const attendance = await EmployeeAttendance.findOneAndUpdate(
-          {
-            EmployeeId: req.user.EmployeeId,
-            EmployeeName: req.user.EmployeeName,
-            Date: date(),
-          },
-          {
-            inTime: data.inTime,
-          },
-          { new: true }
-        );
-        console.log(attendance);
-        return res.send(attendance);
-      }
-      if (
-        findEmp.EmployeeId === req.user.EmployeeId &&
-        findEmp.inTime !== "pending"
-      ) {
-        return res
-          .status(400)
-          .send({ data: "employee already loggedin, you cant login again" });
-      }
-    } catch (error) {
-      console.log(`in time-->${error}`);
-      return res.status(400).send({ data: error });
+        },
+        { new: true }
+      );
+      console.log(attendance);
+      return res.send(attendance);
     }
+    if (
+      findEmp.EmployeeId === req.user.EmployeeId &&
+      findEmp.inTime !== "pending"
+    ) {
+      return res
+        .status(400)
+        .send({ data: "employee already loggedin, you cant login again" });
+    }
+  } catch (error) {
+    console.log(`in time-->${error}`);
+    return res.status(400).send({ data: error });
   }
-);
+});
 //checkout time
-router.post(
-  "/outTime",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
-  authemp,
-  async (req, res) => {
-    try {
-      function date() {
-        let date = new Date();
-        let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        return moment(d1).format("DD/MM/YYYY");
-      }
-      const data = req.body;
-      const { error } = validateoutTime(data);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      const findEmp = await EmployeeAttendance.findOne({
-        EmployeeId: req.user.EmployeeId,
-        organisation: req.user.organisation,
-        Date: date(),
-      });
-      if (
-        findEmp.EmployeeId === req.user.EmployeeId &&
-        findEmp.organisation === req.user.organisation &&
-        findEmp.outTime === "pending"
-      ) {
-        const attendance = await EmployeeAttendance.findOneAndUpdate(
-          {
-            EmployeeId: req.user.EmployeeId,
-            EmployeeName: req.user.EmployeeName,
-            organisation: req.user.organisation,
-            Date: date(),
-          },
-          {
-            outTime: data.outTime,
-          },
-          { new: true }
-        );
-        console.log(attendance);
-        return res.send(attendance);
-      }
-      if (
-        findEmp.EmployeeId === req.user.EmployeeId &&
-        findEmp.organisation === req.user.organisation &&
-        findEmp.outTime !== "pending"
-      ) {
-        return res.status(400).send({
-          data: "employee already loggedout, you cant logout again",
-        });
-      }
-    } catch (error) {
-      `in time-->${error}`;
-      return res.status(400).send({ data: error });
+router.post("/outTime", authemp, async (req, res) => {
+  try {
+    function date() {
+      let date = new Date();
+      let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      return moment(d1).format("DD/MM/YYYY");
     }
+    const data = req.body;
+    const { error } = validateoutTime(data);
+    if (error) return res.status(400).send({ data: error.details[0].message });
+    const findEmp = await EmployeeAttendance.findOne({
+      EmployeeId: req.user.EmployeeId,
+      organisation: req.user.organisation,
+      Date: date(),
+    });
+    if (
+      findEmp.EmployeeId === req.user.EmployeeId &&
+      findEmp.organisation === req.user.organisation &&
+      findEmp.outTime === "pending"
+    ) {
+      const attendance = await EmployeeAttendance.findOneAndUpdate(
+        {
+          EmployeeId: req.user.EmployeeId,
+          EmployeeName: req.user.EmployeeName,
+          organisation: req.user.organisation,
+          Date: date(),
+        },
+        {
+          outTime: data.outTime,
+        },
+        { new: true }
+      );
+      console.log(attendance);
+      return res.send(attendance);
+    }
+    if (
+      findEmp.EmployeeId === req.user.EmployeeId &&
+      findEmp.organisation === req.user.organisation &&
+      findEmp.outTime !== "pending"
+    ) {
+      return res.status(400).send({
+        data: "employee already loggedout, you cant logout again",
+      });
+    }
+  } catch (error) {
+    `in time-->${error}`;
+    return res.status(400).send({ data: error });
   }
-);
+});
 //auto checkout if user forgot to checkout before 7:30pm
 var cronJob1 = new CronJob1({
   cronTime: "00 00 14 * * 1-5 ",
@@ -321,7 +303,7 @@ var cronJob1 = new CronJob1({
   start: true,
   runOnInit: false,
 });
-// console.log(cronJob1);
+console.log(cronJob1);
 //set holiday for saturdays and sundays
 var cronJob2 = new CronJob2({
   cronTime: "00 02 04 * * 6,0 ",
@@ -356,63 +338,51 @@ var cronJob2 = new CronJob2({
 });
 console.log(cronJob2);
 //change password
-router.post(
-  "/changepassword",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
-  authemp,
-  async (req, res) => {
-    try {
-      const data = req.body;
-      const { error } = validatePassword(data);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      const emp = await EmployeeRegisters.findOne({
-        EmployeeId: req.user.EmployeeId,
-      });
-      if (!emp) return res.status(400).send({ data: "Invalid Employee id !" });
-      const match = await bcrypt.compare(data.oldPassword, emp.Password);
-      if (!match) return res.status(400).send({ data: "password not match !" });
-      if (data.newPassword !== data.conformPassword)
-        return res.send({ data: "both passwords must be same ...!" });
-      const salt = await bcrypt.genSalt(10);
-      emp.Password = await bcrypt.hash(data.newPassword, salt);
-      await EmployeeRegisters.findOneAndUpdate(
-        { EmployeeId: req.user.EmployeeId },
-        { Password: emp.Password }
-      );
-      //await emp.save();
-      return res.send({ data: "password changed successfully..!" });
-    } catch (error) {
-      console.log(error);
-      return res.status(400).send({ data: `emp change password -->${error}` });
-    }
+router.post("/changepassword", authemp, async (req, res) => {
+  try {
+    const data = req.body;
+    const { error } = validatePassword(data);
+    if (error) return res.status(400).send({ data: error.details[0].message });
+    const emp = await EmployeeRegisters.findOne({
+      EmployeeId: req.user.EmployeeId,
+    });
+    if (!emp) return res.status(400).send({ data: "Invalid Employee id !" });
+    const match = await bcrypt.compare(data.oldPassword, emp.Password);
+    if (!match) return res.status(400).send({ data: "password not match !" });
+    if (data.newPassword !== data.conformPassword)
+      return res.send({ data: "both passwords must be same ...!" });
+    const salt = await bcrypt.genSalt(10);
+    emp.Password = await bcrypt.hash(data.newPassword, salt);
+    await EmployeeRegisters.findOneAndUpdate(
+      { EmployeeId: req.user.EmployeeId },
+      { Password: emp.Password }
+    );
+    //await emp.save();
+    return res.send({ data: "password changed successfully..!" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ data: `emp change password -->${error}` });
   }
-);
+});
 //applying leave
-router.post(
-  "/applyleave",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
-  authemp,
-  async (req, res) => {
-    try {
-      let data = req.body;
-      data["EmployeeId"] = req.user.EmployeeId;
-      data["EmployeeName"] = req.user.EmployeeName;
-      const { error } = validateEmployeeLeave(data);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      data["organisation"] = req.user.organisation;
+router.post("/applyleave", authemp, async (req, res) => {
+  try {
+    let data = req.body;
+    data["EmployeeId"] = req.user.EmployeeId;
+    data["EmployeeName"] = req.user.EmployeeName;
+    const { error } = validateEmployeeLeave(data);
+    if (error) return res.status(400).send({ data: error.details[0].message });
+    data["organisation"] = req.user.organisation;
 
-      const leave = new EmployeeLeave(data);
-      await leave.save();
-      console.log("data saved", data);
-      res.status(200).send({ data: "leave applied" });
-    } catch (error) {
-      console.log(`leave catch-->${error}`);
-      return res.status(400).send({ data: error });
-    }
+    const leave = new EmployeeLeave(data);
+    await leave.save();
+    console.log("data saved", data);
+    res.status(200).send({ data: "leave applied" });
+  } catch (error) {
+    console.log(`leave catch-->${error}`);
+    return res.status(400).send({ data: error });
   }
-);
+});
 //get a perticular emp leave
 router.post("/empleaves", authemp, async (req, res) => {
   try {
@@ -447,108 +417,96 @@ router.post("/getleaves", authemp, async (req, res) => {
   }
 });
 //post employee personal/imp data
-router.post(
-  "/add/:name",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
-  authemp,
-  async (req, res, next) => {
-    const data = req.body;
-    data["last_updated_on"] = new Date(Date.now());
-    console.log(data);
-    let name = req.params.name;
-    console.log("req.user");
-    console.log(req.user);
-    const query = { EmployeeId: req.user.EmployeeId };
-    console.log(query);
-    if (name === "EducationalDetails") {
-      const { error } = validateEducationaldetails(data[0]);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      let update = { $push: { EducationalDetails: data } };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
-    if (name === "profile") {
-      const { error } = validateprofile(data);
-      if (error)
-        return res.status(400).send({ data: error.details[0].message });
-      let update = { profile: data };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      console.log(emp_update);
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
-    if (name === "jobExperiences") {
-      console.log("data for job experiment");
-      console.log(data);
-      let update = { $push: { jobExperiences: data } };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
-  }
-);
-//update educational details
-router.post(
-  "/updateEducationalDetails/:name",
-  queue({ activeLimit: 1, queuedLimit: -1 }),
-  authemp,
-  async (req, res) => {
-    const data = req.body;
-    console.log(data);
+router.post("/add/:name", authemp, async (req, res, next) => {
+  const data = req.body;
+  data["last_updated_on"] = new Date(Date.now());
+  console.log(data);
+  let name = req.params.name;
+  console.log("req.user");
+  console.log(req.user);
+  const query = { EmployeeId: req.user.EmployeeId };
+  console.log(query);
+  if (name === "EducationalDetails") {
     const { error } = validateEducationaldetails(data[0]);
     if (error) return res.status(400).send({ data: error.details[0].message });
-    let name = req.params.name;
-    console.log("req.user");
-    console.log(req.user);
-    const query = {
-      EmployeeId: req.user.EmployeeId,
-      organisation: req.user.organisation,
-    };
-    console.log(query);
-    if (name === "ssc") {
-      console.log("ssc selected....");
-      let update = { $set: { "EducationalDetails.0": data } };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      console.log(emp_update);
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
-    if (name === "degree") {
-      let update = { $set: { "EducationalDetails.1": data } };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
-    if (name === "ug") {
-      let update = { $set: { "EducationalDetails.2": data } };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
-    if (name === "pg") {
-      let update = { $set: { "EducationalDetails.3": data } };
-      let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
-        new: true,
-      });
-      if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
-      return res.send(emp_update);
-    }
+    let update = { $push: { EducationalDetails: data } };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
   }
-);
+  if (name === "profile") {
+    const { error } = validateprofile(data);
+    if (error) return res.status(400).send({ data: error.details[0].message });
+    let update = { profile: data };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    console.log(emp_update);
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
+  }
+  if (name === "jobExperiences") {
+    console.log("data for job experiment");
+    console.log(data);
+    let update = { $push: { jobExperiences: data } };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
+  }
+});
+//update educational details
+router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  const { error } = validateEducationaldetails(data[0]);
+  if (error) return res.status(400).send({ data: error.details[0].message });
+  let name = req.params.name;
+  console.log("req.user");
+  console.log(req.user);
+  const query = {
+    EmployeeId: req.user.EmployeeId,
+    organisation: req.user.organisation,
+  };
+  console.log(query);
+  if (name === "ssc") {
+    console.log("ssc selected....");
+    let update = { $set: { "EducationalDetails.0": data } };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    console.log(emp_update);
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
+  }
+  if (name === "degree") {
+    let update = { $set: { "EducationalDetails.1": data } };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
+  }
+  if (name === "ug") {
+    let update = { $set: { "EducationalDetails.2": data } };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
+  }
+  if (name === "pg") {
+    let update = { $set: { "EducationalDetails.3": data } };
+    let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    if (!emp_update) return res.status(400).send({ data: "Invalid data..!" });
+    return res.send(emp_update);
+  }
+});
 //get production hours for last 7 days and last 30days
 router.post("/productionhours/week&month", authemp, async (req, res) => {
   try {

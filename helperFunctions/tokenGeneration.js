@@ -11,9 +11,10 @@ try {
     device,
     EmployeeName,
     Password,
-    organisation
+    organisation,
+    ip
   ) {
-    var ip = req.connection.remoteAddress || req.socket.remoteAddress; //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
+    //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
 
     const user_logins = await EmployeeLogin.find({
       EmployeeId: EmployeeId,

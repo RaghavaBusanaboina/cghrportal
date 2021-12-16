@@ -13,7 +13,7 @@ try {
     Password,
     organisation
   ) {
-    var ip = req.socket.remoteAddress; //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
+    var ip = req.connection.remoteAddress || req.socket.remoteAddress; //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
 
     const user_logins = await EmployeeLogin.find({
       EmployeeId: EmployeeId,

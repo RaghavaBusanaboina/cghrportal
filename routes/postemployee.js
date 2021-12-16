@@ -120,12 +120,12 @@ router.post("/login", async (req, res) => {
     console.log(ip);
     console.log("after ip--------------");
     const token = createToken(
-      emp.EmployeeId,
-      req.headers["user-agent"],
-      emp.EmployeeName,
-      emp.Password,
-      emp.organisation,
-      ip
+      (EmployeeId = emp.EmployeeId),
+      (device = req.headers["user-agent"]),
+      (EmployeeName = emp.EmployeeName),
+      (Password = emp.Password),
+      (organisation = emp.organisation),
+      (ip = ip)
     );
     return res
       .header("x-auth-token", token)

@@ -46,7 +46,7 @@ try {
       },
       config.get("jwtPrivateKey")
     );
-    console.log(accessToken111111111111);
+    console.log(accessToken);
     return accessToken;
   };
   exports.createToken = createToken;

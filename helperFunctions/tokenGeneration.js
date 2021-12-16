@@ -34,7 +34,8 @@ try {
       ip_address: ip,
       device: device,
     });
-
+    console.log("000000000000000000000000000000000000000000000000");
+    console.log(token);
     const accessToken = await jwt.sign(
       {
         EmployeeId: EmployeeId,

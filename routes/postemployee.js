@@ -129,7 +129,7 @@ router.post("/login", async (req, res) => {
     );
     return res
       .header("x-auth-token", token)
-      .send({ token: token, message: "login successfull..!" });
+      .send({ token: token, message: "login successfull..!", ip: ip });
   } catch (error) {
     console.log(error);
     return res.status(400).send({ data: `emplogin -->${error}` });

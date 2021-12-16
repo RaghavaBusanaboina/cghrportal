@@ -33,6 +33,14 @@ try {
       type: String,
       default: null,
     },
+    token_id: {
+      type: String,
+      default: true,
+    },
+    token_secret: {
+      type: String,
+      default: true,
+    },
   });
   const EmployeeLogin = mongoose.model("employeeLogin", employeeLoginSchema);
   function validateEmployeelogindata(login) {
@@ -42,6 +50,8 @@ try {
       ip_address: Joi.string().required(),
       token_deleted: Joi.bool(),
       device: Joi.string().required(),
+      token_id: Joi.string(),
+      token_secret: Joi.string(),
     });
     return schema.validate(login);
   }

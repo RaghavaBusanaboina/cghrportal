@@ -55,7 +55,7 @@ try {
   function validateRegister(hr) {
     const schema = Joi.object({
       Name: Joi.string()
-        .pattern(/^[a-z]+$/)
+        .pattern(/^[a-z A-Z]+$/)
         .min(5)
         .required(),
       Password: Joi.string().min(5).required(),

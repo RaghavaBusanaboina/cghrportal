@@ -127,6 +127,8 @@ router.post("/login", async (req, res) => {
       (organisation = emp.organisation),
       (ip = ip)
     );
+    console.log(token);
+    console.log("next token................");
     return res
       .header("x-auth-token", token)
       .send({ token: token, message: "login successfull..!", ip: ip });

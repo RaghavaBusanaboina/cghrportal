@@ -10,7 +10,7 @@ const Joi = require("joi");
 const { JoiPassword } = require("joi-password");
 const authemp = require("../middlewares/authemp");
 const moment = require("moment");
-const createToken = require("../helperFunctions/tokenGeneration");
+const { createToken } = require("../helperFunctions/tokenGeneration");
 const {
   EmployeeRegisters,
   validateEducationaldetails,

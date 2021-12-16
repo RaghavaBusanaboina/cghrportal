@@ -6,7 +6,6 @@ const config = require("config");
 var { EmployeeLogin } = require("../models/userLogin");
 try {
   var createToken = async function (
-    req,
     EmployeeId,
     device,
     EmployeeName,

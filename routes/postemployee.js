@@ -115,7 +115,10 @@ router.post("/login", async (req, res) => {
     if (!emp) return res.status(400).send({ data: "Invalid credentials..!" });
     const validpass = await bcrypt.compare(data.Password, emp.Password);
     if (!validpass) return res.status(400).send({ data: "Invalid Password!" });
+    console.log("before ip");
     var ip = req.connection.remoteAddress || req.socket.remoteAddress;
+    console.log(ip);
+    console.log("after ip--------------");
     const token = createToken(
       emp.EmployeeId,
       req.headers["user-agent"],

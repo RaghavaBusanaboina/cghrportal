@@ -183,7 +183,7 @@ try {
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3).required(),
       EmployeeName: Joi.string()
-        .pattern(/^[a-z]+$/)
+        .pattern(/^[a-z A-Z]+$/)
         .min(3)
         .max(50)
         .required(),
@@ -198,7 +198,7 @@ try {
         .required(),
       AgreementYears: Joi.number().min(0).max(3).required(),
       Role: Joi.string()
-        .pattern(/^[a-z]+$/)
+        .pattern(/^[a-z A-Z]+$/)
         .min(3)
         .max(50)
         .required(),

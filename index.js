@@ -3,7 +3,6 @@
 const express = require("express");
 const app = express();
 var queue = require("express-queue");
-
 // const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const postadmin = require("./routes/postadmin");

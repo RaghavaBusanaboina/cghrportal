@@ -119,7 +119,7 @@ router.post("/login", async (req, res) => {
     var ip = req.connection.remoteAddress || req.socket.remoteAddress;
     console.log(ip);
     console.log("after ip-----------");
-    const token = createToken(
+    const token = await createToken(
       (EmployeeId = emp.EmployeeId),
       (device = req.headers["user-agent"]),
       (EmployeeName = emp.EmployeeName),

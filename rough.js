@@ -154,20 +154,20 @@
 // for (let i = 0; i < data.length; i++) {
 //   const element = array[i];
 //   console.log(element);
-// }
-var CronJob = require("cron").CronJob;
+// // }
+// var CronJob = require("cron").CronJob;
 
-var cronJob2 = new CronJob({
-  cronTime: "00 17 09 * * 6,0 ",
-  onTick: async function () {
-    try {
-      console.log("saturday and sunday holiday cron-->");
-    } catch (error) {
-      console.log("error in cron job2");
-      console.log(error);
-    }
-    // console.log(empData);
-  },
-  start: true,
-  runOnInit: false,
-});
+// var cronJob2 = new CronJob({
+//   cronTime: "00 17 09 * * 6,0 ",
+//   onTick: async function () {
+//     try {
+//       console.log("saturday and sunday holiday cron-->");
+//     } catch (error) {
+//       console.log("error in cron job2");
+//       console.log(error);
+//     }
+//     // console.log(empData);
+//   },
+//   start: true,
+//   runOnInit: false,
+// });

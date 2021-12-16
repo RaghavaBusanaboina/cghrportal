@@ -25,10 +25,6 @@ try {
       type: String,
       default: null,
     },
-    token_id: {
-      type: String,
-      default: null,
-    },
     token_deleted: {
       type: Boolean,
       default: false,
@@ -44,7 +40,6 @@ try {
       EmployeeId: Joi.string().min(3).required(),
       logged_out: Joi.boolean().required,
       ip_address: Joi.string().required(),
-      token_id: Joi.string().required(),
       token_deleted: Joi.bool(),
       device: Joi.string().required(),
     });

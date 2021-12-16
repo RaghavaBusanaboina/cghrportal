@@ -4,17 +4,13 @@ var CronJob2 = require("cron").CronJob;
 const config = require("config");
 const express = require("express");
 const router = express.Router();
-const queue = require("express-queue");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const { JoiPassword } = require("joi-password");
 const authemp = require("../middlewares/authemp");
 const moment = require("moment");
-const {
-  totalHoursMins,
-  calWorkingHours,
-} = require("../helperFunctions/helperFunctions");
+const createToken = require("../helperFunctions/tokenGeneration");
 const {
   EmployeeRegisters,
   validateEducationaldetails,
@@ -30,22 +26,22 @@ function validateLogin(emp) {
   });
   return schema.validate(emp);
 }
-generateAuthToken = (EmployeeId, EmployeeName, Password, organisation) => {
-  const token = jwt.sign(
-    {
-      EmployeeId: EmployeeId,
-      EmployeeName: EmployeeName,
-      Password: Password,
-      organisation: organisation,
-    },
-    config.get("jwtPrivateKey"),
-    {
-      expiresIn: "12h",
-    }
-  );
-  console.log(token);
-  return token;
-};
+// generateAuthToken = (EmployeeId, EmployeeName, Password, organisation) => {
+//   const token = jwt.sign(
+//     {
+//       EmployeeId: EmployeeId,
+//       EmployeeName: EmployeeName,
+//       Password: Password,
+//       organisation: organisation,
+//     },
+//     config.get("jwtPrivateKey"),
+//     {
+//       expiresIn: "12h",
+//     }
+//   );
+//   console.log(token);
+//   return token;
+// };
 function validatePassword(data) {
   const schema = Joi.object({
     oldPassword: Joi.string().min(3).required(),
@@ -119,8 +115,10 @@ router.post("/login", async (req, res) => {
     if (!emp) return res.status(400).send({ data: "Invalid credentials..!" });
     const validpass = await bcrypt.compare(data.Password, emp.Password);
     if (!validpass) return res.status(400).send({ data: "Invalid Password!" });
-    const token = generateAuthToken(
+
+    const token = createToken(
       emp.EmployeeId,
+      req.headers["user-agent"],
       emp.EmployeeName,
       emp.Password,
       emp.organisation

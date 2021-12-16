@@ -2,12 +2,15 @@
 
 const express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
+var queue = require("express-queue");
+
+// const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const registerHr = require("./routes/registerHr");
-const employee = require("./routes/employee");
+const postadmin = require("./routes/postadmin");
+const getadmin = require("./routes/getadmin");
+const postemployee = require("./routes/postemployee");
+const getemployee = require("./routes/getemployee");
 const config = require("config");
-const multer = require("multer");
 
 require("./prod")(app);
 // Mongodb connection
@@ -28,36 +31,15 @@ mongoose
 //   });
 
 app.use(express.json());
-app.use("/api/admin", registerHr);
-app.use("/api/employee", employee);
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.set("view engine", "ejs");
-
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
-
-var upload = multer({ storage: storage });
-
+app.use("/api/admin/get", getadmin);
+app.use("/api/employee/get", getemployee);
+app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
+app.use("/api/admin/post", postadmin);
+app.use("/api/employee/post", postemployee);
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.set("view engine", "ejs");
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Listening to port 🚀 ${port}`);
 });
-const { EmployeeRegisters } = require("./models/employeeRegisters");
-async function getdata() {
-  const empData = await EmployeeRegisters.find({}).select(
-    "EmployeeId EmployeeName -_id"
-  );
-  for (let i = 0; i < empData.length; i++) {
-    const element = empData[i];
-    console.log(element.EmployeeId, element.EmployeeName);
-  }
-  // return empData;
-}
-getdata();

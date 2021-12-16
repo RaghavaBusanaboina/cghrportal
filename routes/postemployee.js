@@ -118,7 +118,7 @@ router.post("/login", async (req, res) => {
     console.log("before ip");
     var ip = req.connection.remoteAddress || req.socket.remoteAddress;
     console.log(ip);
-    console.log("after ip--------------");
+    console.log("after ip-----------");
     const token = createToken(
       (EmployeeId = emp.EmployeeId),
       (device = req.headers["user-agent"]),

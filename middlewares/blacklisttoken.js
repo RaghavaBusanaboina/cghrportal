@@ -49,6 +49,7 @@ async function blacklistToken(req, res, next) {
             const blacklist_token = new TokenBlackList({
               token: token,
             });
+            blacklist_token.save();
           }
         }
         next();

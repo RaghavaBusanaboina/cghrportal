@@ -15,10 +15,6 @@ const {
   validateemployeeTermination,
 } = require("../models/employeeTermination");
 const {
-  totalHoursMins,
-  calWorkingHours,
-} = require("../helperFunctions/helperFunctions");
-const {
   RegisterHr,
   validateRegister,
   validateLogin,

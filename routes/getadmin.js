@@ -181,22 +181,22 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       totalLastMonthHours.push(lastMonthHours);
       finaldata[empData[i].EmployeeId] = {
         EmployeId: empData[i].EmployeeId,
-        lastWeekHours: `${lastWeekHours.split(":")[0]}Hours ${
+        lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
           lastWeekHours.split(":")[1]
-        } Mins`,
-        lastMonthHours: `${lastMonthHours.split(":")[0]}Hours ${
+        } mins`,
+        lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
           lastMonthHours.split(":")[1]
-        } Mins`,
+        } mins`,
       };
     }
     var thmweek = totalHoursMins(totalLastWeekHours);
     var thmmonth = totalHoursMins(totalLastMonthHours);
-    total["totalLastWeekHours"] = `${thmweek.split(":")[0]}Hours ${
+    total["totalLastWeekHours"] = `${thmweek.split(":")[0]}hrs ${
       thmweek.split(":")[1]
-    } Mins`;
-    total["totalLastMonthHours"] = `${thmmonth.split(":")[0]}Hours ${
+    } mins`;
+    total["totalLastMonthHours"] = `${thmmonth.split(":")[0]}hrs ${
       thmmonth.split(":")[1]
-    } Mins`;
+    } mins`;
     return res
       .status(200)
       .send({ finaldata, total, count: `${empData.length}` });

@@ -136,15 +136,20 @@ router.post("/leavestatus", auth, async (req, res) => {
   console.log("post");
   const data = req.body;
   console.log(data);
-  query = { _id: mongoose.Types.ObjectId(data._id), status: "pending" };
-  update = { status: data.status };
-  const findemp = await EmployeeLeave.findOneAndUpdate(query, update, {
-    new: true,
-  });
-  console.log(findemp);
-  if (!findemp) return res.status(404).send({ data: "Status already updated" });
+  if ("_id" in data && "status" in data) {
+    query = { _id: mongoose.Types.ObjectId(data._id), status: "pending" };
+    update = { status: data.status };
+    const findemp = await EmployeeLeave.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    console.log(findemp);
+    if (!findemp)
+      return res.status(404).send({ data: "Status already updated" });
 
-  return res.send(findemp);
+    return res.send(findemp);
+  } else {
+    return res.status(404).send("_id and status are required");
+  }
 });
 //post organisation holidays
 router.post("/holidays", auth, async (req, res) => {

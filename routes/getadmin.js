@@ -8,7 +8,6 @@ const { EmployeeAttendance } = require("../models/employeeAttendance");
 const { Holidays } = require("../models/holidays");
 const { EmployeeLeave } = require("../models/leaves");
 const { EmployeeTermination } = require("../models/employeeTermination");
-
 const { EmployeeRegisters } = require("../models/employeeRegisters");
 const { AdminSettings } = require("../models/companyprofile");
 const {
@@ -152,6 +151,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     const empData = await EmployeeRegisters.find({
       organisation: req.user.organisation,
     });
+    var countlen = empData.length;
     let finaldata = {};
     let total = {};
     let totalLastWeekHours = [];
@@ -191,12 +191,12 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     }
     var thmweek = totalHoursMins(totalLastWeekHours);
     var thmmonth = totalHoursMins(totalLastMonthHours);
-    total["totalLastWeekHours"] = `${thmweek.split(":")[0]}hrs ${
-      thmweek.split(":")[1]
-    } mins`;
-    total["totalLastMonthHours"] = `${thmmonth.split(":")[0]}hrs ${
-      thmmonth.split(":")[1]
-    } mins`;
+    total["totalLastWeekHours"] = `${
+      eval(thmweek.split(":")[0]) / countlen
+    }hrs ${eval(thmweek.split(":")[1]) / countlen} mins`;
+    total["totalLastMonthHours"] = `${
+      eval(thmmonth.split(":")[0]) / countlen
+    }hrs ${eval(thmmonth.split(":")[1]) / countlen} mins`;
     return res
       .status(200)
       .send({ finaldata, total, count: `${empData.length}` });

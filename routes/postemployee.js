@@ -248,7 +248,7 @@ router.post("/outTime", authemp, async (req, res) => {
     }
   } catch (error) {
     `in time-->${error}`;
-    return res.status(400).send({ data: error });
+    return res.status(400).send({ data: error || "please checkin first" });
   }
 });
 //auto checkout if user forgot to checkout before 7:30pm

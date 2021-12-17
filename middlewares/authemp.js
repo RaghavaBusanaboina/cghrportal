@@ -70,6 +70,9 @@ module.exports = async function (req, res, next) {
             //   token: token,
             // });
             // await blacklist_token.save();
+            const decoded = jwt.verify(token, config.get("jwtPrivateKey"));
+            console.log(decoded);
+            req.user = decoded;
             console.log("else block in authemp");
           }
         }

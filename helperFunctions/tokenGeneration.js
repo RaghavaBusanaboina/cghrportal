@@ -30,7 +30,6 @@ try {
       EmployeeId: EmployeeId,
       token_deleted: false,
       ip_address: ip,
-      device: device,
     });
     user_logins.forEach(async (login) => {
       if (login) {

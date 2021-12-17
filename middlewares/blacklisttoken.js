@@ -6,7 +6,7 @@ const { TokenBlackList } = require("../models/blackListToken");
 const config = require("config");
 
 //MIDDLEWARE TO AUTHENTICTAE TOKEN BEFORE ACCESSING PROTECTED ROUTES
-async function authenticateToken(req, res, next) {
+async function blacklistToken(req, res, next) {
   const token = req.headers["x-auth-token"];
   if (token == null) return res.sendStatus(401);
 

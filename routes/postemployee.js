@@ -1,13 +1,10 @@
 /** @format */
 var requestIp = require("request-ip");
-
 var CronJob1 = require("cron").CronJob;
 var CronJob2 = require("cron").CronJob;
-const config = require("config");
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const { JoiPassword } = require("joi-password");
 const authemp = require("../middlewares/authemp");
@@ -103,7 +100,6 @@ function validateoutTime(data) {
   });
   return schema.validate(data);
 }
-
 //route for emp login
 router.post("/login", async (req, res) => {
   console.log("login route------------");

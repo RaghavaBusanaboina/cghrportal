@@ -21,6 +21,7 @@ const {
 const { EmployeeAttendance } = require("../models/employeeAttendance");
 const { validateEmployeeLeave, EmployeeLeave } = require("../models/leaves");
 const both = require("../middlewares/both");
+const blocklisttoken = require("../middlewares/blacklisttoken");
 function validateLogin(emp) {
   const schema = Joi.object({
     Email: Joi.string().min(5).required(),
@@ -440,38 +441,8 @@ router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
     return res.send(emp_update);
   }
 });
-//route for logout// need to change
-router.post("/logout", async (req, res) => {
-  try {
-    const empData = await EmployeeAttendance.findOne({
-      EmployeeId: req.params.id,
-    });
-    console.log(empData);
-    if (empData.outTime === "pending") {
-      let date = new Date();
-      // outTime = `${date.getHours()}:${date.getMinutes()}`;
-
-      // console.log(outTime);
-      let update = { outTime: Date.now().toString() };
-      const Data = await EmployeeAttendance.findOneAndUpdate(
-        {
-          EmployeeId: req.params.id,
-        },
-        update,
-        { new: true }
-      );
-      if (!Data)
-        return res
-          .status(404)
-          .send({ data: "id not found in employee attendance" });
-
-      res.send(Data);
-    } else {
-      return res.send({ data: "employee loggedout!" });
-    }
-  } catch (error) {
-    console.log(error);
-    return res.send({ data: `get emp attendance by id -->${error}` });
-  }
+//route for logout
+router.delete("/logout", blocklisttoken, async (req, res) => {
+  return res.json({ message: "Token blacklisted. User logged out." });
 });
 module.exports = router;

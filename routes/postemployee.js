@@ -442,6 +442,7 @@ router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
 });
 //route for logout
 router.delete("/logout", blocklisttoken, async (req, res) => {
+  console.log("logout route-------------------------");
   return res.json({ message: "Token blacklisted. User logged out." });
 });
 module.exports = router;

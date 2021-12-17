@@ -9,11 +9,12 @@ module.exports = function (req, res, next) {
     return res.status(401).send("Access denied. No token providedae.");
   try {
     const decoded = jwt.verify(token, "PrivateKey");
+    console.log(decoded);
     req.user = decoded;
     next();
     return decoded;
   } catch (ex) {
     console.log(`${ex}`);
-    res.status(400).send(`${ex}`); //("Session Expired! Please Login Again");
+    res.status(400).send(`issueeeeeee${ex}`); //("Session Expired! Please Login Again");
   }
 };

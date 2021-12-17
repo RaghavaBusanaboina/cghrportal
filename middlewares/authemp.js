@@ -51,20 +51,26 @@ module.exports = async function (req, res, next) {
             token_id: payload.token_id,
           });
           if (login.token_deleted == true) {
-            login.logged_out = true;
             await login.save();
             const blacklist_token = new TokenBlackList({
               token: token,
             });
-            blacklist_token.save();
+            await blacklist_token.save();
+            details = {
+              Status: "Failure",
+              Details: "Token blacklisted. Cannot use this token.",
+            };
+
+            return res.status(401).json(details);
           } else {
-            login.logged_out = true;
-            login.token_deleted = true;
-            await login.save();
-            const blacklist_token = new TokenBlackList({
-              token: token,
-            });
-            blacklist_token.save();
+            // login.logged_out = true;
+            // login.token_deleted = true;
+            // await login.save();
+            // const blacklist_token = new TokenBlackList({
+            //   token: token,
+            // });
+            // await blacklist_token.save();
+            console.log("else block in authemp");
           }
         }
         next();

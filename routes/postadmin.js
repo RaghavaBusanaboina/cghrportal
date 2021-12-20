@@ -327,7 +327,7 @@ router.post("/productionhours", both, async (req, res) => {
 router.post("/employeetermination", auth, async (req, res) => {
   try {
     const data = req.body;
-    const emp = await EmployeeRegisters.findOneAndUpdate(
+    await EmployeeRegisters.findOneAndUpdate(
       { EmployeeId: data.EmployeeId },
       { isTerminated: true },
       { new: true }

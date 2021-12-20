@@ -16,12 +16,12 @@ try {
     ip
   ) {
     //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
-    const token_id = await customId({
+    const token_id = customId({
       EmployeeId: EmployeeId,
       date: Date.now(),
       randomLength: 4,
     });
-    const token_secret = await customId({
+    const token_secret = customId({
       token_secret: ip,
       date: Date.now(),
       randomLength: 8,

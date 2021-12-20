@@ -133,7 +133,7 @@ router.post("/addemployee", auth, async (req, res) => {
     })
       .sort({ _id: -1 })
       .limit(1);
-    if (findempid) {
+    if (findempid !== []) {
       var lastId = findempid[0].EmployeeId;
       //incrementing the last id for new emp
       let idstring = lastId.split(idCode);

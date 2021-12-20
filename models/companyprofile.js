@@ -25,7 +25,7 @@ try {
     },
     companyIdCode: {
       type: String,
-      minlength: 5,
+      minlength: 1,
       required: true,
     },
     companyMailId: {

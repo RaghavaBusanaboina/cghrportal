@@ -51,7 +51,7 @@ module.exports = async function (req, res, next) {
             token_id: payload.token_id,
           });
           if (login.token_deleted == true) {
-            await login.save();
+            // await login.save();
             const blacklist_token = new TokenBlackList({
               token: token,
             });

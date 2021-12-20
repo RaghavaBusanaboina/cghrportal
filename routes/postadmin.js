@@ -256,6 +256,7 @@ router.post("/companydetails", auth, async (req, res) => {
 //company timings post route
 router.post("/companytimings", auth, async (req, res) => {
   const data = req.body;
+  console.log(data);
   const { error } = validatecompanytimingsdata(data);
   if (error) return res.status(400).send({ data: error.details[0].message });
   const timings = await CompanyTimings.findOneAndUpdate(
@@ -267,7 +268,7 @@ router.post("/companytimings", auth, async (req, res) => {
 
   if (timings === null) {
     data["organisation"] = req.user.organisation;
-    const d1 = new Companydetails(data);
+    const d1 = new CompanyTimings(data);
     await d1.save();
     return res.status(200).send({ data: d1 });
   }

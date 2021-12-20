@@ -122,6 +122,21 @@ router.post("/addemployee", auth, async (req, res) => {
       return res.status(400).send({
         data: "Employeeid already there in terminated list..!",
       });
+    //find last emp id then increment that id
+    const findempid = await EmployeeRegisters.find({
+      organisation: req.user.organisation,
+    })
+      .sort({ _id: -1 })
+      .limit(1);
+    const findCompanyIdCode = await Companydetails.findOne({
+      organisation: req.user.organisation,
+    });
+    var idCode = findCompanyIdCode.companyIdCode;
+    var lastId = findempid[0].EmployeeId;
+    //incrementing the last id for new emp
+    let idstring = lastId.split(idCode);
+    let empid = idCode + (eval(idstring[1]) + 1);
+    data["EmployeeId"] = empid;
     data["organisation"] = req.user.organisation;
     const empData = new EmployeeRegisters(data);
     const salt = await bcrypt.genSalt(10);
@@ -224,7 +239,6 @@ router.post("/companydetails", auth, async (req, res) => {
   //   return res.status(400).send({ data: "somwthing went wrong!.." });
   return res.status(200).send({ data: settings });
 });
-
 //company timings post route
 router.post("/companytimings", auth, async (req, res) => {
   const data = req.body;
@@ -246,7 +260,6 @@ router.post("/companytimings", auth, async (req, res) => {
 
   return res.status(200).send({ data: timings });
 });
-
 // emp intime,outtime and working hours
 router.post("/productionhours", both, async (req, res) => {
   try {

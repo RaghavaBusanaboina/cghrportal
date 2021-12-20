@@ -15,7 +15,6 @@ const {
   calWorkingHours,
 } = require("../helperFunctions/helperFunctions");
 const limit = 2;
-
 //get only emp list
 router.post("/getall", auth, async (req, res) => {
   try {
@@ -40,7 +39,6 @@ router.post("/getall", auth, async (req, res) => {
     return res.status(400).send({ data: `get all emp list -->${error}` });
   }
 });
-
 //get all leaves of employees
 router.post("/allleaves", auth, async (req, res) => {
   try {
@@ -60,7 +58,6 @@ router.post("/allleaves", auth, async (req, res) => {
     return res.status(400).send({ data: `get all emp leaves -->${error}` });
   }
 });
-
 //get attendances for a month, year from user inps,
 router.post("/attendancestats", both, async (req, res) => {
   try {
@@ -124,7 +121,6 @@ router.get("/companydetails", both, async (req, res) => {
     return res.status(400).send({ data: "somwthing went wrong!.." });
   return res.status(200).send({ data: settings });
 });
-
 //get company timings
 router.get("/companytimings", auth, async (req, res) => {
   const timings = await CompanyTimings.find({

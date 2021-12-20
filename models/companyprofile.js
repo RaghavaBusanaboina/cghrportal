@@ -77,9 +77,7 @@ try {
     const schema = Joi.object({
       established: Joi.string().min(3).required(),
       type: Joi.string().min(5).required(),
-      companyIdCode: Joi.string()
-        .regex(/^[a-zA-Z]$/)
-        .required(),
+      companyIdCode: Joi.string().regex(/[A-Z]/).required(),
       companyMailId: Joi.string().min(5).email().required(),
       companyContactNumber: Joi.string()
         .length(10)

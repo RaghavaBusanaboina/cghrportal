@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { EmployeeLogin } = require("../models/userLogin");
 const { TokenBlackList } = require("../models/blackListToken");
-
+const { EmployeeRegisters } = require("../models/employeeRegisters");
+const { EmployeeTermination } = require("../models/employeeTermination");
 // module.exports = function (req, res, next) {
 //   const token = req.header("x-auth-token");
 //   if (!token)
@@ -25,7 +26,8 @@ module.exports = async function (req, res, next) {
   const token = req.headers["x-auth-token"];
   if (!token)
     return res.status(404).send("Access denied. No token providedae.");
-  TokenBlackList.findOne({ token: token }).then((found) => {
+
+  await TokenBlackList.findOne({ token: token }).then((found) => {
     if (found) {
       jwt.verify(token, config.get("jwtPrivateKey"), async (err, payload) => {
         const login = await EmployeeLogin.findOne({
@@ -49,6 +51,7 @@ module.exports = async function (req, res, next) {
             EmployeeId: payload.EmployeeId,
             token_id: payload.token_id,
           });
+
           if (login.token_deleted === true) {
             const blacklist_token = new TokenBlackList({
               token: token,
@@ -63,6 +66,21 @@ module.exports = async function (req, res, next) {
           } else {
             const decoded = jwt.verify(token, config.get("jwtPrivateKey"));
             console.log(decoded);
+            await EmployeeRegisters.findOne({
+              EmployeeId: decoded.EmployeeId,
+              EmployeeName: decoded.EmployeeName,
+              isTerminated: true,
+            }).then((found) => {
+              if (found)
+                return res.status(404).send({ data: "Employee terminated1" });
+            });
+            await EmployeeTermination.findOne({
+              EmployeeId: decoded.EmployeeId,
+              EmployeeName: decoded.EmployeeName,
+            }).then((found) => {
+              if (found)
+                return res.status(404).send({ data: "Employee terminated" });
+            });
             req.user = decoded;
             console.log("else block in authemp");
           }

@@ -3,10 +3,13 @@
 //schema for emp registers
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const { JoiPassword } = require("joi-password");
 const moment = require("moment");
 try {
   const employeeRegistersSchema = mongoose.Schema({
+    isTerminated: {
+      type: Boolean,
+      default: false,
+    },
     ADate: {
       type: Date,
       default: Date.now,

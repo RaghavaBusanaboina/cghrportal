@@ -249,7 +249,7 @@ router.post("/outTime", authemp, async (req, res) => {
 });
 //auto checkout if user forgot to checkout before 7:30pm
 var cronJob1 = new CronJob1({
-  cronTime: "00 00 14 * * 1-5 ",
+  cronTime: "00 00 14 * * * ",
   onTick: async function () {
     console.log("cron start");
     let filter = { outTime: "pending" };
@@ -268,7 +268,7 @@ var cronJob1 = new CronJob1({
 console.log(cronJob1);
 //set holiday for saturdays and sundays
 var cronJob2 = new CronJob2({
-  cronTime: "00 02 04 * * 6,0 ",
+  cronTime: "00 02 04 * * sat,sun ",
   onTick: async function () {
     try {
       console.log("saturday and sunday holiday cron-->");

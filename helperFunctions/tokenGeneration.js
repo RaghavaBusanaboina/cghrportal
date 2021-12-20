@@ -37,7 +37,6 @@ try {
         await login.save();
       }
     });
-
     const token = await new EmployeeLogin({
       EmployeeId: EmployeeId,
       ip_address: ip,
@@ -46,7 +45,6 @@ try {
       token_secret: token_secret,
     });
     token.save();
-    console.log("000000000000000000000000000000000000000000000000");
     console.log(token);
     const accessToken = jwt.sign(
       {

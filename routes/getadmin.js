@@ -9,7 +9,7 @@ const { Holidays } = require("../models/holidays");
 const { EmployeeLeave } = require("../models/leaves");
 const { EmployeeTermination } = require("../models/employeeTermination");
 const { EmployeeRegisters } = require("../models/employeeRegisters");
-const { AdminSettings } = require("../models/companyprofile");
+const { Companydetails } = require("../models/companyprofile");
 const {
   totalHoursMins,
   calWorkingHours,
@@ -115,14 +115,26 @@ router.get("/holidays", auth, async (req, res) => {
   }
 });
 //company details get route
-router.get("/settings", both, async (req, res) => {
-  const settings = await AdminSettings.find({
+router.get("/companydetails", both, async (req, res) => {
+  const settings = await Companydetails.find({
     organisation: req.user.organisation,
   });
   console.log(settings);
   if (!settings)
     return res.status(400).send({ data: "somwthing went wrong!.." });
   return res.status(200).send({ data: settings });
+});
+
+//get company timings
+router.get("/companytimings", auth, async (req, res) => {
+  const timings = await CompanyTimings.find({
+    organisation: req.user.organisation,
+  });
+  console.log(timings);
+  if (!timings) {
+    return res.status(400).send({ data: "timings not found" });
+  }
+  return res.status(200).send({ data: timings });
 });
 //get production hours for all employees for the last 7 and last 30days
 router.post("/productionhours/week&month", auth, async (req, res) => {

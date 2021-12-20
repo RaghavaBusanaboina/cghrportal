@@ -25,8 +25,10 @@ const {
   validateEmployeedata,
 } = require("../models/employeeRegisters");
 const {
-  AdminSettings,
-  validatesettingsdata,
+  Companydetails,
+  validatecompanydata,
+  CompanyTimings,
+  validatecompanytimingsdata,
 } = require("../models/companyprofile");
 const {
   totalHoursMins,
@@ -200,11 +202,11 @@ router.delete("/removeemployee/:id", auth, async (req, res) => {
   }
 });
 //company details post route
-router.post("/settings", auth, async (req, res) => {
+router.post("/companydetails", auth, async (req, res) => {
   const data = req.body;
-  const { error } = validatesettingsdata(data);
+  const { error } = validatecompanydata(data);
   if (error) return res.status(400).send({ data: error.details[0].message });
-  const settings = await AdminSettings.findOneAndUpdate(
+  const settings = await Companydetails.findOneAndUpdate(
     { organisation: req.user.organisation },
     data,
     { new: true }
@@ -213,7 +215,7 @@ router.post("/settings", auth, async (req, res) => {
 
   if (!settings) {
     data["organisation"] = req.user.organisation;
-    const d1 = new AdminSettings(data);
+    const d1 = new Companydetails(data);
     await d1.save();
     return res.status(200).send({ data: d1 });
   }
@@ -222,6 +224,29 @@ router.post("/settings", auth, async (req, res) => {
   //   return res.status(400).send({ data: "somwthing went wrong!.." });
   return res.status(200).send({ data: settings });
 });
+
+//company timings post route
+router.post("/companytimings", auth, async (req, res) => {
+  const data = req.body;
+  const { error } = validatecompanytimingsdata(data);
+  if (error) return res.status(400).send({ data: error.details[0].message });
+  const timings = await CompanyTimings.findOneAndUpdate(
+    { organisation: req.user.organisation },
+    data,
+    { new: true }
+  );
+  console.log(timings);
+
+  if (!timings) {
+    data["organisation"] = req.user.organisation;
+    const d1 = new Companydetails(data);
+    await d1.save();
+    return res.status(200).send({ data: d1 });
+  }
+
+  return res.status(200).send({ data: timings });
+});
+
 // emp intime,outtime and working hours
 router.post("/productionhours", both, async (req, res) => {
   try {

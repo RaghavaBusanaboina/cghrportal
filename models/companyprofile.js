@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 const moment = require("moment");
 try {
-  const settingsSchema = mongoose.Schema({
+  const companydetailsSchema = mongoose.Schema({
     ADate: {
       type: Date,
       default: Date.now,
@@ -23,12 +23,19 @@ try {
       minlength: 5,
       required: true,
     },
-    inTime: {
+    companyIdCode: {
       type: String,
+      minlength: 5,
       required: true,
     },
-    outTime: {
+    companyMailId: {
       type: String,
+      minlength: 5,
+      required: true,
+    },
+    companyContactNumber: {
+      type: String,
+      minlength: 10,
       required: true,
     },
     createdOn: {
@@ -40,18 +47,51 @@ try {
       },
     },
   });
-  const AdminSettings = mongoose.model("settings", settingsSchema);
-  function validatesettingsdata(setting) {
+
+  const companytimingsSchema = mongoose.Schema({
+    organisation: {
+      type: String,
+      minlength: 4,
+    },
+    inTime: {
+      type: String,
+      required: true,
+    },
+    outTime: {
+      type: String,
+      required: true,
+    },
+  });
+
+  const CompanyTimings = mongoose.model("companytimings", companytimingsSchema);
+  const Companydetails = mongoose.model("companydetails", companydetailsSchema);
+
+  function validatecompanytimingsdata(companytimings) {
     const schema = Joi.object({
-      established: Joi.string().min(3).required(),
-      type: Joi.string().min(5).required(),
       inTime: Joi.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
       outTime: Joi.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
     });
-    return schema.validate(setting);
+    return schema.validate(companytimings);
   }
-  exports.AdminSettings = AdminSettings;
-  exports.validatesettingsdata = validatesettingsdata;
+  function validatecompanydata(companydetails) {
+    const schema = Joi.object({
+      established: Joi.string().min(3).required(),
+      type: Joi.string().min(5).required(),
+      companyIdCode: Joi.string()
+        .regex(/^[a-z A-Z]+ $/)
+        .required(),
+      companyMailId: Joi.string().min(5).email().required(),
+      companyContactNumber: Joi.string()
+        .length(10)
+        .pattern(/^[6-9]{1}[0-9]{9}$/)
+        .required(),
+    });
+    return schema.validate(companydetails);
+  }
+  exports.Companydetails = Companydetails;
+  exports.validatecompanydata = validatecompanydata;
+  exports.CompanyTimings = CompanyTimings;
+  exports.validatecompanytimingsdata = validatecompanytimingsdata;
 } catch (error) {
-  console.log(`AdminSettings${err}`);
+  console.log(`company profile model${err}`);
 }

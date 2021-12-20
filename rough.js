@@ -172,10 +172,13 @@
 //   runOnInit: false,
 // });DJDZJMJQKTWF2T4Y
 
-var data = { status: "Approved" };
-console.log(data);
-if ("_id" in data && "status" in data) {
-  console.log("yes");
-} else {
-  console.log("no");
-}
+// var data = { status: "Approved" };
+// console.log(data);
+// if ("_id" in data && "status" in data) {
+//   console.log("yes");
+// } else {
+//   console.log("no");
+// }
+
+var data = "bgmi9";
+console.log(data.substring());

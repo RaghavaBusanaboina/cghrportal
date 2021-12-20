@@ -95,7 +95,7 @@ router.post("/resetpassword", auth, async (req, res) => {
     return res.status(400).send({ data: `reset password -->${error}` });
   }
 });
-// add employees into db
+// add employees into db changes
 router.post("/addemployee", auth, async (req, res) => {
   try {
     const data = req.body;

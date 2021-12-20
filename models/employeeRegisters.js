@@ -172,7 +172,7 @@ try {
           type: String,
           default: "",
         },
-        last_updated_on: { type: Date, default: "" },
+        last_updated_on: { type: Date, default: Date.now },
       },
     ],
   });

@@ -239,9 +239,6 @@ router.post("/companydetails", auth, async (req, res) => {
     await d1.save();
     return res.status(200).send({ data: d1 });
   }
-
-  // if (!settings)
-  //   return res.status(400).send({ data: "somwthing went wrong!.." });
   return res.status(200).send({ data: settings });
 });
 //company timings post route

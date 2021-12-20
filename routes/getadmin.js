@@ -9,7 +9,7 @@ const { Holidays } = require("../models/holidays");
 const { EmployeeLeave } = require("../models/leaves");
 const { EmployeeTermination } = require("../models/employeeTermination");
 const { EmployeeRegisters } = require("../models/employeeRegisters");
-const { Companydetails } = require("../models/companyprofile");
+const { Companydetails, CompanyTimings } = require("../models/companyprofile");
 const {
   totalHoursMins,
   calWorkingHours,

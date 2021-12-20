@@ -181,7 +181,7 @@ try {
     let d1 = new Date(date.getFullYear() - 18, date.getMonth(), date.getDate());
     d1 = moment(d1).format("YYYY/MM/DD");
     const schema = Joi.object({
-      EmployeeId: Joi.string().min(3).required(),
+      EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string()
         .pattern(/^[a-z A-Z]+$/)
         .min(3)

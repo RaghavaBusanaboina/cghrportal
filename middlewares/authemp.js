@@ -40,7 +40,6 @@ module.exports = async function (req, res, next) {
         Status: "Failure",
         Details: "Token blacklisted. Cannot use this token.",
       };
-
       return res.status(401).json(details);
     } else {
       jwt.verify(token, config.get("jwtPrivateKey"), async (err, payload) => {
@@ -51,7 +50,6 @@ module.exports = async function (req, res, next) {
             token_id: payload.token_id,
           });
           if (login.token_deleted === true) {
-            // await login.save();
             const blacklist_token = new TokenBlackList({
               token: token,
             });
@@ -63,13 +61,6 @@ module.exports = async function (req, res, next) {
 
             return res.status(401).json(details);
           } else {
-            // login.logged_out = true;
-            // login.token_deleted = true;
-            // await login.save();
-            // const blacklist_token = new TokenBlackList({
-            //   token: token,
-            // });
-            // await blacklist_token.save();
             const decoded = jwt.verify(token, config.get("jwtPrivateKey"));
             console.log(decoded);
             req.user = decoded;

@@ -126,8 +126,10 @@ router.get("/companytimings", auth, async (req, res) => {
   const timings = await CompanyTimings.find({
     organisation: req.user.organisation,
   });
-  if (timings === []) {
-    return res.status(400).send({ data: "timings not found" });
+  if (timings.length === 0) {
+    return res
+      .status(400)
+      .send({ data: "timings not found,please add company timings..!" });
   }
   return res.status(200).send({ data: timings });
 });

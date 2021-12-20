@@ -265,7 +265,7 @@ router.post("/companytimings", auth, async (req, res) => {
   );
   console.log(timings);
 
-  if (!timings) {
+  if (timings.length < 0) {
     data["organisation"] = req.user.organisation;
     const d1 = new Companydetails(data);
     await d1.save();

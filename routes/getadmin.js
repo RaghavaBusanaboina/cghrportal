@@ -121,7 +121,7 @@ router.get("/companydetails", both, async (req, res) => {
   return res.status(200).send({ data: settings });
 });
 //get company timings
-router.get("/companytimings", auth, async (req, res) => {
+router.get("/companytimings", both, async (req, res) => {
   console.log("get company timings");
   const timings = await CompanyTimings.find({
     organisation: req.user.organisation,

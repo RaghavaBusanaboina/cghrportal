@@ -1,10 +1,7 @@
 /** @format */
-
 var jwt = require("jsonwebtoken");
 var customId = require("custom-id");
-
 const config = require("config");
-
 var { EmployeeLogin } = require("../models/userLogin");
 try {
   async function createToken(
@@ -15,7 +12,6 @@ try {
     organisation,
     ip
   ) {
-    //(req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
     const token_id = customId({
       EmployeeId: EmployeeId,
       date: Date.now(),

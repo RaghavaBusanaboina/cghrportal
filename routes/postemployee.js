@@ -251,7 +251,7 @@ router.post("/outTime", authemp, async (req, res) => {
 var cronJob1 = new CronJob1({
   cronTime: "00 00 14 * * * ",
   onTick: async function () {
-    console.log("cron start");
+    console.log("cron started");
     let filter = { outTime: "pending" };
     let update = { outTime: "19:30" };
     const attendance = await EmployeeAttendance.updateMany(

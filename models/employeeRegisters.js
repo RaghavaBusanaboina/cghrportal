@@ -31,6 +31,10 @@ try {
     organisation: {
       type: String,
     },
+    joiningDate: {
+      type: String,
+      required: true,
+    },
     AgreementYears: {
       type: Number,
       min: 0,
@@ -192,6 +196,8 @@ try {
         .length(10)
         .pattern(/^[6-9]{1}[0-9]{9}$/)
         .required(),
+
+      joiningDate: Joi.string().required(),
       DateOfBirth: Joi.date()
         .messages({ "dateOfBirth.max": "Employee must be 18 years old" })
         .max(d1)

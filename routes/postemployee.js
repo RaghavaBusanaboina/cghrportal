@@ -155,7 +155,13 @@ router.post("/inTime", authemp, async (req, res) => {
     console.log("findemp");
     console.log(findEmp);
     data["organisation"] = req.user.organisation;
-    if (findEmp === null) {
+    if (
+      findEmp === null &&
+      (await EmployeeRegisters.findOne({
+        EmployeeId: req.user.EmployeeId,
+        EmployeeName: req.user.EmployeeName,
+      }))
+    ) {
       if (data.inTime > data.timelimit)
         return res.status(401).send({ data: "please contact your Admin" });
       const attendance = new EmployeeAttendance({
@@ -167,7 +173,14 @@ router.post("/inTime", authemp, async (req, res) => {
       await attendance.save();
       return res.send(attendance);
     }
-    if (findEmp.inTime === "pending") {
+
+    if (
+      findEmp.inTime === "pending" &&
+      (await EmployeeRegisters.findOne({
+        EmployeeId: req.user.EmployeeId,
+        EmployeeName: req.user.EmployeeName,
+      }))
+    ) {
       if (data.inTime > data.timelimit)
         return res.status(401).send({ data: "please contact your Admin" });
       const attendance = await EmployeeAttendance.findOneAndUpdate(
@@ -186,11 +199,17 @@ router.post("/inTime", authemp, async (req, res) => {
     }
     if (
       findEmp.EmployeeId === req.user.EmployeeId &&
-      findEmp.inTime !== "pending"
+      findEmp.inTime !== "pending" &&
+      (await EmployeeRegisters.findOne({
+        EmployeeId: req.user.EmployeeId,
+        EmployeeName: req.user.EmployeeName,
+      }))
     ) {
       return res
         .status(400)
         .send({ data: "employee already loggedin, you cant login again" });
+    } else {
+      return res.status(404).send({ data: "emp not found" });
     }
   } catch (error) {
     console.log(`in time-->${error}`);
@@ -216,7 +235,11 @@ router.post("/outTime", authemp, async (req, res) => {
     if (
       findEmp.EmployeeId === req.user.EmployeeId &&
       findEmp.organisation === req.user.organisation &&
-      findEmp.outTime === "pending"
+      findEmp.outTime === "pending" &&
+      (await EmployeeRegisters.findOne({
+        EmployeeId: req.user.EmployeeId,
+        EmployeeName: req.user.EmployeeName,
+      }))
     ) {
       const attendance = await EmployeeAttendance.findOneAndUpdate(
         {
@@ -236,11 +259,17 @@ router.post("/outTime", authemp, async (req, res) => {
     if (
       findEmp.EmployeeId === req.user.EmployeeId &&
       findEmp.organisation === req.user.organisation &&
-      findEmp.outTime !== "pending"
+      findEmp.outTime !== "pending" &&
+      (await EmployeeRegisters.findOne({
+        EmployeeId: req.user.EmployeeId,
+        EmployeeName: req.user.EmployeeName,
+      }))
     ) {
       return res.status(400).send({
         data: "employee already loggedout, you cant logout again",
       });
+    } else {
+      return res.status(404).send({ data: "emp not found" });
     }
   } catch (error) {
     `in time-->${error}`;

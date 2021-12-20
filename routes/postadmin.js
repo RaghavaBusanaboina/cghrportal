@@ -138,8 +138,19 @@ router.post("/addemployee", auth, async (req, res) => {
       var lastId = findempid[0].EmployeeId;
       //incrementing the last id for new emp
       let idstring = lastId.split(idCode);
-      let empid = idCode + (eval(idstring[1]) + 1);
-      data["EmployeeId"] = empid;
+      var num = 0;
+      let id = `${Number(idstring[1]) + 1}`;
+      if (id.length === 1) {
+        num = `000${id}`;
+      } else if (id.length === 2) {
+        num = `00${id}`;
+      } else if (id.length === 3) {
+        num = `0${id}`;
+      } else if (id.length === 4) {
+        num = `${id}`;
+      }
+
+      data["EmployeeId"] = idCode + num;
     } else {
       data["EmployeeId"] = idCode + "0001";
     }

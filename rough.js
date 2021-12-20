@@ -180,5 +180,17 @@
 //   console.log("no");
 // }
 
-var data = "bgmi9";
-console.log(data.substring());
+var data = "0225";
+console.log(Number(data));
+let id = `${Number(data) + 1}`;
+console.log(id);
+if (id.length === 1) {
+  data = `000${id}`;
+} else if (id.length === 2) {
+  data = `00${id}`;
+} else if (id.length === 3) {
+  data = `0${id}`;
+} else if (id.length === 4) {
+  data = `${id}`;
+}
+console.log(data);

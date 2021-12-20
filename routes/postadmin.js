@@ -112,7 +112,7 @@ router.post("/addemployee", auth, async (req, res) => {
     if (emp) return res.status(400).send({ data: "Employee already there!" });
 
     const empterm = await EmployeeTermination.findOne({
-      EmployeeId: data.EmployeeId,
+      $or: [{ Email: data.Email }, { Phone: data.Phone }],
     });
     console.log("empterm");
 

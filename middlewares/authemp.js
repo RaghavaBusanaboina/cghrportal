@@ -72,14 +72,14 @@ module.exports = async function (req, res, next) {
               isTerminated: true,
             }).then((found) => {
               if (found)
-                return res.status(404).send({ data: "Employee terminated1" });
+                return res.status(401).send({ data: "Employee terminated1" });
             });
             await EmployeeTermination.findOne({
               EmployeeId: decoded.EmployeeId,
               EmployeeName: decoded.EmployeeName,
             }).then((found) => {
               if (found)
-                return res.status(404).send({ data: "Employee terminated" });
+                return res.status(401).send({ data: "Employee terminated" });
             });
             req.user = decoded;
             console.log("else block in authemp");

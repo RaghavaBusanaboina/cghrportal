@@ -61,7 +61,7 @@ try {
       Password: Joi.string().min(5).required(),
       Email: Joi.string().min(5).required(),
       organisation: Joi.string()
-        .pattern(/^[a-z]+$/)
+        .pattern(/^[a-z A-Z]+$/)
         .min(3)
         .required(),
     });

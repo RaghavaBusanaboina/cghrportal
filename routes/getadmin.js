@@ -122,6 +122,7 @@ router.get("/companydetails", both, async (req, res) => {
 });
 //get company timings
 router.get("/companytimings", auth, async (req, res) => {
+  console.log("get company timings");
   const timings = await CompanyTimings.find({
     organisation: req.user.organisation,
   });

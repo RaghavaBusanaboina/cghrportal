@@ -195,10 +195,10 @@
 // }
 // console.log(data);
 
-// str = "1234";
-// console.log(~~str); // expected result: 1234
-// console.log(eval(str));
-// console.log(Number(str));
+str = "1234";
+console.log(~~str); // expected result: 1234
+console.log(eval(str));
+console.log(Number(str));
 
 // new Date(Date.now());
 console.log(new Date(Date.now()));

@@ -221,8 +221,11 @@ try {
     const schema = Joi.object({
       qualification: Joi.string().min(3).required(),
       institute: Joi.string().min(3).max(50).required(),
-      passedoutYear: Joi.number().max(Number(date.getFullYear())).required(),
-      percentage: Joi.number().max(100).required(),
+      passedoutYear: Joi.number()
+        .integer()
+        .max(Number(date.getFullYear()))
+        .required(),
+      percentage: Joi.number().integer().max(100).required(),
       last_updated_on: Joi.date(),
     });
     return schema.validate(educationaldetails);

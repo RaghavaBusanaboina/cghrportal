@@ -235,10 +235,15 @@ try {
       LastName: Joi.string().min(3).required(),
       fatherName: Joi.string().min(3).required(),
       motherName: Joi.string().min(3).required(),
-      emergencyNumber: Joi.number().required(),
+      emergencyNumber: Joi.string()
+        .minlength(10)
+        .pattern(/^[6-9]{1}[0-9]{9}$/)
+        .required(),
       Address: Joi.string().min(3).required(),
       City: Joi.string().min(3).required(),
-      Pincode: Joi.number().minlength(6).required(),
+      Pincode: Joi.string()
+        .pattern(/^[0-9]{6}$/)
+        .required(),
       emergencyAddress: Joi.string().min(3).required(),
       AboutMe: Joi.string().min(3).required(),
       last_updated_on: Joi.date(),

@@ -84,7 +84,7 @@ router.post("/resetpassword", auth, async (req, res) => {
     });
     if (!emp) return res.status(400).send({ data: "Invalid Employee id !" });
     const salt = await bcrypt.genSalt(10);
-    emp.Password = await bcrypt.hash("12345", salt);
+    emp.Password = await bcrypt.hash(req.body.Password, salt);
     await EmployeeRegisters.findOneAndUpdate(
       { EmployeeId: req.body.EmployeeId },
       { Password: emp.Password }

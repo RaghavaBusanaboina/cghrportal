@@ -199,10 +199,7 @@ str = "1234";
 console.log(~~str); // expected result: 1234
 console.log(eval(str));
 console.log(Number(str));
-str = "hello";
-console.log(~~str); // expected result: 1234
-console.log(Number(str));
-console.log(eval(str));
+
 
 // new Date(Date.now());
 console.log(new Date(Date.now()));

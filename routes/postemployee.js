@@ -424,6 +424,7 @@ router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
   console.log("hello1111");
   console.log("printing data1");
   console.log(data);
+  console.log(data.percentage);
   const { error } = validateEducationaldetails(data);
   if (error) return res.status(400).send({ data: error.details[0].message });
   let name = req.params.name;

@@ -94,11 +94,11 @@ try {
         },
         passedoutYear: {
           type: Number,
-          default: "",
+          default: 0,
         },
         percentage: {
           type: Number,
-          default: "",
+          default: 0,
         },
         last_updated_on: { type: Date, default: "" },
       },

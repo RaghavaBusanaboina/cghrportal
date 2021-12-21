@@ -240,6 +240,7 @@ try {
         .required(),
       Address: Joi.string().min(3).required(),
       City: Joi.string().min(3).required(),
+      Country: Joi.string().min(3).required(),
       Pincode: Joi.string()
         .pattern(/^[0-9]{6}$/)
         .required(),

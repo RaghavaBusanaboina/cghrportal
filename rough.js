@@ -195,7 +195,7 @@
 // }
 // console.log(data);
 
-str = "1234";
+str = "sai";
 console.log(~~str); // expected result: 1234
 console.log(eval(str));
 console.log(Number(str));

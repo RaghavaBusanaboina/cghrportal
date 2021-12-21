@@ -420,6 +420,7 @@ router.post("/add/:name", authemp, async (req, res, next) => {
 //update educational details..!!1123
 router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
   const data = req.body;
+  data["last_updated_on"] = new Date(Date.now());
   console.log("hello1111");
   console.log("printing data1");
   console.log(data);

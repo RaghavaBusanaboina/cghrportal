@@ -417,9 +417,11 @@ router.post("/add/:name", authemp, async (req, res, next) => {
     return res.send(emp_update);
   }
 });
-//update educational details
+//update educational details..!!1123
 router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
   const data = req.body;
+  console.log("hello1111");
+  console.log("printing data1");
   console.log(data);
   const { error } = validateEducationaldetails(data);
   if (error) return res.status(400).send({ data: error.details[0].message });

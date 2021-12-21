@@ -235,7 +235,7 @@ try {
       LastName: Joi.string().min(3).required(),
       fatherName: Joi.string().min(3).required(),
       motherName: Joi.string().min(3).required(),
-      emergencyNumber: Joi.number().minlength(10).required(),
+      emergencyNumber: Joi.number().required(),
       Address: Joi.string().min(3).required(),
       City: Joi.string().min(3).required(),
       Pincode: Joi.number().minlength(6).required(),

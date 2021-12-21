@@ -26,6 +26,7 @@ function validateLogin(emp) {
   });
   return schema.validate(emp);
 }
+//change
 // generateAuthToken = (EmployeeId, EmployeeName, Password, organisation) => {
 //   const token = jwt.sign(
 //     {

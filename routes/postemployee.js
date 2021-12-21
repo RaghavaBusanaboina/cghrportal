@@ -386,7 +386,7 @@ router.post("/add/:name", authemp, async (req, res, next) => {
   const query = { EmployeeId: req.user.EmployeeId };
   console.log(query);
   if (name === "EducationalDetails") {
-    const { error } = validateEducationaldetails(data[0]);
+    const { error } = validateEducationaldetails(data);
     if (error) return res.status(400).send({ data: error.details[0].message });
     let update = { $push: { EducationalDetails: data } };
     let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {

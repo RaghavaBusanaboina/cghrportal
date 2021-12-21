@@ -231,7 +231,7 @@ try {
   function validateprofile(profile) {
     const schema = Joi.object({
       FirstName: Joi.string().min(3).required(),
-      MiddleName: Joi.string(),
+      MiddleName: Joi.string().optional(),
       LastName: Joi.string().min(3).required(),
       fatherName: Joi.string().min(3).required(),
       motherName: Joi.string().min(3).required(),

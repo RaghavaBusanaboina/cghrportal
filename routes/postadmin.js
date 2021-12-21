@@ -79,17 +79,24 @@ router.post("/login", async (req, res) => {
 // password reset
 router.post("/resetpassword", auth, async (req, res) => {
   try {
-    const emp = await EmployeeRegisters.findOne({
-      EmployeeId: req.body.EmployeeId,
-    });
-    if (!emp) return res.status(400).send({ data: "Invalid Employee id !" });
-    const salt = await bcrypt.genSalt(10);
-    emp.Password = await bcrypt.hash(req.body.Password, salt);
-    await EmployeeRegisters.findOneAndUpdate(
-      { EmployeeId: req.body.EmployeeId },
-      { Password: emp.Password }
-    );
-    return res.send({ data: "password reset successfull..!" });
+    var data = req.body;
+    if ("EmployeeId" in data && "Password" in data) {
+      const emp = await EmployeeRegisters.findOne({
+        EmployeeId: req.body.EmployeeId,
+      });
+      if (!emp) return res.status(400).send({ data: "Invalid Employee id !" });
+      const salt = await bcrypt.genSalt(10);
+      emp.Password = await bcrypt.hash(req.body.Password, salt);
+      await EmployeeRegisters.findOneAndUpdate(
+        { EmployeeId: req.body.EmployeeId },
+        { Password: emp.Password }
+      );
+      return res.send({ data: "password reset successfull..!" });
+    } else {
+      return res
+        .status(400)
+        .send({ data: "password and EmployeeId are required!" });
+    }
   } catch (error) {
     console.log(error);
     return res.status(400).send({ data: `reset password -->${error}` });

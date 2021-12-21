@@ -420,7 +420,8 @@ router.post("/add/:name", authemp, async (req, res, next) => {
 //update educational details
 router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
   const data = req.body;
-  console.log(data);
+  console.log("aliiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+  console.log(data[0]);
   const { error } = validateEducationaldetails(data[0]);
   if (error) return res.status(400).send({ data: error.details[0].message });
   let name = req.params.name;

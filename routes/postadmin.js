@@ -324,7 +324,8 @@ router.post("/productionhours", both, async (req, res) => {
       hours.push(TotalWorkingHours);
     }
     let hoursmins = totalHoursMins(hours);
-    return res.status(200).send({ data: hoursmins });
+    var output = hoursmins.split(":");
+    return res.status(200).send({ data: `${output[0]} hrs ${output[1]} mins` });
   } catch (error) {
     console.log(`${error}`);
     res.status(400).send({ data: error });

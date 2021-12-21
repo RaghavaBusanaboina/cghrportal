@@ -164,7 +164,7 @@ router.post("/inTime", authemp, async (req, res) => {
       }))
     ) {
       if (data.inTime > data.timelimit)
-        return res.status(400).send({ data: "please contact your Admin" });
+        return res.status(402).send({ data: "please contact your Admin" });
       const attendance = new EmployeeAttendance({
         EmployeeId: req.user.EmployeeId,
         EmployeeName: req.user.EmployeeName,
@@ -183,7 +183,7 @@ router.post("/inTime", authemp, async (req, res) => {
       }))
     ) {
       if (data.inTime > data.timelimit)
-        return res.status(400).send({ data: "please contact your Admin" });
+        return res.status(402).send({ data: "please contact your Admin" });
       const attendance = await EmployeeAttendance.findOneAndUpdate(
         {
           EmployeeId: req.user.EmployeeId,

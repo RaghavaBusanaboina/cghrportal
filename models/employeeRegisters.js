@@ -221,8 +221,8 @@ try {
     const schema = Joi.object({
       qualification: Joi.string().min(3).required(),
       institute: Joi.string().min(3).max(50).required(),
-      passedoutYear: Joi.number().max(date.getFullYear()).required(),
-      percentage: Joi.number().max(100).required(),
+      passedoutYear: Joi.string().max(date.getFullYear()).required(),
+      percentage: Joi.string().max(100).required(),
       last_updated_on: Joi.date(),
     });
     return schema.validate(educationaldetails);

@@ -299,8 +299,8 @@ router.post("/productionhours", both, async (req, res) => {
     const query = {
       EmployeeId: data.EmployeeId,
       organisation: req.user.organisation,
-      inTime: { $ne: ["pending", "Holiday"] },
-      outTime: { $ne: ["pending", "Holiday"] },
+      inTime: { $nin: ["pending", "Holiday"] },
+      outTime: { $nin: ["pending", "Holiday"] },
       ADate: {
         $gte: new Date(
           fromyearmonth.year,

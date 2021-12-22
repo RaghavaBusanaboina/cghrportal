@@ -295,7 +295,7 @@ var cronJob1 = new CronJob1({
   start: true,
   runOnInit: false,
 });
-console.log(cronJob1);
+console.log("11111", cronJob1);
 //set holiday for saturdays and sundays
 var cronJob2 = new CronJob2({
   cronTime: "00 02 04 * * sat,sun ",
@@ -317,7 +317,7 @@ var cronJob2 = new CronJob2({
         });
         console.log(attendance);
         await attendance.save();
-        console.log(element.EmployeeId, "holiday saved");
+        console.log("holiday saved");
       }
     } catch (error) {
       console.log("error in cron job2");
@@ -328,7 +328,7 @@ var cronJob2 = new CronJob2({
   start: true,
   runOnInit: false,
 });
-console.log(cronJob2);
+console.log("22222", cronJob2);
 //change password
 router.post("/changepassword", authemp, async (req, res) => {
   try {
@@ -423,7 +423,7 @@ router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
   data["percentage"] = Number(data["percentage"]);
   data["passedoutYear"] = Number(data["passedoutYear"]);
   data["last_updated_on"] = new Date(Date.now());
-  console.log("printing data1",data);
+  console.log("printing data1", data);
   const { error } = validateEducationaldetails(data);
   if (error) return res.status(400).send({ data: error.details[0].message });
   let name = req.params.name;

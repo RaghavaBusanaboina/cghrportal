@@ -178,8 +178,8 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       let weekquery = {
         EmployeeId: empData[i].EmployeeId, //
         organisation: req.user.organisation,
-        inTime: { $ne: ["pending", "Holiday"] },
-        outTime: { $ne: ["pending", "Holiday"] },
+        inTime: { $nin: ["pending", "Holiday"] },
+        outTime: { $nin: ["pending", "Holiday"] },
 
         ADate: {
           $gte: new Date(currentYear, currentMonth, currentDate - 8),

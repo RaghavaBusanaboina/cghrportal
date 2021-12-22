@@ -365,7 +365,6 @@ router.post("/applyleave", authemp, async (req, res) => {
     const { error } = validateEmployeeLeave(data);
     if (error) return res.status(400).send({ data: error.details[0].message });
     data["organisation"] = req.user.organisation;
-
     const leave = new EmployeeLeave(data);
     await leave.save();
     console.log("data saved", data);

@@ -195,12 +195,20 @@
 // }
 // console.log(data);
 
-str = "123";
-console.log(~~~str); // expected result: 1234
-console.log(eval(str));
-console.log(Number(str));
+// str = "123";
+// console.log(~~~str); // expected result: 1234
+// console.log(eval(str));
+// console.log(Number(str));
 
-// new Date(Date.now());
-// console.log(new Date(Date.now()));
+// // new Date(Date.now());
+// // console.log(new Date(Date.now()));
 
-console.log(Math.round(0.9));
+// console.log(Math.round(0.9));
+var to = new Date("2021-12-30");
+var from = new Date("2022-01-31");
+console.log(to);
+
+console.log(from);
+var timeDiff = Math.abs(from.getTime() - to.getTime());
+var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+console.log(diffDays);

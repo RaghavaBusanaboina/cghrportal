@@ -184,6 +184,9 @@ router.post("/leavestatus", auth, async (req, res) => {
       new: true,
     });
     console.log(findemp);
+    if (data.status ==='Approved'){
+      
+    }
     if (!findemp)
       return res.status(404).send({ data: "Status already updated" });
 

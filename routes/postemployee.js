@@ -417,28 +417,23 @@ router.post("/add/:name", authemp, async (req, res, next) => {
     return res.send(emp_update);
   }
 });
-//update educational details..!!1123
+//update educational details
 router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
   const data = req.body;
   data["percentage"] = Number(data["percentage"]);
   data["passedoutYear"] = Number(data["passedoutYear"]);
   data["last_updated_on"] = new Date(Date.now());
-  console.log("hello1111");
-  console.log("printing data1");
-  console.log(data);
-  console.log(data.percentage);
+  console.log("printing data1",data);
   const { error } = validateEducationaldetails(data);
   if (error) return res.status(400).send({ data: error.details[0].message });
   let name = req.params.name;
-  console.log("req.user");
-  console.log(req.user);
+  console.log("req.user", req.user);
   const query = {
     EmployeeId: req.user.EmployeeId,
     organisation: req.user.organisation,
   };
   console.log(query);
   if (name === "ssc") {
-    console.log("ssc selected....");
     let update = { $set: { "EducationalDetails.0": data } };
     let emp_update = await EmployeeRegisters.findOneAndUpdate(query, update, {
       new: true,

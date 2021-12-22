@@ -195,10 +195,10 @@
 // }
 // console.log(data);
 
-str = "Raghava";
-console.log(~~str); // expected result: 1234
+str = "123";
+console.log(~~~str); // expected result: 1234
 console.log(eval(str));
 console.log(Number(str));
 
 // new Date(Date.now());
-console.log(new Date(Date.now()));
+// console.log(new Date(Date.now()));

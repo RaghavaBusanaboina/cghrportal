@@ -199,12 +199,12 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       };
       const lastWeekHours = await calculateWorkingingHours(
         (query = weekquery),
-        (type = week)
+        (type = "week")
       );
       totalLastWeekHours.push(lastWeekHours);
       const lastMonthHours = await calculateWorkingingHours(
         (query = monthquery),
-        (type = month)
+        (type = "month")
       );
       totalLastMonthHours.push(lastMonthHours);
 

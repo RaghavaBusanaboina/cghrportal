@@ -299,6 +299,8 @@ router.post("/productionhours", both, async (req, res) => {
     const query = {
       EmployeeId: data.EmployeeId,
       organisation: req.user.organisation,
+      inTime: { $ne: ["pending", "Holiday"] },
+      outTime: { $ne: ["pending", "Holiday"] },
       ADate: {
         $gte: new Date(
           fromyearmonth.year,
@@ -325,7 +327,10 @@ router.post("/productionhours", both, async (req, res) => {
     }
     let hoursmins = totalHoursMins(hours);
     var output = hoursmins.split(":");
-    return res.status(200).send({ data: `${output[0]} hrs ${output[1]} mins` });
+    return res.status(200).send({
+      data: `${output[0]} hrs ${output[1]} mins`,
+      WorkingDays: empattendance.length,
+    });
   } catch (error) {
     console.log(`${error}`);
     res.status(400).send({ data: error });

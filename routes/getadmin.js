@@ -141,9 +141,17 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     let currentYear = date.getFullYear();
     let currentMonth = date.getMonth();
     let currentDate = date.getDate();
-    async function calculateWorkingingHours(query) {
+    let weekWorkingDays = [];
+    let monthWorkingDays = [];
+    async function calculateWorkingingHours(query, type) {
       const empattendance = await EmployeeAttendance.find(query);
       console.log(empattendance);
+      if (type === "week") {
+        weekWorkingDays.push(empattendance.length);
+      }
+      if (type === "month") {
+        monthWorkingDays.push(empattendance.length);
+      }
       if (!empattendance)
         return res.status(404).send({ data: "no data found" });
       var hours = [];
@@ -170,6 +178,8 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       let weekquery = {
         EmployeeId: empData[i].EmployeeId, //
         organisation: req.user.organisation,
+        inTime: { $ne: ["pending", "Holiday"] },
+        outTime: { $ne: ["pending", "Holiday"] },
 
         ADate: {
           $gte: new Date(currentYear, currentMonth, currentDate - 8),
@@ -179,16 +189,25 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       let monthquery = {
         EmployeeId: empData[i].EmployeeId, //
         organisation: req.user.organisation,
+        inTime: { $ne: ["pending", "Holiday"] },
+        outTime: { $ne: ["pending", "Holiday"] },
 
         ADate: {
           $gte: new Date(currentYear, currentMonth - 1, currentDate),
           $lt: new Date(currentYear, currentMonth, currentDate),
         },
       };
-      const lastWeekHours = await calculateWorkingingHours(weekquery);
+      const lastWeekHours = await calculateWorkingingHours(
+        (query = weekquery),
+        (type = week)
+      );
       totalLastWeekHours.push(lastWeekHours);
-      const lastMonthHours = await calculateWorkingingHours(monthquery);
+      const lastMonthHours = await calculateWorkingingHours(
+        (query = monthquery),
+        (type = month)
+      );
       totalLastMonthHours.push(lastMonthHours);
+
       finaldata[empData[i].EmployeeId] = {
         EmployeId: empData[i].EmployeeId,
         lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
@@ -197,16 +216,18 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
         lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
           lastMonthHours.split(":")[1]
         } mins`,
+        weekWorkingdays: weekWorkingDays[i],
+        monthWorkingdays: monthWorkingDays[i],
       };
     }
     var thmweek = totalHoursMins(totalLastWeekHours);
     var thmmonth = totalHoursMins(totalLastMonthHours);
-    total["totalLastWeekHours"] = `${
+    total["totalLastWeekHours"] = `${Math.round(
       eval(thmweek.split(":")[0]) / countlen
-    }hrs ${eval(thmweek.split(":")[1]) / countlen} mins`;
-    total["totalLastMonthHours"] = `${
+    )}hrs ${Math.round(eval(thmweek.split(":")[1]) / countlen)} mins`;
+    total["totalLastMonthHours"] = `${Math.round(
       eval(thmmonth.split(":")[0]) / countlen
-    }hrs ${eval(thmmonth.split(":")[1]) / countlen} mins`;
+    )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
     return res
       .status(200)
       .send({ finaldata, total, count: `${empData.length}` });

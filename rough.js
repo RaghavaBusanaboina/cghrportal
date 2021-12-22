@@ -202,3 +202,5 @@ console.log(Number(str));
 
 // new Date(Date.now());
 // console.log(new Date(Date.now()));
+
+console.log(Math.round(0.9));

@@ -219,7 +219,7 @@ try {
   function validateEducationaldetails(educationaldetails) {
     let date = new Date();
     const schema = Joi.object({
-      qualification: Joi.string().min(3).required(),
+      qualification: Joi.string().required(),
       institute: Joi.string().min(3).max(50).required(),
       passedoutYear: Joi.number()
         .integer()

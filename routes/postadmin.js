@@ -200,7 +200,7 @@ router.post("/leavestatus", auth, async (req, res) => {
           outTime: "Leave",
           organisation: findemp.organisation,
           Date: day,
-          ADate: new Date(moment(from).format("DD/MM/YYYY")),
+          ADate: new Date(from),
         };
         var addLeaves = new EmployeeAttendance(leaveData);
         await addLeaves.save();

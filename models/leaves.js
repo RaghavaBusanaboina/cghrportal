@@ -82,7 +82,7 @@ try {
       EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string().min(3).max(50),
       To: Joi.string().min(4).required(),
-      from_Date: Joi.string().max(d1).required(),
+      from_Date: Joi.string().min(d1).required(),
       to_Date: Joi.string().min(d1).required(),
       subject: Joi.string().min(5).max(100).required(),
       reason: Joi.string().min(5).max(255).required(),

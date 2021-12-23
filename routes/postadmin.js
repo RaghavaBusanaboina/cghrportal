@@ -192,7 +192,7 @@ router.post("/leavestatus", auth, async (req, res) => {
       for (let i = 0; i <= diffDays; i++) {
         var from = new Date(findemp.from_Date);
         from.setDate(from.getDate() + i);
-        var day = moment(from).format("YYYY/MM/DD");
+        var day = moment(from).format("DD/MM/YYYY");
         var leaveData = {
           EmployeeId: findemp.EmployeeId,
           EmployeeName: findemp.EmployeeName,

@@ -39,7 +39,7 @@ router.post("/getattendance/:id", both, async (req, res) => {
     const empData = await EmployeeAttendance.find({
       EmployeeId: req.params.id,
       ADate: {
-        $lte: new Date(currentYear, currentMonth, currentDate + 1),
+        $lte: new Date(currentYear, currentMonth, currentDate, 0, 0, 0),
       },
     })
       .sort({ _id: -1 })

@@ -77,15 +77,16 @@ try {
   function validateEmployeeLeave(employeeleave) {
     let date = new Date();
     let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    d1 = moment(d1).format("DD/MM/YYYY");
+    d1 = moment(d1).format("YYYY/MM/DD");
     let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-    d2 = moment(d2).format("DD/MM/YYYY");
+    d2 = moment(d2).format("YYYY/MM/DD");
     employeeleave["from_Date"] = moment(employeeleave["from_Date"]).format(
       "YYYY/MM/DD"
     );
     employeeleave["to_Date"] = moment(employeeleave["to_Date"]).format(
       "YYYY/MM/DD"
     );
+    console.log("dataaaaaaaa", employeeleave);
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string().min(3).max(50),

@@ -77,9 +77,9 @@ try {
   function validateEmployeeLeave(employeeleave) {
     let date = new Date();
     let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    d1 = moment(d1).format("YYYY/MM/DD");
+    d1 = moment(d1).format("DD/MM/YYYY");
     let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-    d2 = moment(d2).format("YYYY/MM/DD");
+    d2 = moment(d2).format("DD/MM/YYYY");
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string().min(3).max(50),

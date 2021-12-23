@@ -78,7 +78,7 @@ try {
     let date = new Date();
     let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     d1 = moment(d1).format("YYYY/MM/DD");
-    let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     d2 = moment(d2).format("YYYY/MM/DD");
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3),

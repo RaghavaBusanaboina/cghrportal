@@ -80,12 +80,18 @@ try {
     d1 = moment(d1).format("DD/MM/YYYY");
     let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     d2 = moment(d2).format("DD/MM/YYYY");
+    employeeleave["from_Date"] = moment(employeeleave["from_Date"]).format(
+      "YYYY/MM/DD"
+    );
+    employeeleave["to_Date"] = moment(employeeleave["to_Date"]).format(
+      "YYYY/MM/DD"
+    );
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string().min(3).max(50),
       To: Joi.string().min(4).required(),
-      from_Date: Joi.date().required(),
-      to_Date: Joi.date().required(),
+      from_Date: Joi.date().min(d1).required(),
+      to_Date: Joi.date().min(d1).required(),
       subject: Joi.string().min(5).max(100).required(),
       reason: Joi.string().min(5).max(255).required(),
       leave_type: Joi.string().min(4).required(),

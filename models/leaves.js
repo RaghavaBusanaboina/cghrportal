@@ -85,12 +85,13 @@ try {
       EmployeeName: Joi.string().min(3).max(50),
       To: Joi.string().min(4).required(),
       from_Date: Joi.date().min(d1).required(),
-      to_Date: Joi.date().min(d2).required(),
+      to_Date: Joi.date().min(d1).required(),
       subject: Joi.string().min(5).max(100).required(),
       reason: Joi.string().min(5).max(255).required(),
       leave_type: Joi.string().min(4).required(),
       organisation: Joi.string(),
     });
+    console.log('123',schema.validate(employeeleave));
     return schema.validate(employeeleave);
   }
   exports.validateEmployeeLeave = validateEmployeeLeave;

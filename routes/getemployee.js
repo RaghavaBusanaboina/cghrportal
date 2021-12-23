@@ -2,6 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const { EmployeeRegisters } = require("../models/employeeRegisters");
+const both = require("../middlewares/both");
+
 const {
   totalHoursMins,
   calWorkingHours,

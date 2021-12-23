@@ -424,6 +424,7 @@ router.post("/add/:name", authemp, async (req, res, next) => {
 });
 //update educational details
 router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
+  console.log(req.body);
   const data = req.body;
   data["percentage"] = Number(data["percentage"]);
   data["passedoutYear"] = Number(data["passedoutYear"]);

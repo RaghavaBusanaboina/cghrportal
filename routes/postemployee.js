@@ -360,17 +360,19 @@ router.post("/changepassword", authemp, async (req, res) => {
 router.post("/applyleave", authemp, async (req, res) => {
   try {
     let data = req.body;
+    var from = new Date(data.from_Date);
+    var to = new Date(data.to_Date);
+    var today = new Date(Date.now());
+    if (from < today || to < today) {
+      return res.status(400).send({ data: "you cannot apply leaves in past" });
+    }
     data["EmployeeId"] = req.user.EmployeeId;
     data["EmployeeName"] = req.user.EmployeeName;
-    console.log("before vali");
     const { error } = validateEmployeeLeave(data);
-    console.log("error-------->", error);
     if (error) return res.status(400).send({ data: error.details[0].message });
     data["organisation"] = req.user.organisation;
-    console.log("before new");
     const leave = new EmployeeLeave(data);
     await leave.save();
-    console.log("data saved", data);
     res.status(200).send({ data: "leave applied" });
   } catch (error) {
     console.log(`leave catch-->${error}`);

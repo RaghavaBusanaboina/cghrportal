@@ -75,23 +75,12 @@ try {
   const EmployeeLeave = mongoose.model("employeeLeave", employeeLeaveSchema);
 
   function validateEmployeeLeave(employeeleave) {
-    let date = new Date();
-    console.log("real", employeeleave);
-    let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    d1 = moment(d1).format("YYYY/MM/DD");
-    employeeleave["from_Date"] = moment(
-      Date(employeeleave["from_Date"])
-    ).format("YYYY/MM/DD");
-    employeeleave["to_Date"] = moment(Date(employeeleave["to_Date"])).format(
-      "YYYY/MM/DD"
-    );
-    console.log("dataaaaaaaa", employeeleave);
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string().min(3).max(50),
       To: Joi.string().min(4).required(),
-      from_Date: Joi.date().min(d1).required(),
-      to_Date: Joi.date().min(d1).required(),
+      from_Date: Joi.string().required(),
+      to_Date: Joi.string().required(),
       subject: Joi.string().min(5).max(100).required(),
       reason: Joi.string().min(5).max(255).required(),
       leave_type: Joi.string().min(4).required(),

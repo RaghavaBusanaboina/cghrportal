@@ -215,12 +215,17 @@ const moment = require("moment");
 // var timeDiff = Math.abs(from.getTime() - to.getTime());
 // var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 // console.log(diffDays);
-for (let i = 0; i < 10; i++) {
-  var from = new Date("2022-01-31");
-  from.setDate(from.getDate() + i);
-  console.log(new Date(from));
-}
-console.log(Date.now());
+// for (let i = 0; i < 10; i++) {
+//   var from = new Date("2022-01-31");
+//   from.setDate(from.getDate() + i);
+//   console.log(new Date(from));
+// }
+// console.log(Date.now());
 // console.log(Date("20/12/2021"));
 // console.log(new Date(moment(from).format("YYYY/MM/DD")));
 //
+
+var from = new Date("2021-12-21");
+var to = new Date("2021-12-22");
+var today = new Date(Date.now());
+console.log(from < today);

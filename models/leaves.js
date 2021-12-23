@@ -76,6 +76,7 @@ try {
 
   function validateEmployeeLeave(employeeleave) {
     let date = new Date();
+    console.log("real", employeeleave);
     let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     d1 = moment(d1).format("YYYY/MM/DD");
     let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);

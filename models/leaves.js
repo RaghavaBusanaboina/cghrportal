@@ -78,12 +78,14 @@ try {
     let date = new Date();
     let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     d1 = moment(d1).format("YYYY/MM/DD");
+    let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    d2 = moment(d2).format("YYYY/MM/DD");
     const schema = Joi.object({
       EmployeeId: Joi.string().min(3),
       EmployeeName: Joi.string().min(3).max(50),
       To: Joi.string().min(4).required(),
       from_Date: Joi.string().min(d1).required(),
-      to_Date: Joi.string().min(this.from_Date).required(),
+      to_Date: Joi.string().min(d2).required(),
       subject: Joi.string().min(5).max(100).required(),
       reason: Joi.string().min(5).max(255).required(),
       leave_type: Joi.string().min(4).required(),

@@ -81,10 +81,10 @@ try {
     d1 = moment(d1).format("YYYY/MM/DD");
     let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     d2 = moment(d2).format("YYYY/MM/DD");
-    employeeleave["from_Date"] = moment(employeeleave["from_Date"]).format(
-      "YYYY/MM/DD"
-    );
-    employeeleave["to_Date"] = moment(employeeleave["to_Date"]).format(
+    employeeleave["from_Date"] = moment(
+      Date(employeeleave["from_Date"])
+    ).format("YYYY/MM/DD");
+    employeeleave["to_Date"] = moment(Date(employeeleave["to_Date"])).format(
       "YYYY/MM/DD"
     );
     console.log("dataaaaaaaa", employeeleave);

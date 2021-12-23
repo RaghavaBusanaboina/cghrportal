@@ -79,8 +79,6 @@ try {
     console.log("real", employeeleave);
     let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     d1 = moment(d1).format("YYYY/MM/DD");
-    let d2 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-    d2 = moment(d2).format("YYYY/MM/DD");
     employeeleave["from_Date"] = moment(
       Date(employeeleave["from_Date"])
     ).format("YYYY/MM/DD");

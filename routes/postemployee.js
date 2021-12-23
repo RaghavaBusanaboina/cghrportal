@@ -371,7 +371,7 @@ router.post("/applyleave", authemp, async (req, res) => {
     res.status(200).send({ data: "leave applied" });
   } catch (error) {
     console.log(`leave catch-->${error}`);
-    return res.status(400).send({ data: error });
+    return res.status(400).send({ data: `${error}` });
   }
 });
 //post employee personal/imp data

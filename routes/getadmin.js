@@ -47,7 +47,7 @@ router.post("/allleaves", auth, async (req, res) => {
       .sort({ _id: -1 })
       .skip(req.body.skip)
       .limit(limit);
-    if (empleaves.length > 0) return res.status(200).send(empleaves);
+    if (empleaves.length > 0) return res.status(200).send({ data: empleaves });
     else
       return res
         .status(404)

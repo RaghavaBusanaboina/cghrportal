@@ -32,8 +32,15 @@ router.post("/details", authemp, async (req, res) => {
 //get emp data from emp id(emp attendance)
 router.post("/getattendance/:id", both, async (req, res) => {
   try {
+    let date = new Date();
+    let currentYear = date.getFullYear();
+    let currentMonth = date.getMonth();
+    let currentDate = date.getDate();
     const empData = await EmployeeAttendance.find({
       EmployeeId: req.params.id,
+      ADate: {
+        $lte: new Date(currentYear, currentMonth, currentDate),
+      },
     })
       .sort({ _id: -1 })
       .skip(req.body.skip)

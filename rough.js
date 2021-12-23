@@ -218,5 +218,7 @@ const moment = require("moment");
 for (let i = 0; i < 10; i++) {
   var from = new Date("2022-01-31");
   from.setDate(from.getDate() + i);
-  console.log(moment(from).format("YYYY/MM/DD"));
+  console.log(new Date(moment(from).format("YYYY/MM/DD")));
 }
+
+// console.log(Date("20/12/2021"));

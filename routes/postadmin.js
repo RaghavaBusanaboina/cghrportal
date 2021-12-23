@@ -194,17 +194,17 @@ router.post("/leavestatus", auth, async (req, res) => {
         from.setDate(from.getDate() + i);
         var day = moment(from).format("YYYY/MM/DD");
         var leaveData = {
-          EmployeeId = findemp.EmployeeId,
-          EmployeeName=findemp.EmployeeName,
-          inTime='Leave',
-          outTime='Leave',
-          organisation=findemp.organisation,
-          Date=day
-        }
-        var addLeaves = new EmployeeAttendance(leaveData)
-        await addLeaves.save()
+          EmployeeId: findemp.EmployeeId,
+          EmployeeName: findemp.EmployeeName,
+          inTime: "Leave",
+          outTime: "Leave",
+          organisation: findemp.organisation,
+          Date: day,
+        };
+        var addLeaves = new EmployeeAttendance(leaveData);
+        await addLeaves.save();
       }
-      console.log('leaves added to db');
+      console.log("leaves added to db");
     }
     if (!findemp)
       return res.status(404).send({ data: "Status already updated" });

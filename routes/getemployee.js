@@ -28,7 +28,7 @@ router.post("/details", authemp, async (req, res) => {
 });
 
 //get emp data from emp id(emp attendance)
-router.post("/getattendance/:id", authemp, async (req, res) => {
+router.post("/getattendance/:id", both, async (req, res) => {
   try {
     const empData = await EmployeeAttendance.find({
       EmployeeId: req.params.id,

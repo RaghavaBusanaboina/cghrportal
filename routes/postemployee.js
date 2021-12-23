@@ -364,6 +364,7 @@ router.post("/applyleave", authemp, async (req, res) => {
     var to = new Date(data.to_Date);
     var today = new Date(Date.now());
     if (from < today || to < today) {
+      console.log("you cannot apply leaves in past");
       return res.status(400).send({ data: "you cannot apply leaves in past" });
     }
     data["EmployeeId"] = req.user.EmployeeId;

@@ -184,8 +184,27 @@ router.post("/leavestatus", auth, async (req, res) => {
       new: true,
     });
     console.log(findemp);
-    if (data.status ==='Approved'){
-      
+    if (data.status === "Approved") {
+      var to = new Date(findemp.to_Date);
+      var from = new Date(findemp.from_Date);
+      var timeDiff = Math.abs(from.getTime() - to.getTime());
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      for (let i = 0; i <= diffDays; i++) {
+        var from = new Date(findemp.from_Date);
+        from.setDate(from.getDate() + i);
+        var day = moment(from).format("YYYY/MM/DD");
+        var leaveData = {
+          EmployeeId = findemp.EmployeeId,
+          EmployeeName=findemp.EmployeeName,
+          inTime='Leave',
+          outTime='Leave',
+          organisation=findemp.organisation,
+          Date=day
+        }
+        var addLeaves = new EmployeeAttendance(leaveData)
+        await addLeaves.save()
+      }
+      console.log('leaves added to db');
     }
     if (!findemp)
       return res.status(404).send({ data: "Status already updated" });

@@ -31,7 +31,7 @@ router.post("/getall", auth, async (req, res) => {
       return res.status(200).send({ data: empData, count: count });
     else
       return res
-        .status(400)
+        .status(404)
         .send({ data: [], skip: req.body.skip - 2 * limit });
   } catch (error) {
     console.log(error);
@@ -50,7 +50,7 @@ router.post("/allleaves", auth, async (req, res) => {
     if (empleaves.length > 0) return res.status(200).send(empleaves);
     else
       return res
-        .status(400)
+        .status(404)
         .send({ data: [], skip: req.body.skip - 2 * limit });
   } catch (error) {
     console.log(error);
@@ -117,7 +117,7 @@ router.get("/companydetails", both, async (req, res) => {
   });
   console.log(settings);
   if (!settings)
-    return res.status(400).send({ data: "somwthing went wrong!.." });
+    return res.status(400).send({ data: "something went wrong!.." });
   return res.status(200).send({ data: settings });
 });
 //get company timings
@@ -249,7 +249,7 @@ router.post("/getemployeetermination", auth, async (req, res) => {
       return res.status(200).send({ data: emptermination });
     else
       return res
-        .status(400)
+        .status(404)
         .send({ data: [], skip: req.body.skip - 2 * limit });
   } catch (error) {
     console.log(error);

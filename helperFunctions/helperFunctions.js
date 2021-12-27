@@ -21,7 +21,12 @@ function calWorkingHours(start, end) {
   diffmins = 0;
   diffhours = 0;
   var holiday = "00:00";
-  if (start !== "hoilday" && end !== "hoilday") {
+  if (
+    start !== "hoilday" &&
+    end !== "hoilday" &&
+    start !== "Leave" &&
+    end !== "Leave"
+  ) {
     starthours = eval(start.split(":")[0]);
     startminsINhours = eval(start.split(":")[1]) / 60;
     endhours = eval(end.split(":")[0]);

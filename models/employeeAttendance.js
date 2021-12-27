@@ -1,8 +1,8 @@
+/** @format */
+
 //schema for employee attendance
 
 const mongoose = require("mongoose");
-const Joi = require("joi");
-const { JoiPassword } = require("joi-password");
 const moment = require("moment");
 try {
   const employeeAttendanceSchema = mongoose.Schema({

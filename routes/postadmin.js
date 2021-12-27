@@ -8,32 +8,25 @@ const both = require("../middlewares/both");
 const mongoose = require("mongoose");
 const moment = require("moment");
 const { EmployeeAttendance } = require("../models/employeeAttendance");
-const { Holidays, validateHolidaydata } = require("../models/holidays");
+const { Holidays } = require("../models/holidays");
 const { EmployeeLeave } = require("../models/leaves");
-const {
-  EmployeeTermination,
-  validateemployeeTermination,
-} = require("../models/employeeTermination");
-const {
-  RegisterHr,
-  validateRegister,
-  validateLogin,
-  generateAuthToken,
-} = require("../models/registerHr");
-const {
-  EmployeeRegisters,
-  validateEmployeedata,
-} = require("../models/employeeRegisters");
-const {
-  Companydetails,
-  validatecompanydata,
-  CompanyTimings,
-  validatecompanytimingsdata,
-} = require("../models/companyprofile");
+const { EmployeeTermination } = require("../models/employeeTermination");
+const { RegisterHr, generateAuthToken } = require("../models/registerHr");
+const { EmployeeRegisters } = require("../models/employeeRegisters");
+const { Companydetails, CompanyTimings } = require("../models/companyprofile");
 const {
   totalHoursMins,
   calWorkingHours,
 } = require("../helperFunctions/helperFunctions");
+const {
+  validatecompanydata,
+  validatecompanytimingsdata,
+  validateEmployeedata,
+  validateemployeeTermination,
+  validateHolidaydata,
+  validateRegister,
+  validateLoginhr,
+} = require("../validations/validations");
 const limit = 2;
 //admin register
 router.post("/registerHr", async (req, res) => {
@@ -57,7 +50,7 @@ router.post("/registerHr", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const data = req.body;
-    const { error } = validateLogin(data);
+    const { error } = validateLoginhr(data);
     if (error) return res.status(400).send({ data: error.details[0].message });
     const admin = await RegisterHr.findOne({ Email: data.Email });
     if (!admin) return res.status(400).send({ data: "Invalid data!" });

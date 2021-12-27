@@ -52,28 +52,6 @@ try {
   //   };
   const RegisterHr = mongoose.model("RegisterHr", registerHrSchema);
 
-  function validateRegister(hr) {
-    const schema = Joi.object({
-      Name: Joi.string()
-        .pattern(/^[a-z A-Z]+$/)
-        .min(5)
-        .required(),
-      Password: Joi.string().min(5).required(),
-      Email: Joi.string().min(5).required(),
-      organisation: Joi.string()
-        .pattern(/^[a-z A-Z]+$/)
-        .min(3)
-        .required(),
-    });
-    return schema.validate(hr);
-  }
-  function validateLogin(hr) {
-    const schema = Joi.object({
-      Email: Joi.string().min(3).required(),
-      Password: Joi.string().min(5).required(),
-    });
-    return schema.validate(hr);
-  }
   generateAuthToken = (isAdmin, Email, Name, organisation) => {
     const token = jwt.sign(
       {
@@ -89,8 +67,7 @@ try {
   };
   exports.generateAuthToken = generateAuthToken;
   exports.RegisterHr = RegisterHr;
-  exports.validateRegister = validateRegister;
-  exports.validateLogin = validateLogin;
+
 } catch (error) {
   console.log(`${err}`);
 }

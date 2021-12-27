@@ -5,102 +5,22 @@ var CronJob2 = require("cron").CronJob;
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Joi = require("joi");
-const { JoiPassword } = require("joi-password");
 const authemp = require("../middlewares/authemp");
 const moment = require("moment");
 const { createToken } = require("../helperFunctions/tokenGeneration");
+const { EmployeeRegisters } = require("../models/employeeRegisters");
+const { EmployeeAttendance } = require("../models/employeeAttendance");
+const { EmployeeLeave } = require("../models/leaves");
+const blocklisttoken = require("../middlewares/blacklisttoken");
 const {
-  EmployeeRegisters,
+  validatePassword,
+  validateLogin,
+  validateinTime,
+  validateoutTime,
+  validateEmployeeLeave,
   validateEducationaldetails,
   validateprofile,
-} = require("../models/employeeRegisters");
-const { EmployeeAttendance } = require("../models/employeeAttendance");
-const { validateEmployeeLeave, EmployeeLeave } = require("../models/leaves");
-const both = require("../middlewares/both");
-const blocklisttoken = require("../middlewares/blacklisttoken");
-function validateLogin(emp) {
-  const schema = Joi.object({
-    Email: Joi.string().min(5).required(),
-    Password: Joi.string().min(5).required(),
-  });
-  return schema.validate(emp);
-}
-//change
-// generateAuthToken = (EmployeeId, EmployeeName, Password, organisation) => {
-//   const token = jwt.sign(
-//     {
-//       EmployeeId: EmployeeId,
-//       EmployeeName: EmployeeName,
-//       Password: Password,
-//       organisation: organisation,
-//     },
-//     config.get("jwtPrivateKey"),
-//     {
-//       expiresIn: "12h",
-//     }
-//   );
-//   console.log(token);
-//   return token;
-// };
-function validatePassword(data) {
-  const schema = Joi.object({
-    oldPassword: Joi.string().min(3).required(),
-    newPassword: JoiPassword.string()
-      .min(8)
-      .max(12)
-      .minOfSpecialCharacters(1)
-      .minOfLowercase(1)
-      .minOfUppercase(1)
-      .minOfNumeric(1)
-      .noWhiteSpaces()
-      .required()
-      .messages({
-        "password.minOfUppercase":
-          "password contains atleast 1 uppercase letter",
-        "password.minOfLowercase":
-          "password contains atleast 1 lowercase letter",
-        "password.minOfSpecialCharacters":
-          "password contains atleast 1 special character",
-        "password.minOfNumeric": "password contains atleast 1 number",
-        "password.noWhiteSpaces": "password doestnot contains any space",
-      }),
-    conformPassword: JoiPassword.string()
-      .min(8)
-      .max(12)
-      .minOfSpecialCharacters(1)
-      .minOfLowercase(1)
-      .minOfUppercase(1)
-      .minOfNumeric(1)
-      .noWhiteSpaces()
-      .required()
-      .messages({
-        "password.minOfUppercase":
-          "password contains atleast 1 uppercase letter",
-        "password.minOfLowercase":
-          "password contains atleast 1 lowercase letter",
-        "password.minOfSpecialCharacters":
-          "password contains atleast 1 special character",
-        "password.minOfNumeric": "password contains atleast 1 number",
-        "password.noWhiteSpaces": "password doestnot contains any space",
-      }),
-  });
-
-  return schema.validate(data);
-}
-function validateinTime(data) {
-  const schema = Joi.object({
-    inTime: Joi.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
-    timelimit: Joi.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
-  });
-  return schema.validate(data);
-}
-function validateoutTime(data) {
-  const schema = Joi.object({
-    outTime: Joi.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
-  });
-  return schema.validate(data);
-}
+} = require("../validations/validations");
 //route for emp login
 router.post("/login", async (req, res) => {
   console.log("login route------------");

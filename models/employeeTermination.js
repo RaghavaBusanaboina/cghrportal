@@ -59,21 +59,7 @@ try {
     employeeTerminationSchema
   );
 
-  function validateemployeeTermination(employee) {
-    const schema = Joi.object({
-      EmployeeId: Joi.string().min(5).required(),
-      EmployeeName: Joi.string().min(5).required(),
-      organisation: Joi.string().min(3).required(),
-      Reason: Joi.string().min(3).required(),
-      From: Joi.string().min(3).required(),
-      ExperienceHere: Joi.string().required(),
-      EmployeeRecord: Joi.array().required(),
-      AgreementDone: Joi.string().valid("Yes", "No").required(),
-    });
-    return schema.validate(employee);
-  }
   exports.EmployeeTermination = EmployeeTermination;
-  exports.validateemployeeTermination = validateemployeeTermination;
 } catch (error) {
   console.log(`employee terminational model${err}`);
 }

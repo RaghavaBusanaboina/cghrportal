@@ -43,20 +43,8 @@ try {
     },
   });
   const EmployeeLogin = mongoose.model("employeeLogin", employeeLoginSchema);
-  function validateEmployeelogindata(login) {
-    const schema = Joi.object({
-      EmployeeId: Joi.string().min(3).required(),
-      logged_out: Joi.boolean().required,
-      ip_address: Joi.string().required(),
-      token_deleted: Joi.bool(),
-      device: Joi.string().required(),
-      token_id: Joi.string(),
-      token_secret: Joi.string(),
-    });
-    return schema.validate(login);
-  }
+ 
   exports.EmployeeLogin = EmployeeLogin;
-  exports.validateEmployeelogindata = validateEmployeelogindata;
 } catch (e) {
   console.log(`Employee login model${e}`);
 }

@@ -3,7 +3,6 @@
 const express = require("express");
 const app = express();
 var queue = require("express-queue");
-// const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const postadmin = require("./routes/postadmin");
 const getadmin = require("./routes/getadmin");
@@ -32,7 +31,6 @@ mongoose
 app.use(express.json());
 app.use("/api/admin/get", getadmin);
 app.use("/api/employee/get", getemployee);
-// app.use(queue({ activeLimit: 1, queuedLimit: 1 }));
 app.use(
   "/api/admin/post",
   postadmin,

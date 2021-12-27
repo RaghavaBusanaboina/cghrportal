@@ -183,81 +183,8 @@ try {
     "EmployeeRegisters",
     employeeRegistersSchema
   );
-  function validateEmployeedata(employee) {
-    let date = new Date();
-    let d1 = new Date(date.getFullYear() - 18, date.getMonth(), date.getDate());
-    d1 = moment(d1).format("YYYY/MM/DD");
-    const schema = Joi.object({
-      EmployeeId: Joi.string().min(3),
-      EmployeeName: Joi.string()
-        .pattern(/^[a-z A-Z]+$/)
-        .min(3)
-        .max(50)
-        .required(),
-      Email: Joi.string().min(5).email().required(),
-      Phone: Joi.string()
-        .length(10)
-        .pattern(/^[6-9]{1}[0-9]{9}$/)
-        .required(),
-
-      joiningDate: Joi.string().required(),
-      DateOfBirth: Joi.date()
-        .messages({ "dateOfBirth.max": "Employee must be 18 years old" })
-        .max(d1)
-        .required(),
-      AgreementYears: Joi.number().min(0).max(3).required(),
-      Role: Joi.string()
-        .pattern(/^[a-z A-Z]+$/)
-        .min(3)
-        .max(50)
-        .required(),
-      NetSalary: Joi.number().min(10000).max(9999999).required(),
-    });
-    return schema.validate(employee);
-  }
-
-  function validateEducationaldetails(educationaldetails) {
-    let date = new Date();
-    const schema = Joi.object({
-      qualification: Joi.string().required(),
-      institute: Joi.string().min(3).max(50).required(),
-      passedoutYear: Joi.number()
-        .integer()
-        .max(Number(date.getFullYear()))
-        .required(),
-      percentage: Joi.number().integer().max(100).required(),
-      last_updated_on: Joi.date(),
-    });
-    return schema.validate(educationaldetails);
-  }
-
-  function validateprofile(profile) {
-    const schema = Joi.object({
-      FirstName: Joi.string().min(3).required(),
-      MiddleName: Joi.string().optional(),
-      LastName: Joi.string().min(3).required(),
-      fatherName: Joi.string().min(3).required(),
-      motherName: Joi.string().min(3).required(),
-      emergencyNumber: Joi.string()
-        .pattern(/^[6-9]{1}[0-9]{9}$/)
-        .required(),
-      Address: Joi.string().min(3).required(),
-      City: Joi.string().min(3).required(),
-      Country: Joi.string().min(3).required(),
-      Pincode: Joi.string()
-        .pattern(/^[0-9]{6}$/)
-        .required(),
-      emergencyAddress: Joi.string().min(3).required(),
-      AboutMe: Joi.string().min(3).required(),
-      last_updated_on: Joi.date(),
-    });
-    return schema.validate(profile);
-  }
 
   exports.EmployeeRegisters = EmployeeRegisters;
-  exports.validateEmployeedata = validateEmployeedata;
-  exports.validateEducationaldetails = validateEducationaldetails;
-  exports.validateprofile = validateprofile;
 } catch (error) {
   console.log(`Employee registers${err}`);
 }

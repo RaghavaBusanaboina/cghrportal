@@ -95,6 +95,6 @@ module.exports = async function (req, res, next) {
     }
   } catch (ex) {
     console.log(`${ex}`);
-    res.status(400).send(`${ex}`); //("Session Expired! Please Login Again");
+    res.status(400).send(`${ex}`); 
   }
 };

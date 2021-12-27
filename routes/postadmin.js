@@ -95,6 +95,22 @@ router.post("/resetpassword", auth, async (req, res) => {
     return res.status(400).send({ data: `reset password -->${error}` });
   }
 });
+
+function empIdGeneration(empid) {
+  let idstring = empid.split(idCode);
+  var num = 0;
+  let id = `${Number(idstring[1]) + 1}`;
+  if (id.length === 1) {
+    num = `000${id}`;
+  } else if (id.length === 2) {
+    num = `00${id}`;
+  } else if (id.length === 3) {
+    num = `0${id}`;
+  } else if (id.length === 4) {
+    num = `${id}`;
+  }
+  return num;
+}
 // add employees into db changes
 router.post("/addemployee", auth, async (req, res) => {
   try {
@@ -134,25 +150,22 @@ router.post("/addemployee", auth, async (req, res) => {
       .sort({ _id: -1 })
       .limit(1);
     console.log(findempid);
-    if (findempid.length > 0) {
-      var lastId = findempid[0].EmployeeId;
-      //incrementing the last id for new emp
-      let idstring = lastId.split(idCode);
-      var num = 0;
-      let id = `${Number(idstring[1]) + 1}`;
-      if (id.length === 1) {
-        num = `000${id}`;
-      } else if (id.length === 2) {
-        num = `00${id}`;
-      } else if (id.length === 3) {
-        num = `0${id}`;
-      } else if (id.length === 4) {
-        num = `${id}`;
-      }
+    const find_empid_termination = await EmployeeTermination.find({
+      organisation: req.user.organisation,
+    })
+      .sort({ _id: -1 })
+      .limit(1);
+    if (find_empid_termination.length > 0) {
+      var terminated_empid = Number(find_empid_termination[0].EmployeeId);
+      if (findempid.length > 0) {
+        var lastId = findempid[0].EmployeeId;
+        //incrementing the last id for new emp
 
-      data["EmployeeId"] = idCode + num;
-    } else {
-      data["EmployeeId"] = idCode + "0001";
+        var num = empIdGeneration(lastId);
+        data["EmployeeId"] = idCode + num;
+      } else {
+        data["EmployeeId"] = idCode + "0001";
+      }
     }
     data["organisation"] = req.user.organisation;
     const empData = new EmployeeRegisters(data);

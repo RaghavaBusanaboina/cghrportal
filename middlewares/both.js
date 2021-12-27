@@ -6,7 +6,7 @@ const { EmployeeLogin } = require("../models/userLogin");
 const { TokenBlackList } = require("../models/blackListToken");
 const { EmployeeRegisters } = require("../models/employeeRegisters");
 const { EmployeeTermination } = require("../models/employeeTermination");
-module.exports = function (req, res, next) {
+module.exports = async function (req, res, next) {
   const token = req.header("x-auth-token");
   if (!token) return res.status(401).send("Access denied. No token providedb.");
   try {

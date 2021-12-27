@@ -96,7 +96,7 @@ router.post("/resetpassword", auth, async (req, res) => {
   }
 });
 
-function empIdGeneration(empid) {
+function empIdGeneration(empid, idCode) {
   let idstring = empid.split(idCode);
   var num = 0;
   let id = `${Number(idstring[1]) + 1}`;
@@ -161,8 +161,9 @@ router.post("/addemployee", auth, async (req, res) => {
         var lastId = findempid[0].EmployeeId;
         //incrementing the last id for new emp
 
-        var num = empIdGeneration(lastId);
-        data["EmployeeId"] = idCode + num;
+        var num = empIdGeneration(lastId, idCode);
+        var termnum = empIdGeneration(lastId, idCode);
+        data["EmployeeId"] = idCode + Math.max(num, termnum);
       } else {
         data["EmployeeId"] = idCode + "0001";
       }

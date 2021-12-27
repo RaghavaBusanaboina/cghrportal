@@ -2,6 +2,8 @@
 
 const Joi = require("joi");
 const { JoiPassword } = require("joi-password");
+const moment = require("moment");
+
 function validatePassword(data) {
   const schema = Joi.object({
     oldPassword: Joi.string().min(3).required(),
@@ -54,7 +56,6 @@ function validateLogin(emp) {
   });
   return schema.validate(emp);
 }
-
 function validateinTime(data) {
   const schema = Joi.object({
     inTime: Joi.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
@@ -190,7 +191,6 @@ function validateEmployeeLeave(employeeleave) {
   console.log("123", schema.validate(employeeleave));
   return schema.validate(employeeleave);
 }
-
 function validateRegister(hr) {
   const schema = Joi.object({
     Name: Joi.string()

@@ -295,7 +295,7 @@ var cronJob1 = new CronJob1({
   start: true,
   runOnInit: false,
 });
-console.log("11111", cronJob1);
+console.log("cron1", cronJob1);
 //set holiday for saturdays and sundays
 var cronJob2 = new CronJob2({
   cronTime: "00 02 04 * * sat,sun ",
@@ -328,7 +328,7 @@ var cronJob2 = new CronJob2({
   start: true,
   runOnInit: false,
 });
-console.log("22222", cronJob2);
+console.log("cron2", cronJob2);
 //change password
 router.post("/changepassword", authemp, async (req, res) => {
   try {

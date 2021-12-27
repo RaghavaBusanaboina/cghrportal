@@ -32,12 +32,17 @@ mongoose
 app.use(express.json());
 app.use("/api/admin/get", getadmin);
 app.use("/api/employee/get", getemployee);
-app.use(queue({ activeLimit: 1, queuedLimit: 1 }));
-app.use("/api/admin/post", postadmin);
-app.use("/api/employee/post", postemployee);
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-// app.set("view engine", "ejs");
+// app.use(queue({ activeLimit: 1, queuedLimit: 1 }));
+app.use(
+  "/api/admin/post",
+  postadmin,
+  queue({ activeLimit: 1, queuedLimit: 1 })
+);
+app.use(
+  "/api/employee/post",
+  postemployee,
+  queue({ activeLimit: 1, queuedLimit: 1 })
+);
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Listening to port 🚀 ${port}`);

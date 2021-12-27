@@ -205,7 +205,7 @@
 
 // console.log(Math.round(0.9));
 // let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-const moment = require("moment");
+// const moment = require("moment");
 
 // var to = new Date("2021-12-30");
 // var from = new Date("2022-01-31");
@@ -225,7 +225,84 @@ const moment = require("moment");
 // console.log(new Date(moment(from).format("YYYY/MM/DD")));
 //
 
-var from = new Date("2021-12-21");
-var to = new Date("2021-12-22");
-var today = new Date(Date.now());
-console.log(from < today);
+// var from = new Date("2021-12-21");
+// var to = new Date("2021-12-22");
+// var today = new Date(Date.now());
+// console.log(from < today);
+
+// rand = Math.floor(Math.random() * 99999 + 99999);
+// console.log(rand);
+
+// var express = require("express");
+// var nodemailer = require("nodemailer");
+// var app = express();
+/*
+    Here we are configuring our SMTP Server details.
+    STMP is mail server which is responsible for sending and recieving email.
+*/
+// var smtpTransport = nodemailer.createTransport({
+//   //   host: "smtp.gmail.com",
+//   pool: true,
+//   host: "smtp.codegene.io",
+//   port: 587,
+//   auth: {
+//     user: "raghava@codegene.io",
+//     pass: "hi!%}uyfniqG",
+//   },
+// });
+// var rand, mailOptions, host, link;
+// /*------------------SMTP Over-----------------------------*/
+
+// /*------------------Routing Started ------------------------*/
+// app.post("/", function (req, res) {
+//   console.log("home");
+//   res.send("homepage");
+// });
+// app.get("/send", function (req, res) {
+//   rand = Math.floor(Math.random() * 100 + 54);
+//   console.log("rand", rand);
+//   host = req.get("host");
+//   console.log("host", host);
+//   link = "http://" + req.get("host") + "/verify?id=" + rand;
+//   mailOptions = {
+//     // to: "busanaboinaraghava@gmail.com",
+//     to: "raghava7728@gmail.com",
+//     subject: "Please confirm your Email account",
+//     html:
+//       "Hello,<br> Please Click on the link to verify your email.<br><a href=" +
+//       link +
+//       ">Click here to verify</a>",
+//   };
+//   console.log(mailOptions);
+//   smtpTransport.sendMail(mailOptions, function (error, response) {
+//     if (error) {
+//       console.log(`${error}`);
+//       res.send(`${error}`);
+//     } else {
+//       console.log("Message sent: ");
+//       res.end("sent");
+//     }
+//   });
+// });
+
+// app.get("/verify", function (req, res) {
+//   console.log(req.protocol + ":/" + req.get("host"));
+//   if (req.protocol + "://" + req.get("host") == "http://" + host) {
+//     console.log("Domain is matched. Information is from Authentic email");
+//     if (req.query.id == rand) {
+//       console.log("email is verified");
+//       res.end("<h1>Email " + mailOptions.to + " is been Successfully verified");
+//     } else {
+//       console.log("email is not verified");
+//       res.end("<h1>Bad Request</h1>");
+//     }
+//   } else {
+//     res.end("<h1>Request is from unknown source");
+//   }
+// });
+
+/*--------------------Routing Over----------------------------*/
+// var port = 4000;
+// app.listen(port, "0.0.0.0", () => {
+//   console.log(`Express Started on Port ${port}`);
+// });

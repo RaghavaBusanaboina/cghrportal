@@ -244,7 +244,7 @@ router.post("/holidays", auth, async (req, res) => {
     const { error } = validateHolidaydata(data);
     data["organisation"] = req.user.organisation;
     if (error) return res.status(400).send({ data: error.details[0].message });
-    console.log('data',data);
+    console.log("data", data);
     const find_organisation = await Holidays.find({
       organisation: req.user.organisation,
     });
@@ -254,6 +254,7 @@ router.post("/holidays", auth, async (req, res) => {
     data.holidays[0].Adate = new Date(Date.now());
     console.log(data);
     if (find_organisation.length === 0) {
+      console.log("before save ", data);
       const holiday = new Holidays(data);
       await holiday.save();
       console.log(holiday);

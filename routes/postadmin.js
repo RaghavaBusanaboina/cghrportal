@@ -116,8 +116,10 @@ router.post("/addemployee", auth, async (req, res) => {
   try {
     const data = req.body;
     console.log("addemp", data);
+    console.log("before validation");
     const { error } = validateEmployeedata(data);
     if (error) return res.status(400).send({ data: error.details[0].message });
+    console.log("after vallidation", error);
     const emp = await EmployeeRegisters.findOne({
       $or: [
         { EmployeeId: data.EmployeeId },
@@ -156,6 +158,7 @@ router.post("/addemployee", auth, async (req, res) => {
     })
       .sort({ _id: -1 })
       .limit(1);
+    console.log("find_empid_termination", find_empid_termination);
     if (find_empid_termination.length > 0) {
       var terminated_empid = Number(find_empid_termination[0].EmployeeId);
       if (findempid.length > 0) {

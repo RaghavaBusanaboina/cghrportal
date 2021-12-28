@@ -272,15 +272,19 @@ router.post("/holidays", auth, async (req, res) => {
 
 //delete holiday based on index
 router.post("/deleteHolidays", auth, async (req, res) => {
-  console.log("data", req.body);
-  const query = { organisation: req.body.organisation };
-  var index = req.body.index;
-  const update = { "holidays.$.index": "" };
-  const del_holidays = await Holidays.findByIdAndUpdate(query, {
-    $unset: update,
-  });
-  console.log("deleted");
-  return res.status(200).send({ data: del_holidays });
+  try {
+    console.log("data", req.body);
+    const query = { organisation: req.body.organisation };
+    var index = req.body.index;
+    const update = { "holidays.$.index": "" };
+    const del_holidays = await Holidays.findByIdAndUpdate(query, {
+      $unset: update,
+    });
+    console.log("deleted");
+    return res.status(200).send({ data: del_holidays });
+  } catch (error) {
+    return res.status(404).send(new Error(error));
+  }
 });
 //company details post route
 router.post("/companydetails", auth, async (req, res) => {

@@ -285,7 +285,8 @@ router.post("/deleteHolidays", auth, async (req, res) => {
     console.log("del_holidays");
     return res.status(200).send({ data: del_holidays });
   } catch (error) {
-    return res.status(404).send(new Error(error));
+    console.log(`${error}`);
+    return res.status(404).send(`${error}`);
   }
 });
 //company details post route

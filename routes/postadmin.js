@@ -242,7 +242,7 @@ router.post("/holidays", auth, async (req, res) => {
     const data = req.body;
     console.log("------------------------");
     console.log(data);
-    const { error } = validateHolidaydata(data);
+    const { error } = validateHolidaydata(data.holidays[0]);
     data["organisation"] = req.user.organisation;
     if (error) return res.status(400).send({ data: error.details[0].message });
     console.log("data", data);

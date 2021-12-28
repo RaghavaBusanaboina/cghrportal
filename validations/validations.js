@@ -173,7 +173,8 @@ function validateemployeeTermination(employee) {
 }
 function validateHolidaydata(holiday) {
   const schema = Joi.object({
-    holidays: Joi.array().required(),
+    date: Joi.string(),
+    festival: Joi.string(),
   });
   return schema.validate(holiday);
 }

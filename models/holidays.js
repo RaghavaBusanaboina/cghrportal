@@ -2,7 +2,6 @@
 
 //schema for holidays
 const mongoose = require("mongoose");
-const Joi = require("joi");
 try {
   const holidaysSchema = mongoose.Schema({
     organisation: {
@@ -12,7 +11,16 @@ try {
       type: Date,
       default: Date.now,
     },
-    holidays: { type: Array },
+    holidays: [
+      {
+        date: { type: String },
+        festival: { type: String },
+        Adate: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   });
   const Holidays = mongoose.model("holidays", holidaysSchema);
   exports.Holidays = Holidays;

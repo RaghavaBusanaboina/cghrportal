@@ -50,6 +50,7 @@ try {
         Password: Password,
         organisation: organisation,
         token_id: token_id,
+        ip_address: ip,
       },
       config.get("jwtPrivateKey")
     );

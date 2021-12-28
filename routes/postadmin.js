@@ -397,12 +397,13 @@ router.post("/employeetermination", auth, async (req, res) => {
       EmployeeId: data.EmployeeId,
     });
     if (!emp) return res.status(400).send({ data: "Employee not found!" });
+    data["Email"] = emp.Email;
+    data["Phone"] = emp.Phone;
     data["EmployeeName"] = emp.EmployeeName;
     data["From"] = emp.createdOn;
     data["organisation"] = emp.organisation;
     data["EmployeeRecord"] = [emp];
-    data["Email"] = emp.Email;
-    data["Phone"] = emp.Phone;
+
     function today() {
       let date = new Date();
       let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());

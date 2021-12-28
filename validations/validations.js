@@ -160,7 +160,9 @@ function validateprofile(profile) {
 function validateemployeeTermination(employee) {
   const schema = Joi.object({
     EmployeeId: Joi.string().min(5).required(),
+    Email: Joi.string().required(),
     EmployeeName: Joi.string().min(5).required(),
+    Phone: Joi.number().required(),
     organisation: Joi.string().min(3).required(),
     Reason: Joi.string().min(3).required(),
     From: Joi.string().min(3).required(),

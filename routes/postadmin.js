@@ -128,7 +128,7 @@ router.post("/addemployee", auth, async (req, res) => {
     //check employee
     if (emp) return res.status(400).send({ data: "Employee already there!" });
 
-    const empterm = await EmployeeTermination.find({
+    const empterm = await EmployeeTermination.findOne({
       $or: [{ Email: data.Email }, { Phone: data.Phone }],
     });
     console.log("empterm", empterm);
@@ -384,6 +384,8 @@ router.post("/employeetermination", auth, async (req, res) => {
     data["From"] = emp.createdOn;
     data["organisation"] = emp.organisation;
     data["EmployeeRecord"] = [emp];
+    data["Email"] = emp.Email;
+    data["Phone"] = emp.Phone;
     function today() {
       let date = new Date();
       let d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate());

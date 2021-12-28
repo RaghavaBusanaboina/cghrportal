@@ -17,6 +17,14 @@ try {
       required: true,
       minlength: 5,
     },
+    Email: {
+      type: String,
+      required: true,
+    },
+    Phone:{
+      type: Number,
+      required: true,
+    },
     organisation: {
       type: String,
       required: true,

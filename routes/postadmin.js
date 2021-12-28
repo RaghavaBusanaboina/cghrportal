@@ -269,6 +269,16 @@ router.post("/holidays", auth, async (req, res) => {
     return res.status(400).send({ data: `${error}` });
   }
 });
+
+//delete holiday based on index
+router.post("deleteHolidays", auth, async (req, res) => {
+  const query = { organisation: req.body.organisation };
+  var index = req.body.index;
+  const update = { "holidays.$.index": "" };
+  await Holidays.findByIdAndUpdate(query, { $unset: update });
+  console.log("deleted");
+  return res.status(200).send("deleted");
+});
 //company details post route
 router.post("/companydetails", auth, async (req, res) => {
   const data = req.body;

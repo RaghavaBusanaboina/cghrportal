@@ -46,12 +46,7 @@ try {
       default: Date.now,
     },
   });
-  //   registerHrSchema.methods.generateAuthToken = function () {
-  //     const token = jwt.sign({ isAdmin: this.isAdmin }, "PrivateKey");
-  //     return token;
-  //   };
   const RegisterHr = mongoose.model("RegisterHr", registerHrSchema);
-
   generateAuthToken = (isAdmin, Email, Name, organisation) => {
     const token = jwt.sign(
       {
@@ -67,7 +62,6 @@ try {
   };
   exports.generateAuthToken = generateAuthToken;
   exports.RegisterHr = RegisterHr;
-
 } catch (error) {
   console.log(`${err}`);
 }

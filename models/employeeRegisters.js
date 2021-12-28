@@ -183,7 +183,6 @@ try {
     "EmployeeRegisters",
     employeeRegistersSchema
   );
-
   exports.EmployeeRegisters = EmployeeRegisters;
 } catch (error) {
   console.log(`Employee registers${err}`);

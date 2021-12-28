@@ -15,7 +15,6 @@ try {
     holidays: { type: Array },
   });
   const Holidays = mongoose.model("holidays", holidaysSchema);
- 
   exports.Holidays = Holidays;
 } catch (error) {
   console.log(`validateHolidaydata--->${err}`);

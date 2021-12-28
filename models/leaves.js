@@ -1,7 +1,6 @@
 /** @format */
 
 //schema for employee leaves
-
 const mongoose = require("mongoose");
 const moment = require("moment");
 try {
@@ -71,7 +70,6 @@ try {
     },
   });
   const EmployeeLeave = mongoose.model("employeeLeave", employeeLeaveSchema);
-
   exports.EmployeeLeave = EmployeeLeave;
 } catch (error) {
   console.log(`Employee Leave schema${error}`);

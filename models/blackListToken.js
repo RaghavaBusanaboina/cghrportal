@@ -1,5 +1,4 @@
 /** @format */
-
 //schema for blacklist token
 const mongoose = require("mongoose");
 try {

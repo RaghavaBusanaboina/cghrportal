@@ -65,7 +65,6 @@ try {
     "EmployeeTerminationn",
     employeeTerminationSchema
   );
-
   exports.EmployeeTermination = EmployeeTermination;
 } catch (error) {
   console.log(`employee terminational model${err}`);

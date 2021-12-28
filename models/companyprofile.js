@@ -46,7 +46,6 @@ try {
       },
     },
   });
-
   const companytimingsSchema = mongoose.Schema({
     organisation: {
       type: String,

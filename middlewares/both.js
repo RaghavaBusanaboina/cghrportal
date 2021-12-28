@@ -95,6 +95,6 @@ module.exports = async function (req, res, next) {
     }
   } catch (ex) {
     console.log(`${ex}`);
-    res.status(400).send(`${ex}`); 
+    res.status(400).send(`${ex}`);
   }
 };

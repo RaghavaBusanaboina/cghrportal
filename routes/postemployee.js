@@ -393,7 +393,7 @@ router.post("/updateEducationalDetails/:name", authemp, async (req, res) => {
     return res.send(emp_update);
   }
 });
-//route for logout..
+//route for logout
 router.post("/logout", blocklisttoken, async (req, res) => {
   console.log("logout route---------------------");
   return res.json({ message: "Token blacklisted. User logged out." });

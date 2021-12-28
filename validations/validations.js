@@ -3,7 +3,6 @@
 const Joi = require("joi");
 const { JoiPassword } = require("joi-password");
 const moment = require("moment");
-
 function validatePassword(data) {
   const schema = Joi.object({
     oldPassword: Joi.string().min(3).required(),

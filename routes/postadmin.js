@@ -269,21 +269,6 @@ router.post("/holidays", auth, async (req, res) => {
     return res.status(400).send({ data: `${error}` });
   }
 });
-//remove employee by id
-router.delete("/removeemployee/:id", auth, async (req, res) => {
-  try {
-    let emp = await EmployeeRegisters.findOneAndRemove(
-      { organisation: req.user.organisation, EmployeeId: req.params.id },
-      { new: true }
-    );
-    if (!emp) return res.status(400).send({ data: "Employee not found!" });
-    console.log(emp);
-    return res.send({ data: emp });
-  } catch (error) {
-    console.log("remove employee -->", error);
-    return res.status(400).send({ data: `${error}` });
-  }
-});
 //company details post route
 router.post("/companydetails", auth, async (req, res) => {
   const data = req.body;

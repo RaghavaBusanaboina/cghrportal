@@ -1,7 +1,6 @@
 /** @format */
 
 //schema for employee attendance
-
 const mongoose = require("mongoose");
 const moment = require("moment");
 try {

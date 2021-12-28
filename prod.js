@@ -1,3 +1,5 @@
+/** @format */
+
 const helmet = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
@@ -13,13 +15,4 @@ module.exports = function (app) {
         "Content-Type,Access-Control-Allow-Headers,x-test",
     })
   );
-  // const corsOpts = {
-  //   origin: "*",
-
-  //   methods: ["GET", "POST"],
-
-  //   allowedHeaders: ["Content-Type"],
-  // };
-
-  // app.use(cors(corsOpts));
 };

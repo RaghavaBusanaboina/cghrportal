@@ -1,5 +1,4 @@
 /** @format */
-
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const { EmployeeLogin } = require("../models/userLogin");

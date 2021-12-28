@@ -1,7 +1,5 @@
 /** @format */
-
 const { round } = require("lodash");
-
 function totalHoursMins(list) {
   // var holiday = "00:00";
 
@@ -61,7 +59,6 @@ function empIdGeneration(empid, idCode) {
   }
   return num;
 }
-
 exports.totalHoursMins = totalHoursMins;
 exports.calWorkingHours = calWorkingHours;
 exports.empIdGeneration = empIdGeneration;

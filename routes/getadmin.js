@@ -14,7 +14,7 @@ const {
   calWorkingHours,
 } = require("../helperFunctions/helperFunctions");
 const limit = 2;
-//get only emp list
+//get only emp list.
 router.post("/getall", auth, async (req, res) => {
   try {
     const count = await EmployeeRegisters.find({

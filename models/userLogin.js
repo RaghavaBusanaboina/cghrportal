@@ -2,7 +2,6 @@
 
 //schema for emp login
 const mongoose = require("mongoose");
-const Joi = require("joi");
 try {
   const employeeLoginSchema = mongoose.Schema({
     EmployeeId: {
@@ -43,7 +42,6 @@ try {
     },
   });
   const EmployeeLogin = mongoose.model("employeeLogin", employeeLoginSchema);
- 
   exports.EmployeeLogin = EmployeeLogin;
 } catch (e) {
   console.log(`Employee login model${e}`);

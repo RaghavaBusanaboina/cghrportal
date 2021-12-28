@@ -1,4 +1,5 @@
 /** @format */
+//token generation
 var jwt = require("jsonwebtoken");
 var customId = require("custom-id");
 const config = require("config");

@@ -173,6 +173,18 @@ router.post("/addemployee", auth, async (req, res) => {
       } else {
         data["EmployeeId"] = idCode + "0001";
       }
+    } else {
+      if (findempid.length > 0) {
+        var lastId = findempid[0].EmployeeId;
+        //incrementing the last id for new emp
+
+        var num = empIdGeneration(lastId, idCode);
+        console.log("before", data);
+        data["EmployeeId"] = idCode + num;
+        console.log("after", data);
+      } else {
+        data["EmployeeId"] = idCode + "0001";
+      }
     }
     data["organisation"] = req.user.organisation;
     const empData = new EmployeeRegisters(data);

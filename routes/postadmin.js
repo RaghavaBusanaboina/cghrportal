@@ -240,6 +240,7 @@ router.post("/leavestatus", auth, async (req, res) => {
 router.post("/holidays", auth, async (req, res) => {
   try {
     const data = req.body;
+    console.log("------------------------");
     console.log(data);
     const { error } = validateHolidaydata(data);
     data["organisation"] = req.user.organisation;

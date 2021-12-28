@@ -54,6 +54,9 @@ module.exports = async function (req, res, next) {
           });
 
           if (login.token_deleted === true) {
+            if (payload.ip_address !== requestIp.getClientIp(req)) {
+              return res.status(401).send("ip changed plz login again");
+            }
             const blacklist_token = new TokenBlackList({
               token: token,
             });

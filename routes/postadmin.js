@@ -242,6 +242,16 @@ router.post("/holidays", auth, async (req, res) => {
     const data = req.body;
     console.log("------------------------");
     console.log(data);
+    const query = {
+      organisation: req.user.organisation,
+      holidays: {
+        $or: [
+          { date: data.holidays[0].date },
+          { festival: data.holidays[0].festival },
+        ],}},
+    const findholidays = await Holidays.find(query);
+    console.log('findholidays',findholidays);
+    if (findholidays.length > 0) {return res.status(400).send('date or holiday is already there')}
     const { error } = validateHolidaydata(data.holidays[0]);
     data["organisation"] = req.user.organisation;
     if (error) return res.status(400).send({ data: error.details[0].message });

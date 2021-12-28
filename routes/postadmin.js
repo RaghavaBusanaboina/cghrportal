@@ -164,7 +164,9 @@ router.post("/addemployee", auth, async (req, res) => {
 
         var num = empIdGeneration(lastId, idCode);
         var termnum = empIdGeneration(terminated_empid, idCode);
+        console.log("before", data);
         data["EmployeeId"] = idCode + Math.max(num, termnum);
+        console.log("after", data);
       } else {
         data["EmployeeId"] = idCode + "0001";
       }

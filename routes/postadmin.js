@@ -272,6 +272,7 @@ router.post("/holidays", auth, async (req, res) => {
 
 //delete holiday based on index
 router.post("deleteHolidays", auth, async (req, res) => {
+  console.log("data", req.body);
   const query = { organisation: req.body.organisation };
   var index = req.body.index;
   const update = { "holidays.$.index": "" };

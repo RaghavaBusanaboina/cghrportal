@@ -160,7 +160,7 @@ router.post("/addemployee", auth, async (req, res) => {
       .limit(1);
     console.log("find_empid_termination", find_empid_termination);
     if (find_empid_termination.length > 0) {
-      var terminated_empid = Number(find_empid_termination[0].EmployeeId);
+      var terminated_empid = find_empid_termination[0].EmployeeId;
       if (findempid.length > 0) {
         var lastId = findempid[0].EmployeeId;
         //incrementing the last id for new emp
@@ -431,6 +431,7 @@ router.post("/employeetermination", auth, async (req, res) => {
     console.log("before validation");
     const { error } = validateemployeeTermination(data);
     console.log("after validation");
+    console.log(`${error}`);
     if (error) return res.status(400).send({ data: error.details[0].message });
     console.log("after validation1--------");
     await EmployeeAttendance.deleteMany({

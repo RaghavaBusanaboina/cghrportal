@@ -199,7 +199,7 @@ router.post("/outTime", authemp, async (req, res) => {
 });
 //auto checkout if user forgot to checkout before 7:30pm
 var cronJob1 = new CronJob1({
-  cronTime: "00 52 04 * * * ",
+  cronTime: "00 43 04 * * * ",
   onTick: async function () {
     console.log("cron started");
     let filter = { outTime: "pending" };

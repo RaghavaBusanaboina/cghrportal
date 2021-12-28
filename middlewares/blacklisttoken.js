@@ -14,7 +14,7 @@ async function blacklistToken(req, res, next) {
         const login = await EmployeeLogin.findOne({
           EmployeeId: payload.EmployeeId,
           token_id: payload.token_id,
-          ip_address: payload.ip_address,
+          // ip_address: payload.ip_address,
         });
         login.logged_out = true;
         login.token_deleted = true;
@@ -33,7 +33,7 @@ async function blacklistToken(req, res, next) {
           const login = await EmployeeLogin.findOne({
             EmployeeId: payload.EmployeeId,
             token_id: payload.token_id,
-            ip_address: payload.ip_address,
+            // ip_address: payload.ip_address,
           });
           if (login.token_deleted == true) {
             login.logged_out = true;

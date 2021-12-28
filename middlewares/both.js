@@ -41,6 +41,9 @@ module.exports = async function (req, res, next) {
             config.get("jwtPrivateKey"),
             async (err, payload) => {
               if (err) return res.sendStatus(403);
+              if (payload.ip_address !== requestIp.getClientIp(req)) {
+                return res.status(401).send("ip changed plz login again");
+              }
               if (payload) {
                 const login = await EmployeeLogin.findOne({
                   EmployeeId: payload.EmployeeId,

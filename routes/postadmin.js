@@ -280,7 +280,7 @@ router.post("/deleteHolidays", auth, async (req, res) => {
     const query = {
       organisation: req.body.organisation,
     };
-    const del = { "holidays._id": mongoose.Types.ObjectId(req.body._id) };
+    const del = { holidays: { _id: mongoose.Types.ObjectId(req.body._id) } };
     const del_holidays = await Holidays.findOneAndUpdate(
       query,
       {

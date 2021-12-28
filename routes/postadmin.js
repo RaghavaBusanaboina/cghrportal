@@ -282,7 +282,7 @@ router.post("/deleteHolidays", auth, async (req, res) => {
     const del_holidays = await Holidays.findOneAndUpdate(
       query,
       {
-        $unset: del,
+        $pull: del,
       },
       { new: true }
     );

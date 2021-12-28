@@ -131,9 +131,9 @@ router.post("/addemployee", auth, async (req, res) => {
     const empterm = await EmployeeTermination.findOne({
       $or: [{ Email: data.Email }, { Phone: data.Phone }],
     });
-    console.log("empterm");
+    console.log("empterm", empterm);
 
-    console.log(empterm);
+    // console.log(empterm);
     //check employeeid in terminated list
     if (empterm)
       return res.status(400).send({

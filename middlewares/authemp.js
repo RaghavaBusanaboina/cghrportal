@@ -29,6 +29,9 @@ module.exports = async function (req, res, next) {
   await TokenBlackList.findOne({ token: token }).then((found) => {
     if (found) {
       jwt.verify(token, config.get("jwtPrivateKey"), async (err, payload) => {
+        if (payload.ip_address !== requestIp.getClientIp(req)) {
+          return res.status(401).send("ip changed plz login again");
+        }
         const login = await EmployeeLogin.findOne({
           EmployeeId: payload.EmployeeId,
           token_id: payload.token_id,

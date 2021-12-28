@@ -276,11 +276,11 @@ router.post("/deleteHolidays", auth, async (req, res) => {
     console.log("data", req.body);
     const query = { organisation: req.body.organisation };
     var index = req.body.index;
-    const update = { "holidays.$.index": "" };
+    const update = { "holidays.$.0": "" };
     const del_holidays = await Holidays.findByIdAndUpdate(query, {
       $unset: update,
     });
-    console.log("deleted");
+    console.log("del_holidays");
     return res.status(200).send({ data: del_holidays });
   } catch (error) {
     return res.status(404).send(new Error(error));

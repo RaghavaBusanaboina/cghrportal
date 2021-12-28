@@ -46,5 +46,22 @@ function calWorkingHours(start, end) {
     return `${diffhours}:${diffmins}`;
   } else return `${diffhours}:${diffmins}`;
 }
+function empIdGeneration(empid, idCode) {
+  let idstring = empid.split(idCode);
+  var num = 0;
+  let id = `${Number(idstring[1]) + 1}`;
+  if (id.length === 1) {
+    num = `000${id}`;
+  } else if (id.length === 2) {
+    num = `00${id}`;
+  } else if (id.length === 3) {
+    num = `0${id}`;
+  } else if (id.length === 4) {
+    num = `${id}`;
+  }
+  return num;
+}
+
 exports.totalHoursMins = totalHoursMins;
 exports.calWorkingHours = calWorkingHours;
+exports.empIdGeneration = empIdGeneration;

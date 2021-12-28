@@ -17,6 +17,7 @@ const { Companydetails, CompanyTimings } = require("../models/companyprofile");
 const {
   totalHoursMins,
   calWorkingHours,
+  empIdGeneration,
 } = require("../helperFunctions/helperFunctions");
 const {
   validatecompanydata,
@@ -95,22 +96,6 @@ router.post("/resetpassword", auth, async (req, res) => {
     return res.status(400).send({ data: `reset password -->${error}` });
   }
 });
-
-function empIdGeneration(empid, idCode) {
-  let idstring = empid.split(idCode);
-  var num = 0;
-  let id = `${Number(idstring[1]) + 1}`;
-  if (id.length === 1) {
-    num = `000${id}`;
-  } else if (id.length === 2) {
-    num = `00${id}`;
-  } else if (id.length === 3) {
-    num = `0${id}`;
-  } else if (id.length === 4) {
-    num = `${id}`;
-  }
-  return num;
-}
 // add employees into db changes
 router.post("/addemployee", auth, async (req, res) => {
   try {
@@ -169,7 +154,7 @@ router.post("/addemployee", auth, async (req, res) => {
         var termnum = empIdGeneration(terminated_empid, idCode);
         console.log("before", data);
         var final = `${Math.max(num, termnum)}`;
-        var finalnum
+        var finalnum;
         if (final.length === 1) {
           finalnum = `000${final}`;
         } else if (final.length === 2) {
@@ -179,8 +164,7 @@ router.post("/addemployee", auth, async (req, res) => {
         } else if (final.length === 4) {
           finalnum = `${final}`;
         }
-      
-        data["EmployeeId"] = idCode + finalnum
+        data["EmployeeId"] = idCode + finalnum;
         console.log("after", data);
       } else {
         data["EmployeeId"] = idCode + "0001";

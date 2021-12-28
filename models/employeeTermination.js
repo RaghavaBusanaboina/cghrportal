@@ -2,7 +2,6 @@
 
 // schema for employee termination from admin
 const mongoose = require("mongoose");
-const Joi = require("joi");
 const moment = require("moment");
 
 try {

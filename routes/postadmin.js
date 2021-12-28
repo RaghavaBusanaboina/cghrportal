@@ -451,8 +451,11 @@ router.post("/employeetermination", auth, async (req, res) => {
       .catch(function (error) {
         console.log(error); // Failure
       });
+    console.log("before empterm");
     const emptermination = new EmployeeTermination(data);
+    console.log("before emp term save");
     await emptermination.save();
+    console.log("after save------------");
     let findandremove = await EmployeeRegisters.findOneAndRemove(
       { organisation: emp.organisation, EmployeeId: data.EmployeeId },
       { new: true }

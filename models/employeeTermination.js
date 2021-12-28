@@ -21,7 +21,7 @@ try {
       type: String,
       required: true,
     },
-    Phone:{
+    Phone: {
       type: Number,
       required: true,
     },
@@ -63,7 +63,7 @@ try {
     EmployeeRecord: { type: Array, required: true },
   });
   const EmployeeTermination = mongoose.model(
-    "EmployeeTermination",
+    "EmployeeTerminationn",
     employeeTerminationSchema
   );
 

@@ -1,6 +1,8 @@
 /** @format */
 const jwt = require("jsonwebtoken");
 const config = require("config");
+var requestIp = require("request-ip");
+
 const { EmployeeLogin } = require("../models/userLogin");
 const { TokenBlackList } = require("../models/blackListToken");
 const { EmployeeRegisters } = require("../models/employeeRegisters");

@@ -245,10 +245,8 @@ router.post("/holidays", auth, async (req, res) => {
     const query = {
       organisation: req.user.organisation,
       holidays: {
-        $or: [
-          { date: data.holidays[0].date },
-          { festival: data.holidays[0].festival },
-        ],
+        date: data.holidays[0].date,
+        festival: data.holidays[0].festival,
       },
     };
     const findholidays = await Holidays.find(query);

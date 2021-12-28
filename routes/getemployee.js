@@ -116,8 +116,8 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
       organisation: req.user.organisation,
 
       ADate: {
-        $gte: new Date(currentYear, currentMonth - 1, currentDate),
-        $lt: new Date(currentYear, currentMonth, currentDate),
+        $gte: new Date(currentYear, currentMonth - 1, 01),
+        $lt: new Date(currentYear, currentMonth + 1, 01),
       },
     };
     async function calculateWorkingingHours(query) {

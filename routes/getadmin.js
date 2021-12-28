@@ -193,8 +193,8 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
         outTime: { $nin: ["pending", "Holiday"] },
 
         ADate: {
-          $gte: new Date(currentYear, currentMonth - 1, currentDate),
-          $lt: new Date(currentYear, currentMonth, currentDate),
+          $gte: new Date(currentYear, currentMonth - 1, 01),
+          $lt: new Date(currentYear, currentMonth+1, 01),
         },
       };
       const lastWeekHours = await calculateWorkingingHours(

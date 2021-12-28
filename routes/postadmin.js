@@ -115,6 +115,7 @@ function empIdGeneration(empid, idCode) {
 router.post("/addemployee", auth, async (req, res) => {
   try {
     const data = req.body;
+    console.log("addemp", data);
     const { error } = validateEmployeedata(data);
     if (error) return res.status(400).send({ data: error.details[0].message });
     const emp = await EmployeeRegisters.findOne({

@@ -428,7 +428,9 @@ router.post("/employeetermination", auth, async (req, res) => {
     };
     data["ExperienceHere"] = experience(emp.createdOn, today());
     console.log(data);
+    console.log("before validation");
     const { error } = validateemployeeTermination(data);
+    console.log("after validation");
     if (error) return res.status(400).send({ data: error.details[0].message });
     await EmployeeAttendance.deleteMany({
       EmployeeId: data["EmployeeId"],

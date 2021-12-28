@@ -277,7 +277,7 @@ router.post("/deleteHolidays", auth, async (req, res) => {
     const query = { organisation: req.body.organisation };
     var index = req.body.index;
     const update = { "holidays.0": "" };
-    const del_holidays = await Holidays.findByIdAndUpdate(query, {
+    const del_holidays = await Holidays.findOneAndUpdate(query, {
       $unset: update,
     });
     console.log("del_holidays");

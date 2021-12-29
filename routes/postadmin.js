@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
       admin.Name,
       admin.organisation
     );
-    return res.header("x-auth-token", token).send(token);
+    return res.header("x-auth-token", token).send(await rediss.test());
   } catch (error) {
     console.log(error);
     return res.status(400).send({ data: `adminlogin -->${error}` });

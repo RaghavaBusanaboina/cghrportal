@@ -51,10 +51,7 @@ router.post("/registerHr", async (req, res) => {
 //admin login
 router.post("/login", async (req, res) => {
   try {
-    async function call() {
-      console.log("call function-->", await rediss.test());
-    }
-    call();
+    console.log("call function-->", await rediss.test());
     const data = req.body;
     const { error } = validateLoginhr(data);
     if (error) return res.status(400).send({ data: error.details[0].message });

@@ -12,12 +12,13 @@ client.on("error", (err) => {
 client.on("connect", () => {
   console.log("redis Connected!!");
 });
-// client.connect();
+client.connect();
 module.exports = {
   test: async () => {
-    client.set("welcomee", "hi from redis", (err, sucess) => {
+    client.set("welcomee", JSON.stringify("hi from redis"), (err, sucess) => {
       if (err) throw err;
       console.log("sucess-->", sucess);
+      client.quit();
     });
   },
   // client

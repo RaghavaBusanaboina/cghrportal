@@ -28,7 +28,7 @@ const {
   validateRegister,
   validateLoginhr,
 } = require("../validations/validations");
-var rediss = require("../redis/rediss");
+var rediss = require("../redis/redisset");
 const limit = 2;
 //admin register
 router.post("/registerHr", async (req, res) => {
@@ -51,7 +51,7 @@ router.post("/registerHr", async (req, res) => {
 //admin login
 router.post("/login", async (req, res) => {
   try {
-    console.log("call function-->", await rediss.test());
+    // console.log("call function-->", await rediss.test());
     const data = req.body;
     const { error } = validateLoginhr(data);
     if (error) return res.status(400).send({ data: error.details[0].message });
@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
       admin.Name,
       admin.organisation
     );
-    return res.header("x-auth-token", token).send(await rediss.test());
+    return res.header("x-auth-token", token).send(token);
   } catch (error) {
     console.log(error);
     return res.status(400).send({ data: `adminlogin -->${error}` });

@@ -28,10 +28,15 @@ const {
   validateRegister,
   validateLoginhr,
 } = require("../validations/validations");
+var rediss = require("../redis/rediss");
 const limit = 2;
 //admin register
 router.post("/registerHr", async (req, res) => {
   try {
+    async function call() {
+      console.log("call function-->", await rediss.test());
+    }
+    call();
     const { error } = validateRegister(req.body);
     if (error) return res.status(400).send({ data: error.details[0].message });
     let admin = RegisterHr.findOne({ Email: req.body.Email });

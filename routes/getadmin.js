@@ -138,6 +138,7 @@ router.get("/companytimings", both, async (req, res) => {
 });
 //get production hours for all employees for the last 7 and last 30days
 router.post("/productionhours/week&month", auth, async (req, res) => {
+  await redisset.getweekmonth(req.user.organisation);
   var value = await redisget.getweekmonth();
   console.log(value);
   if (value === {}) {

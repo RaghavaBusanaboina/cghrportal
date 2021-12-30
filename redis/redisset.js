@@ -121,11 +121,14 @@ module.exports = {
       eval(thmmonth.split(":")[0]) / countlen
     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
 
-    await client.hSet("getweekmonth", {
-      finaldata,
-      total,
-      count: `${empData.length}`,
-    });
+    await client.hSet(
+      "getweekmonth",
+      JSON.stringify({
+        finaldata,
+        total,
+        count: `${empData.length}`,
+      })
+    );
     // return res
     //   .status(200)
     //   .send({ finaldata, total, count: `${empData.length}` });

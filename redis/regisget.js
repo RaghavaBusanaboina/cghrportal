@@ -22,4 +22,9 @@ module.exports = {
     console.log(value);
     return JSON.parse(JSON.stringify(value));
   },
+
+  getweekmonth: async () => {
+    var value = await client.hGetAll("getweekmonth");
+    return JSON.parse(JSON.stringify(value));
+  },
 };

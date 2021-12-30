@@ -308,3 +308,64 @@
 // });
 // console.log(Math.max(09, 10, 08));
 console.log("2022-01-26" === "2022-01-26");
+//get production hours for last 7 days and last 30days
+// router.post("/productionhours/week&month", authemp, async (req, res) => {
+//     try {
+//       let date = new Date();
+//       let currentYear = date.getFullYear();
+//       let currentMonth = date.getMonth();
+//       let currentDate = date.getDate();
+//       const weekquery = {
+//         EmployeeId: req.user.EmployeeId,
+//         organisation: req.user.organisation,
+//         ADate: {
+//           $gte: new Date(currentYear, currentMonth, currentDate - 8),
+//           $lt: new Date(currentYear, currentMonth, currentDate),
+//         },
+//       };
+//       const monthquery = {
+//         EmployeeId: req.user.EmployeeId,
+//         organisation: req.user.organisation,
+  
+//         ADate: {
+//           $gte: new Date(currentYear, currentMonth - 1, 01),
+//           $lt: new Date(currentYear, currentMonth + 1, 01),
+//         },
+//       };
+//       async function calculateWorkingingHours(query) {
+//         const empattendance = await EmployeeAttendance.find(query);
+//         console.log(empattendance);
+//         if (!empattendance)
+//           return res.status(404).send({ data: "no data found" });
+//         var hours = [];
+//         for (let i = 0; i < empattendance.length; i++) {
+//           const element = empattendance[i];
+//           console.log(element.inTime);
+//           let TotalWorkingHours = calWorkingHours(
+//             element.inTime,
+//             element.outTime
+//           );
+//           console.log(TotalWorkingHours);
+//           hours.push(TotalWorkingHours);
+//         }
+//         let hoursmins = totalHoursMins(hours);
+//         console.log(hoursmins);
+//         return hoursmins;
+//       }
+//       const lastWeekHours = await calculateWorkingingHours(weekquery);
+//       console.log(lastWeekHours);
+//       const lastMonthHours = await calculateWorkingingHours(monthquery);
+//       return res.status(200).send({
+//         lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
+//           lastWeekHours.split(":")[1]
+//         } mins`,
+//         lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
+//           lastMonthHours.split(":")[1]
+//         } mins`,
+//       });
+//     } catch (error) {
+//       console.log(`${error}`);
+//       res.status(400).send({ data: error });
+//     }
+//   });
+

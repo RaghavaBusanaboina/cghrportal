@@ -9,6 +9,8 @@ const { EmployeeLeave } = require("../models/leaves");
 const { EmployeeTermination } = require("../models/employeeTermination");
 const { EmployeeRegisters } = require("../models/employeeRegisters");
 const { Companydetails, CompanyTimings } = require("../models/companyprofile");
+const redisset = require("../redis/redisset");
+const redisget = require("../redis/regisget");
 const {
   totalHoursMins,
   calWorkingHours,

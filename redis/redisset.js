@@ -34,7 +34,7 @@ module.exports = {
     let monthWorkingDays = [];
     async function calculateWorkingingHours(query, type) {
       const empattendance = await EmployeeAttendance.find(query);
-      console.log(empattendance);
+      // console.log(empattendance);
       if (type === "week") {
         weekWorkingDays.push(empattendance.length);
       }
@@ -120,8 +120,7 @@ module.exports = {
     total["totalLastMonthHours"] = `${Math.round(
       eval(thmmonth.split(":")[0]) / countlen
     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
-
-    await client.hSet("getweekmonth", {
+    await client.hSet("getweekmonth0", {
       finaldata: finaldata,
       total: total,
       count: `${empData.length}`,

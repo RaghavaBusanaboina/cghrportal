@@ -16,12 +16,10 @@ client.on("connect", () => {
 client.connect();
 module.exports = {
   test: async () => {
-    client.get("welcomee", (err, sucess) => {
-      if (err) console.log(err);
-      console.log("sucess-->", sucess);
-      const data = JSON.parse(sucess);
-      console.log(data);
-      client.quit();
+    var value = await client.hGetAll("1").catch((err) => {
+      console.log(err);
     });
+    console.log(value);
+    return JSON.parse(JSON.stringify(value));
   },
 };

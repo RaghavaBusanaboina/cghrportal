@@ -15,18 +15,8 @@ client.on("connect", () => {
 client.connect();
 module.exports = {
   test: async () => {
-    client.set("welcomee", JSON.stringify("hi from redis"), (err, sucess) => {
-      if (err) throw err;
-      console.log("sucess-->", sucess);
-      client.quit();
+    await client.hSet("1", {valuee:"h", hello123:"v"}).catch((err) => {
+      console.log(err);
     });
   },
-  // client
-  //   .get("welcomee", (err, sucess) => {
-  //     if (err) throw err;
-  //     console.log("sucesssss", sucess);
-  //     client.quit();
-  //   })
-
-  //   .catch((err) => console.error(`${err}`));
 };

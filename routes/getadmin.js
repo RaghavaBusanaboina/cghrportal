@@ -247,7 +247,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     if (value === {} || value === null) {
       await redisset.getweekmonth((organisation = req.user.organisation));
     }
-    if ("data" in value) return res.status(400).send(value);
+    // if ("data" in value) return res.status(400).send(value);
     return res.status(200).send(value);
   } catch (error) {
     console.log(`${error}`);

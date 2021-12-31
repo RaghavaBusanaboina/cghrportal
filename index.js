@@ -44,12 +44,12 @@ app.use(
   postemployee,
   queue({ activeLimit: 1, queuedLimit: 1 })
 );
-async function call() {
-  // await redisset.test();
-  // console.log("call get function-->", await redisget.test());
-  await redisset.getweekmonth("Codegene");
-  console.log("call get function-->", await redisget.getweekmonth());
-}
+// async function call() {
+//   // await redisset.test();
+//   // console.log("call get function-->", await redisget.test());
+//   await redisset.getweekmonth("Codegene");
+//   console.log("call get function-->", await redisget.getweekmonth());
+// }
 call();
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {

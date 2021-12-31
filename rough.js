@@ -308,3 +308,50 @@
 // });
 // console.log(Math.max(09, 10, 08));
 console.log("2022-01-26" === "2022-01-26");
+var out = {
+  finaldata: {
+    CG0001: {
+      EmployeId: "CG0001",
+      lastWeekHours: "20hrs 8 mins",
+      lastMonthHours: "28hrs 12 mins",
+      weekWorkingdays: 2,
+      monthWorkingdays: 3,
+    },
+    CG0002: {
+      EmployeId: "CG0002",
+      lastWeekHours: "0hrs 0 mins",
+      lastMonthHours: "0hrs 0 mins",
+      weekWorkingdays: 0,
+      monthWorkingdays: 0,
+    },
+    CG0003: {
+      EmployeId: "CG0003",
+      lastWeekHours: "14hrs 13 mins",
+      lastMonthHours: "20hrs 14 mins",
+      weekWorkingdays: 3,
+      monthWorkingdays: 5,
+    },
+    CG0005: {
+      EmployeId: "CG0005",
+      lastWeekHours: "2hrs 7 mins",
+      lastMonthHours: "2hrs 7 mins",
+      weekWorkingdays: 1,
+      monthWorkingdays: 2,
+    },
+    CG0007: {
+      EmployeId: "CG0007",
+      lastWeekHours: "0hrs 0 mins",
+      lastMonthHours: "0hrs 0 mins",
+      weekWorkingdays: 0,
+      monthWorkingdays: 0,
+    },
+  },
+  total: {
+    totalLastWeekHours: "7hrs 6 mins",
+    totalLastMonthHours: "10hrs 7 mins",
+  },
+  count: "5",
+};
+console.log(out);
+console.log("finding-----");
+console.log("data" in out);

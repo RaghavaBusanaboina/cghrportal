@@ -50,7 +50,7 @@ app.use(
 //   await redisset.getweekmonth("Codegene");
 //   console.log("call get function-->", await redisget.getweekmonth());
 // }
-call();
+// call();
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Listening to port 🚀 ${port}`);

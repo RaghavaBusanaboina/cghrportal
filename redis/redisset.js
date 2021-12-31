@@ -21,7 +21,7 @@ client.on("connect", () => {
 client.connect();
 module.exports = {
   test: async () => {
-    await client.hSet("1", { valuee: "h", hello123: "v" }).catch((err) => {
+    await client.SET("1", { valuee: "h", hello123: "v" }).catch((err) => {
       console.log(err);
     });
   },
@@ -42,7 +42,7 @@ module.exports = {
         monthWorkingDays.push(empattendance.length);
       }
       if (!empattendance) {
-        await client.hSet("getweekmonth", { data: "no data found" });
+        await client.SET("getweekmonth", { data: "no data found" });
       }
 
       // return res.status(404).send({ data: "no data found" });
@@ -120,10 +120,11 @@ module.exports = {
     total["totalLastMonthHours"] = `${Math.round(
       eval(thmmonth.split(":")[0]) / countlen
     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
-    await client.hSet("getweekmonth0", {
-      finaldata: finaldata,
-      total: total,
-      count: `${empData.length}`,
+    var obj = JSON.stringify({ finaldata, total, count: `${empData.length}` });
+    console.log("obj----->", obj);
+    console.log("0000-->", typeof obj);
+    await client.SET("getweekmonth", obj, (err, res) => {
+      console.log(err);
     });
     // return res
     //   .status(200)

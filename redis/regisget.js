@@ -24,8 +24,8 @@ module.exports = {
   },
 
   getweekmonth: async () => {
-    var value = await client.hGetAll("getweekmonth0");
-    console.log("value---------->", JSON.stringify(value.finaldata));
+    var value = await client.GET("getweekmonth");
+    console.log("value---------->",typeof JSON.parse(value));
     return JSON.parse(JSON.stringify(value));
   },
 };

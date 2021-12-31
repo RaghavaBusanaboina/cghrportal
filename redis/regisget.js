@@ -25,7 +25,7 @@ module.exports = {
 
   getweekmonth: async () => {
     var value = await client.GET("getweekmonth");
-    console.log("value---------->",typeof JSON.parse(value));
-    return JSON.parse(JSON.stringify(value));
+    console.log("value---------->", typeof JSON.parse(value));
+    return JSON.parse(value);
   },
 };

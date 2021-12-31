@@ -121,8 +121,8 @@ module.exports = {
       eval(thmmonth.split(":")[0]) / countlen
     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
     var obj = JSON.stringify({ finaldata, total, count: `${empData.length}` });
-    console.log("obj----->", obj);
-    console.log("0000-->", typeof obj);
+    // console.log("obj----->", obj);
+    // console.log("0000-->", typeof obj);
     await client.SET("getweekmonth", obj, (err, res) => {
       console.log(err);
     });

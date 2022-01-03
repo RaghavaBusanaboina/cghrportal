@@ -355,3 +355,11 @@ var out = {
 console.log(out);
 console.log("finding-----");
 console.log("data" in out);
+
+// {
+// 	"Email":"sairamakrishna@gmail.com",
+// 	"Password":"12345"
+// }{{
+// 	"Email":"admin@codegene.io",
+// 	"Password":"12345"
+// }

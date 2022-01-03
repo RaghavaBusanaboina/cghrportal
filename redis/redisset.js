@@ -130,4 +130,9 @@ module.exports = {
     //   .status(200)
     //   .send({ finaldata, total, count: `${empData.length}` });
   },
+setEmployeeRegisters : async()=>{
+  
+}
+
+
 };

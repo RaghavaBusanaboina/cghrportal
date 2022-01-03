@@ -46,7 +46,7 @@ app.use(
 );
 async function call() {
   // await redisset.test();
-  // console.log("call get function-->", await redisget.test());
+  // console.log("call get function-->", await redisget.test());//
   await redisset.getweekmonth("Codegene");
   var value = await redisget.getweekmonth();
   var data = value.finaldata;

@@ -287,23 +287,27 @@ router.post("/holidays", auth, async (req, res) => {
   }
 });
 
-//delete holiday based on index
+//delete holiday based on _id
 router.post("/deleteHolidays", auth, async (req, res) => {
   try {
     console.log("data", req.body);
-    const query = {
-      organisation: req.user.organisation,
-    };
-    const del = { holidays: { _id: mongoose.Types.ObjectId(req.body._id) } };
-    const del_holidays = await Holidays.findOneAndUpdate(
-      query,
-      {
-        $pull: del,
-      },
-      { new: true }
-    );
-    console.log("del_holidays", del_holidays);
-    return res.status(200).send({ data: del_holidays });
+    if ("_id" in req.body) {
+      const query = {
+        organisation: req.user.organisation,
+      };
+      const del = { holidays: { _id: mongoose.Types.ObjectId(req.body._id) } };
+      const del_holidays = await Holidays.findOneAndUpdate(
+        query,
+        {
+          $pull: del,
+        },
+        { new: true }
+      );
+      console.log("del_holidays", del_holidays);
+      return res.status(200).send({ data: del_holidays });
+    } else {
+      res.status(404).send("_id is required");
+    }
   } catch (error) {
     console.log(`${error}`);
     return res.status(404).send(`${error}`);

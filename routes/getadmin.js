@@ -158,15 +158,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
         "inTime outTime"
       );
       console.log(empattendance);
-      await client
-        .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
-        .catch((err) => {
-          console.log("error in hset emp attendance", err);
-        });
-      var values = await client.HGETALL("EmployeeAttendance");
-      var parsedData = JSON.parse(JSON.stringify(values));
-      console.log("checkhere------------------", parsedData);
-      console.log("**********************************", parsedData["week"]);
+
       if (type === "week") {
         weekWorkingDays.push(empattendance.length);
       }
@@ -251,7 +243,12 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
     return res
       .status(200)
-      .send({ finaldata, total, count: `${empData.length}` });
+      .send({
+        finaldata,
+        total,
+        count: `${empData.length}`,
+        organisation: req.user.organisation,
+      });
     // .send({ finaldata: finaldata, totalHours: total, count: empData.length });
   } catch (error) {
     console.log(`${error}`);

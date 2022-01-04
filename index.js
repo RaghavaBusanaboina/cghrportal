@@ -29,9 +29,12 @@ mongoose
 //     console.log(`${err}`);
 //   });
 // password: "b2hjj0OeKFipw1KnS2bPkNMB6KgnHoCW",
-
+const csrfProtection = csrf({
+  cookie: true,
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(csrfProtection);
 app.use("/api/admin/get", getadmin);
 app.use("/api/employee/get", getemployee);
 app.use(

@@ -52,8 +52,9 @@ try {
         token_id: token_id,
         ip_address: ip,
       },
-      { expiresIn: "12h" },
-      config.get("jwtPrivateKey")
+
+      config.get("jwtPrivateKey"),
+      { expiresIn: "12h" }
     );
     console.log(accessToken);
     return accessToken;

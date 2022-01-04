@@ -55,8 +55,9 @@ try {
         Name: Name,
         organisation: organisation,
       },
-      { expiresIn: "12h" },
-      config.get("jwtPrivateKey")
+
+      config.get("jwtPrivateKey"),
+      { expiresIn: "12h" }
     );
     console.log(token);
     return token;

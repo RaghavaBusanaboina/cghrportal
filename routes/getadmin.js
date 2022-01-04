@@ -164,12 +164,9 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
           console.log("error in hset emp attendance", err);
         });
       var values = await client.HGETALL("EmployeeAttendance");
-
-      console.log("checkhere------------------", values);
-      console.log(
-        "**********************************",
-        JSON.parse(JSON.stringify(values))
-      );
+      var parsedData = JSON.parse(JSON.stringify(values));
+      console.log("checkhere------------------", parsedData);
+      console.log("**********************************", parsedData["week"]);
       if (type === "week") {
         weekWorkingDays.push(empattendance.length);
       }

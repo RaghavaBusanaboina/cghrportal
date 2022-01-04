@@ -126,10 +126,11 @@ module.exports = {
       count: `${empData.length}`,
       organisation: organisation,
     };
+    console.log("result!!!!!!!!!!!!!!!!!!!", result);
     await client
-      .HSET("getweekmonth", organisation, JSON.stringify(result))
+      .HSET("getweekmonth0", organisation, JSON.stringify(result))
       .catch((err) => {
-        console.log("error in hset emp attendance", err);
+        console.log("error in hset emp attendance", `${err}`);
       });
     // return res
     //   .status(200)

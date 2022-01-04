@@ -159,16 +159,16 @@ router.get("/companytimings", both, async (req, res) => {
 router.post("/productionhours/week&month", auth, async (req, res) => {
   try {
     var data = await redisset.redisExistCheck(
-      "getweekmonth",
+      "getweekmonth0",
       req.user.organisation
     );
-    if (data >= 1) {
-      var values = await client.HGET("getweekmonth", req.user.organisation);
+    if (data) {
+      var values = await client.HGET("getweekmonth0", req.user.organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
       return res.status(200).send(parsedData);
     } else {
       await redisset.getweekmonth((organisation = req.user.organisation));
-      var values = await client.HGET("getweekmonth", req.user.organisation);
+      var values = await client.HGET("getweekmonth0", req.user.organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
       return res.status(200).send(parsedData);
     }

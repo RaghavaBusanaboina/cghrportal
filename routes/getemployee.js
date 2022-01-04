@@ -66,9 +66,8 @@ router.post("/getattendance/:id", both, async (req, res) => {
         .status(400)
         .send({ data: "id not found in employee attendance" });
     if (empData.length > 0)
-      return res
-        .status(200)
-        .send({ data: empData, CSRFToken: req.CSRFToken() });
+      return res.status(200).json({ CSRFToken: req.CSRFToken() });
+    // .send({ data: empData, CSRFToken: req.CSRFToken() });
     else
       return res
         .status(400)

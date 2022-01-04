@@ -469,12 +469,12 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
 });
 
 // -----
-// await client
-// .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
-// .catch((err) => {
-//   console.log("error in hset emp attendance", err);
-// });
-// var values = await client.HGETALL("EmployeeAttendance");
-// var parsedData = JSON.parse(JSON.stringify(values));
-// console.log("checkhere------------------", parsedData);
-// console.log("**********************************", parsedData["week"]);
+await client
+.HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
+.catch((err) => {
+  console.log("error in hset emp attendance", err);
+});
+var values = await client.HGETALL("EmployeeAttendance");
+var parsedData = JSON.parse(JSON.stringify(values));
+console.log("checkhere------------------", parsedData);
+console.log("**********************************", parsedData["week"]);

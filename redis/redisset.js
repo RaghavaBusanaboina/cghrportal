@@ -33,19 +33,19 @@ module.exports = {
     let weekWorkingDays = [];
     let monthWorkingDays = [];
     async function calculateWorkingingHours(query, type) {
-      const empattendance = await EmployeeAttendance.find(query);
-      // console.log(empattendance);
+      const empattendance = await EmployeeAttendance.find(query).select(
+        "inTime outTime"
+      );
+      console.log(empattendance);
+
       if (type === "week") {
         weekWorkingDays.push(empattendance.length);
       }
       if (type === "month") {
         monthWorkingDays.push(empattendance.length);
       }
-      if (!empattendance) {
-        await client.SET("getweekmonth", { data: "no data found" });
-      }
-
-      // return res.status(404).send({ data: "no data found" });
+      if (!empattendance)
+        return res.status(404).send({ data: "no data found" });
       var hours = [];
       for (let i = 0; i < empattendance.length; i++) {
         const element = empattendance[i];
@@ -120,19 +120,23 @@ module.exports = {
     total["totalLastMonthHours"] = `${Math.round(
       eval(thmmonth.split(":")[0]) / countlen
     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
-    var obj = JSON.stringify({ finaldata, total, count: `${empData.length}` });
-    // console.log("obj----->", obj);
-    // console.log("0000-->", typeof obj);
-    await client.SET("getweekmonth", obj, (err, res) => {
-      console.log(err);
-    });
+    var result = {
+      finaldata,
+      total,
+      count: `${empData.length}`,
+      organisation: organisation,
+    };
+    await client
+      .HSET("getweekmonth", organisation, JSON.stringify(result))
+      .catch((err) => {
+        console.log("error in hset emp attendance", err);
+      });
     // return res
     //   .status(200)
     //   .send({ finaldata, total, count: `${empData.length}` });
   },
-setEmployeeRegisters : async()=>{
-  
-}
-
-
+  redisExistCheck: async (hash, key) => {
+    var data = await client.HEXISTS(hash, key);
+    return data;
+  },
 };

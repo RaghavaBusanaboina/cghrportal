@@ -54,7 +54,8 @@ try {
         Email: Email,
         Name: Name,
         organisation: organisation,
-      },{expiresIn="12h"},
+      },
+      { expiresIn: "12h" },
       config.get("jwtPrivateKey")
     );
     console.log(token);

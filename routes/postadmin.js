@@ -286,7 +286,6 @@ router.post("/holidays", auth, async (req, res) => {
     return res.status(400).send({ data: `${error}` });
   }
 });
-
 //delete holiday based on _id
 router.post("/deleteHolidays", auth, async (req, res) => {
   try {

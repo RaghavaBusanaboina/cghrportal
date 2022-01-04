@@ -154,7 +154,9 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     let weekWorkingDays = [];
     let monthWorkingDays = [];
     async function calculateWorkingingHours(query, type) {
-      const empattendance = await EmployeeAttendance.find(query);
+      const empattendance = await EmployeeAttendance.find(query).select(
+        "inTime outTime"
+      );
       console.log(empattendance);
       await client
         .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))

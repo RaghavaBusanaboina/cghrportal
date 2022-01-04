@@ -159,7 +159,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       );
       console.log(empattendance);
       await client
-        .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
+        .HSET("EmployeeAttendance", type, empattendance)
         .catch((err) => {
           console.log("error in hset emp attendance", err);
         });

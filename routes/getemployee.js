@@ -53,7 +53,7 @@ router.post("/details", authemp, async (req, res) => {
   }
 });
 
-//get emp data from emp id(emp attendance)
+//get emp data from emp id(emp attendance)..
 router.post("/getattendance/:id", both, async (req, res) => {
   try {
     let date = new Date();
@@ -73,10 +73,7 @@ router.post("/getattendance/:id", both, async (req, res) => {
       return res
         .status(400)
         .send({ data: "id not found in employee attendance" });
-    if (empData.length > 0)
-      return res
-        .status(200)
-        .send({ data: empData, CSRFToken: req.CSRFToken() });
+    if (empData.length > 0) return res.status(200).send({ data: empData });
     else
       return res
         .status(400)

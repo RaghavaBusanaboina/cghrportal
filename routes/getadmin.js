@@ -161,7 +161,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
         .catch((err) => {
           console.log("error in hset emp attendance", err);
         });
-      var values = client.HGETALL("EmployeeAttendance", "week");
+      var values = await client.HGETALL("EmployeeAttendance", "week");
 
       console.log("checkhere------------------", values);
       console.log("**********************************", JSON.parse(values));

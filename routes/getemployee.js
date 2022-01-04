@@ -12,6 +12,15 @@ const { EmployeeLeave } = require("../models/leaves");
 const authemp = require("../middlewares/authemp");
 const limit = 2;
 //get emp details by emp id
+router.get('/dummy',(req,res)=>{ 
+  const csrfProtection = csrf({
+    cookie: true
+  });
+  app.use(csrfProtection);
+  app.get('/getCSRFToken', (req, res) => {
+    return res.json({ CSRFToken: req.CSRFToken() });
+  });
+})
 router.post("/details", authemp, async (req, res) => {
   try {
     const empData = await EmployeeRegisters.find({

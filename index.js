@@ -71,14 +71,16 @@ async function call() {
       console.log("iffffff");
       var values = await client.HGETALL("getweekmonth0", organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
-      console.log(parsedData);
+      console.log("new000000000000000", JSON.parse(parsedData[organisation]));
+      console.log(typeof parsedData[organisation]);
       // return res.status(200).send(parsedData);
     } else {
       await redisset.getweekmonth((organisation = organisation));
       var values = await client.HGETALL("getweekmonth0", organisation);
       console.log("valuesssssssss", values);
       var parsedData = JSON.parse(JSON.stringify(values));
-      console.log(parsedData);
+      console.log("new000000000000000");
+      console.log(parsedData.organisation);
       // return res.status(200).send(parsedData);
     }
   } catch (error) {

@@ -165,12 +165,12 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     if (data) {
       var values = await client.HGET("getweekmonth0", req.user.organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
-      return res.status(200).send(parsedData);
+      return res.status(200).send(JSON.parse(parsedData));
     } else {
       await redisset.getweekmonth((organisation = req.user.organisation));
       var values = await client.HGET("getweekmonth0", req.user.organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
-      return res.status(200).send(parsedData);
+      return res.status(200).send(JSON.parse(parsedData));
     }
   } catch (error) {
     console.log(`${error}`);

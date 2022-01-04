@@ -15,6 +15,14 @@ const {
 } = require("../helperFunctions/helperFunctions");
 const redisset = require("../redis/redisset");
 const redisget = require("../redis/regisget");
+//---------redis--------------------
+const redis = require("redis");
+const client = redis.createClient({
+  url: "redis://redis-12100.c270.us-east-1-3.ec2.cloud.redislabs.com:12100",
+  password: "b2hjj0OeKFipw1KnS2bPkNMB6KgnHoCW",
+});
+client.connect();
+//--------------------------------------
 const limit = 2;
 //get only emp list.
 router.post("/getall", auth, async (req, res) => {
@@ -148,6 +156,16 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
     async function calculateWorkingingHours(query, type) {
       const empattendance = await EmployeeAttendance.find(query);
       console.log(empattendance);
+      await client
+        .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
+        .catch((err) => {
+          console.log("error in hset emp attendance", err);
+        });
+      var values = client.HGETALL("EmployeeAttendance", "week");
+      console.log(
+        "**********************************",
+        JSON.parse(JSON.stringify(values))
+      );
       if (type === "week") {
         weekWorkingDays.push(empattendance.length);
       }

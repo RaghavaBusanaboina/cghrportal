@@ -166,7 +166,10 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       var values = await client.HGETALL("EmployeeAttendance", "week");
 
       console.log("checkhere------------------", values);
-      console.log("**********************************", JSON.parse(values));
+      console.log(
+        "**********************************",
+        JSON.parse(JSON.stringify(values))
+      );
       if (type === "week") {
         weekWorkingDays.push(empattendance.length);
       }

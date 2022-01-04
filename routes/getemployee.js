@@ -12,15 +12,30 @@ const { EmployeeLeave } = require("../models/leaves");
 const authemp = require("../middlewares/authemp");
 const limit = 2;
 //get emp details by emp id
-router.get('/dummy',(req,res)=>{ 
+const csrf = require("csurf");
+const cookieParser = require("cookie-parser");
+var sessions = require("express-session");
+router.get("/dummy", (req, res) => {
+  console.log("-------------------");
+  console.log(req.CSRFToken());
   const csrfProtection = csrf({
-    cookie: true
+    cookie: true,
   });
-  app.use(csrfProtection);
-  app.get('/getCSRFToken', (req, res) => {
-    return res.json({ CSRFToken: req.CSRFToken() });
-  });
-})
+  router.use(csrfProtection);
+  // router.use(csrf());
+  router.use(cookieParser());
+  router.use(
+    sessions({
+      cookieName: "demo-session",
+      secret: "this is a secret msg",
+      duration: 30 * 60 * 1000,
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
+  router.use(csrfProtection);
+  return res.json({ CSRFToken: req.CSRFToken() });
+});
 router.post("/details", authemp, async (req, res) => {
   try {
     const empData = await EmployeeRegisters.find({
@@ -36,9 +51,7 @@ router.post("/details", authemp, async (req, res) => {
     return res.status(400).send({ data: `get emp details by id -->${error}` });
   }
 });
-const csrf = require("csurf");
-const cookieParser = require("cookie-parser");
-var sessions = require("express-session");
+
 //get emp data from emp id(emp attendance)
 router.post("/getattendance/:id", both, async (req, res) => {
   try {

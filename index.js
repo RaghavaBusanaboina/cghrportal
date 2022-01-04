@@ -37,7 +37,8 @@ const csrfProtection = csrf({
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(csrfProtection);
+// app.use(csrfProtection);
+app.use(csrf());
 app.use(cookieParser());
 app.use(
   sessions({

@@ -11,9 +11,7 @@ const getemployee = require("./routes/getemployee");
 const config = require("config");
 const redisset = require("./redis/redisset");
 const redisget = require("./redis/regisget");
-const csrf = require("csurf");
-const cookieParser = require("cookie-parser");
-var sessions = require("express-session");
+
 require("./prod")(app);
 // Mongodb connection
 const db = config.get("db");
@@ -32,23 +30,10 @@ mongoose
 //     console.log(`${err}`);
 //   });
 // password: "b2hjj0OeKFipw1KnS2bPkNMB6KgnHoCW",
-const csrfProtection = csrf({
-  cookie: true,
-});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(csrfProtection);
-app.use(csrf());
-app.use(cookieParser());
-app.use(
-  sessions({
-    cookieName: "demo-session",
-    secret: "this is a secret msg",
-    duration: 30 * 60 * 1000,
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+
 app.use("/api/admin/get", getadmin);
 app.use("/api/employee/get", getemployee);
 app.use(

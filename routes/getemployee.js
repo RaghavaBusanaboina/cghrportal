@@ -27,11 +27,27 @@ router.post("/details", authemp, async (req, res) => {
     return res.status(400).send({ data: `get emp details by id -->${error}` });
   }
 });
-
+const csrf = require("csurf");
+const cookieParser = require("cookie-parser");
+var sessions = require("express-session");
 //get emp data from emp id(emp attendance)
 router.post("/getattendance/:id", both, async (req, res) => {
   try {
-    
+    const csrfProtection = csrf({
+      cookie: true,
+    });
+    router.use(csrfProtection);
+    // router.use(csrf());
+    router.use(cookieParser());
+    router.use(
+      sessions({
+        cookieName: "demo-session",
+        secret: "this is a secret msg",
+        duration: 30 * 60 * 1000,
+        resave: true,
+        saveUninitialized: true,
+      })
+    );
     let date = new Date();
     let currentYear = date.getFullYear();
     let currentMonth = date.getMonth();
@@ -49,7 +65,10 @@ router.post("/getattendance/:id", both, async (req, res) => {
       return res
         .status(400)
         .send({ data: "id not found in employee attendance" });
-    if (empData.length > 0) return res.status(200).send({ data: empData,CSRFToken: req.CSRFToken() });
+    if (empData.length > 0)
+      return res
+        .status(200)
+        .send({ data: empData, CSRFToken: req.CSRFToken() });
     else
       return res
         .status(400)

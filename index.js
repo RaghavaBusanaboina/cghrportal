@@ -71,7 +71,7 @@ async function call() {
       console.log("iffffff");
       var values = await client.HGETALL("getweekmonth0", organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
-      var emplen =  Number(JSON.parse(parsedData[organisation])["count"])
+      var emplen = Number(JSON.parse(parsedData[organisation])["count"]);
       console.log(emplen);
       // console.log("new000", JSON.parse(parsedData[organisation])["count"]);
       // return res.status(200).send(parsedData);
@@ -89,7 +89,7 @@ async function call() {
     // res.status(400).send({ data: error });
   }
 }
-call();
+// call();
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Listening to port 🚀 ${port}`);

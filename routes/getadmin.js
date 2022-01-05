@@ -168,12 +168,13 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       });
       console.log("data----->", data);
       var values = await client.HGET("getweekmonth0", req.user.organisation);
-      console.log('values',values);
+      console.log("values", values);
       var parsedData = JSON.parse(JSON.stringify(values));
       console.log("----++++->", parsedData);
       var emplen = Number(
-        JSON.parse(parsedData[req.user.organisation])["count"]
+        JSON.parse(parsedData[req.user.organisation]["count"])
       );
+      console.log("number");
       console.log("emplen--->", emplen);
       if (emplen === empData.length) {
         console.log("in if");
@@ -189,7 +190,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
         return res.status(200).send(JSON.parse(parsedData));
       }
     } else {
-      log
+      log;
       await redisset.getweekmonth((organisation = req.user.organisation));
       var values = await client.HGET("getweekmonth0", req.user.organisation);
       var parsedData = JSON.parse(JSON.stringify(values));

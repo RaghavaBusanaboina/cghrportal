@@ -470,11 +470,29 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
 
 // -----
 await client
-.HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
-.catch((err) => {
-  console.log("error in hset emp attendance", err);
-});
+  .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
+  .catch((err) => {
+    console.log("error in hset emp attendance", err);
+  });
 var values = await client.HGETALL("EmployeeAttendance");
 var parsedData = JSON.parse(JSON.stringify(values));
 console.log("checkhere------------------", parsedData);
 console.log("**********************************", parsedData["week"]);
+
+var d = {
+  finaldata: {
+    BGMI0001: {
+      EmployeId: "BGMI0001",
+      lastWeekHours: "8hrs 54 mins",
+      lastMonthHours: "49hrs 41 mins",
+      weekWorkingdays: 3,
+      monthWorkingdays: 10,
+    },
+  },
+  total: {
+    totalLastWeekHours: "8hrs 54 mins",
+    totalLastMonthHours: "49hrs 41 mins",
+  },
+  count: "1",
+  organisation: "BGMII",
+};

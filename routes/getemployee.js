@@ -135,7 +135,7 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
       outTime: { $nin: ["pending", "Holiday", "Leave"] },
       ADate: {
         $gte: new Date(currentYear, currentMonth, currentDate - 8),
-        $lte: new Date(currentYear, currentMonth, currentDate - 1),
+        $lte: new Date(currentYear, currentMonth, currentDate),
       },
     };
     const monthquery = {
@@ -148,31 +148,31 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
         $lt: new Date(currentYear, currentMonth + 1, 01),
       },
     };
-    async function calculateWorkingingHours(query) {
+    async function calculateWorkingingHours(query, type) {
       const empattendance = await EmployeeAttendance.find(query);
-      console.log("check----------------------------------");
-      console.log(empattendance);
-      console.log("finishhhhhhhhhhhhhhhhhhhh--------------");
+      // console.log("check----------------------------------");
+      // console.log(empattendance);
+      // console.log("finishhhhhhhhhhhhhhhhhhhh--------------");
       if (!empattendance)
         return res.status(404).send({ data: "no data found" });
       var hours = [];
       for (let i = 0; i < empattendance.length; i++) {
         const element = empattendance[i];
-        console.log(element.inTime);
+        // console.log(element.inTime);
         let TotalWorkingHours = calWorkingHours(
           element.inTime,
           element.outTime
         );
-        console.log(TotalWorkingHours);
+        // console.log(TotalWorkingHours);
         hours.push(TotalWorkingHours);
       }
       let hoursmins = totalHoursMins(hours);
-      console.log(hoursmins);
+      // console.log(hoursmins);
       return hoursmins;
     }
-    const lastWeekHours = await calculateWorkingingHours(weekquery);
+    const lastWeekHours = await calculateWorkingingHours(weekquery, "week");
 
-    const lastMonthHours = await calculateWorkingingHours(monthquery);
+    const lastMonthHours = await calculateWorkingingHours(monthquery, "month");
     console.log("logging start");
     console.log(lastWeekHours);
     console.log(lastMonthHours);

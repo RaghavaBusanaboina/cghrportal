@@ -365,134 +365,172 @@
 // }
 //89361025924 bd
 
-router.post("/productionhours/week&month", auth, async (req, res) => {
-  try {
-    let date = new Date();
-    let currentYear = date.getFullYear();
-    let currentMonth = date.getMonth();
-    let currentDate = date.getDate();
-    let weekWorkingDays = [];
-    let monthWorkingDays = [];
-    async function calculateWorkingingHours(query, type) {
-      const empattendance = await EmployeeAttendance.find(query);
-      console.log(empattendance);
-      if (type === "week") {
-        weekWorkingDays.push(empattendance.length);
-      }
-      if (type === "month") {
-        monthWorkingDays.push(empattendance.length);
-      }
-      if (!empattendance)
-        return res.status(404).send({ data: "no data found" });
-      var hours = [];
-      for (let i = 0; i < empattendance.length; i++) {
-        const element = empattendance[i];
-        let TotalWorkingHours = calWorkingHours(
-          element.inTime,
-          element.outTime
-        );
-        hours.push(TotalWorkingHours);
-      }
-      let hoursmins = totalHoursMins(hours);
-      return hoursmins;
-    }
-    const empData = await EmployeeRegisters.find({
-      organisation: req.user.organisation,
-    });
-    var countlen = empData.length;
-    let finaldata = {};
-    let total = {};
-    let totalLastWeekHours = [];
-    let totalLastMonthHours = [];
-    for (let i = 0; i < empData.length; i++) {
-      let weekquery = {
-        EmployeeId: empData[i].EmployeeId, //
-        organisation: req.user.organisation,
-        inTime: { $nin: ["pending", "Holiday"] },
-        outTime: { $nin: ["pending", "Holiday"] },
+// router.post("/productionhours/week&month", auth, async (req, res) => {
+//   try {
+//     let date = new Date();
+//     let currentYear = date.getFullYear();
+//     let currentMonth = date.getMonth();
+//     let currentDate = date.getDate();
+//     let weekWorkingDays = [];
+//     let monthWorkingDays = [];
+//     async function calculateWorkingingHours(query, type) {
+//       const empattendance = await EmployeeAttendance.find(query);
+//       console.log(empattendance);
+//       if (type === "week") {
+//         weekWorkingDays.push(empattendance.length);
+//       }
+//       if (type === "month") {
+//         monthWorkingDays.push(empattendance.length);
+//       }
+//       if (!empattendance)
+//         return res.status(404).send({ data: "no data found" });
+//       var hours = [];
+//       for (let i = 0; i < empattendance.length; i++) {
+//         const element = empattendance[i];
+//         let TotalWorkingHours = calWorkingHours(
+//           element.inTime,
+//           element.outTime
+//         );
+//         hours.push(TotalWorkingHours);
+//       }
+//       let hoursmins = totalHoursMins(hours);
+//       return hoursmins;
+//     }
+//     const empData = await EmployeeRegisters.find({
+//       organisation: req.user.organisation,
+//     });
+//     var countlen = empData.length;
+//     let finaldata = {};
+//     let total = {};
+//     let totalLastWeekHours = [];
+//     let totalLastMonthHours = [];
+//     for (let i = 0; i < empData.length; i++) {
+//       let weekquery = {
+//         EmployeeId: empData[i].EmployeeId, //
+//         organisation: req.user.organisation,
+//         inTime: { $nin: ["pending", "Holiday"] },
+//         outTime: { $nin: ["pending", "Holiday"] },
 
-        ADate: {
-          $gte: new Date(currentYear, currentMonth, currentDate - 8),
-          $lt: new Date(currentYear, currentMonth, currentDate),
-        },
-      };
-      let monthquery = {
-        EmployeeId: empData[i].EmployeeId, //
-        organisation: req.user.organisation,
-        inTime: { $nin: ["pending", "Holiday"] },
-        outTime: { $nin: ["pending", "Holiday"] },
+//         ADate: {
+//           $gte: new Date(currentYear, currentMonth, currentDate - 8),
+//           $lt: new Date(currentYear, currentMonth, currentDate),
+//         },
+//       };
+//       let monthquery = {
+//         EmployeeId: empData[i].EmployeeId, //
+//         organisation: req.user.organisation,
+//         inTime: { $nin: ["pending", "Holiday"] },
+//         outTime: { $nin: ["pending", "Holiday"] },
 
-        ADate: {
-          $gte: new Date(currentYear, currentMonth - 1, 01),
-          $lt: new Date(currentYear, currentMonth + 1, 01),
-        },
-      };
-      const lastWeekHours = await calculateWorkingingHours(
-        (query = weekquery),
-        (type = "week")
-      );
-      totalLastWeekHours.push(lastWeekHours);
-      const lastMonthHours = await calculateWorkingingHours(
-        (query = monthquery),
-        (type = "month")
-      );
-      totalLastMonthHours.push(lastMonthHours);
+//         ADate: {
+//           $gte: new Date(currentYear, currentMonth - 1, 01),
+//           $lt: new Date(currentYear, currentMonth + 1, 01),
+//         },
+//       };
+//       const lastWeekHours = await calculateWorkingingHours(
+//         (query = weekquery),
+//         (type = "week")
+//       );
+//       totalLastWeekHours.push(lastWeekHours);
+//       const lastMonthHours = await calculateWorkingingHours(
+//         (query = monthquery),
+//         (type = "month")
+//       );
+//       totalLastMonthHours.push(lastMonthHours);
 
-      finaldata[empData[i].EmployeeId] = {
-        EmployeId: empData[i].EmployeeId,
-        lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
-          lastWeekHours.split(":")[1]
-        } mins`,
-        lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
-          lastMonthHours.split(":")[1]
-        } mins`,
-        weekWorkingdays: weekWorkingDays[i],
-        monthWorkingdays: monthWorkingDays[i],
-      };
-    }
-    var thmweek = totalHoursMins(totalLastWeekHours);
-    var thmmonth = totalHoursMins(totalLastMonthHours);
-    total["totalLastWeekHours"] = `${Math.round(
-      eval(thmweek.split(":")[0]) / countlen
-    )}hrs ${Math.round(eval(thmweek.split(":")[1]) / countlen)} mins`;
-    total["totalLastMonthHours"] = `${Math.round(
-      eval(thmmonth.split(":")[0]) / countlen
-    )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
-    return res
-      .status(200)
-      .send({ finaldata, total, count: `${empData.length}` });
-    // .send({ finaldata: finaldata, totalHours: total, count: empData.length });
-  } catch (error) {
-    console.log(`${error}`);
-    res.status(400).send({ data: error });
-  }
-});
+//       finaldata[empData[i].EmployeeId] = {
+//         EmployeId: empData[i].EmployeeId,
+//         lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
+//           lastWeekHours.split(":")[1]
+//         } mins`,
+//         lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
+//           lastMonthHours.split(":")[1]
+//         } mins`,
+//         weekWorkingdays: weekWorkingDays[i],
+//         monthWorkingdays: monthWorkingDays[i],
+//       };
+//     }
+//     var thmweek = totalHoursMins(totalLastWeekHours);
+//     var thmmonth = totalHoursMins(totalLastMonthHours);
+//     total["totalLastWeekHours"] = `${Math.round(
+//       eval(thmweek.split(":")[0]) / countlen
+//     )}hrs ${Math.round(eval(thmweek.split(":")[1]) / countlen)} mins`;
+//     total["totalLastMonthHours"] = `${Math.round(
+//       eval(thmmonth.split(":")[0]) / countlen
+//     )}hrs ${Math.round(eval(thmmonth.split(":")[1]) / countlen)} mins`;
+//     return res
+//       .status(200)
+//       .send({ finaldata, total, count: `${empData.length}` });
+//     // .send({ finaldata: finaldata, totalHours: total, count: empData.length });
+//   } catch (error) {
+//     console.log(`${error}`);
+//     res.status(400).send({ data: error });
+//   }
+// });
 
-// -----
-await client
-  .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
-  .catch((err) => {
-    console.log("error in hset emp attendance", err);
-  });
-var values = await client.HGETALL("EmployeeAttendance");
-var parsedData = JSON.parse(JSON.stringify(values));
-console.log("checkhere------------------", parsedData);
-console.log("**********************************", parsedData["week"]);
+// // -----
+// await client
+//   .HSET("EmployeeAttendance", type, JSON.stringify(empattendance))
+//   .catch((err) => {
+//     console.log("error in hset emp attendance", err);
+//   });
+// var values = await client.HGETALL("EmployeeAttendance");
+// var parsedData = JSON.parse(JSON.stringify(values));
+// console.log("checkhere------------------", parsedData);
+// console.log("**********************************", parsedData["week"]);
 
-var d = {
-  finaldata: {
-    BGMI0001: {
-      EmployeId: "BGMI0001",
-      lastWeekHours: "8hrs 54 mins",
-      lastMonthHours: "49hrs 41 mins",
-      weekWorkingdays: 3,
-      monthWorkingdays: 10,
-    },
-  },
-  total: {
-    totalLastWeekHours: "8hrs 54 mins",
-    totalLastMonthHours: "49hrs 41 mins",
-  },
-  count: "1",
-  organisation: "BGMII",
-};
+// var d = {
+//   finaldata: {
+//     BGMI0001: {
+//       EmployeId: "BGMI0001",
+//       lastWeekHours: "8hrs 54 mins",
+//       lastMonthHours: "49hrs 41 mins",
+//       weekWorkingdays: 3,
+//       monthWorkingdays: 10,
+//     },
+//   },
+//   total: {
+//     totalLastWeekHours: "8hrs 54 mins",
+//     totalLastMonthHours: "49hrs 41 mins",
+//   },
+//   count: "1",
+//   organisation: "BGMII",
+// };
+
+
+//------------------tige-------------
+// const tige = require("tiger-balm");
+// const config = require("config");
+
+// var pssd = "thisistradingpassdcantbedecrypted";
+// var salt = "thisistradingsaltthatisencrypted";
+// module.exports = {
+// 	encrypt: (value) => {
+// 		try {
+// 			return tige.encrypt(pssd, salt, value);
+// 		} catch (error) {
+// 			return "tberror";
+// 		}
+// 	},
+// 	decrypt: (value) => {
+// 		try {
+// 			return tige.decrypt(pssd, salt, value);
+// 		} catch (error) {
+// 			return error;
+// 		}
+// 	},
+// 	decryptarr: (str) => {
+// 		try {
+// 			return JSON.parseFloat(tige.decrypt(pssd, salt, value));
+// 		} catch (error) {
+// 			console.log(error);
+
+// 			return "tberror";
+// 		}
+// 	},
+// };
+
+// // console.log(module.exports.encrypt("hei"));
+// // console.log(module.exports.decrypt("71f0acc17e4f67a94f7be6733ccff7fc"));
+var d = "thisishportalsaltthatisencrypted"
+console.log(d.length);

@@ -171,16 +171,20 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
       return hoursmins;
     }
     const lastWeekHours = await calculateWorkingingHours(weekquery);
-    console.log(lastWeekHours);
+
     const lastMonthHours = await calculateWorkingingHours(monthquery);
-    console.log({
-      lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
-        lastWeekHours.split(":")[1]
-      } mins`,
-      lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
-        lastMonthHours.split(":")[1]
-      } mins`,
-    });
+    console.log("logging start");
+    console.log(lastWeekHours);
+    console.log(lastMonthHours);
+    console.log("logging stop");
+    // console.log({
+    //   lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
+    //     lastWeekHours.split(":")[1]
+    //   } mins`,
+    //   lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
+    //     lastMonthHours.split(":")[1]
+    //   } mins`,
+    // });
     return res.status(200).send({
       lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
         lastWeekHours.split(":")[1]

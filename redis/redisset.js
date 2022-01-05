@@ -70,8 +70,8 @@ module.exports = {
       let weekquery = {
         EmployeeId: empData[i].EmployeeId, //
         organisation: organisation,
-        inTime: { $nin: ["pending", "Holiday"] },
-        outTime: { $nin: ["pending", "Holiday"] },
+        inTime: { $nin: ["pending", "Holiday", "Leave"] },
+        outTime: { $nin: ["pending", "Holiday", "Leave"] },
 
         ADate: {
           $gte: new Date(currentYear, currentMonth, currentDate - 8),
@@ -81,8 +81,8 @@ module.exports = {
       let monthquery = {
         EmployeeId: empData[i].EmployeeId, //
         organisation: organisation,
-        inTime: { $nin: ["pending", "Holiday"] },
-        outTime: { $nin: ["pending", "Holiday"] },
+        inTime: { $nin: ["pending", "Holiday", "Leave"] },
+        outTime: { $nin: ["pending", "Holiday", "Leave"] },
 
         ADate: {
           $gte: new Date(currentYear, currentMonth - 1, 01),

@@ -166,18 +166,21 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       const empData = await EmployeeRegisters.find({
         organisation: req.user.organisation,
       });
-
+      console.log("data----->", data);
       var values = await client.HGET("getweekmonth0", req.user.organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
       var emplen = Number(
         JSON.parse(parsedData[req.user.organisation])["count"]
       );
+      console.log("emplen--->", emplen);
       if (emplen === empData.length) {
         return res.status(200).send(JSON.parse(parsedData));
       } else {
+        console.log("if under else emplen ");
         await redisset.getweekmonth((organisation = req.user.organisation));
         var values = await client.HGET("getweekmonth0", req.user.organisation);
         var parsedData = JSON.parse(JSON.stringify(values));
+        console.log("if under else before return", parsedData);
         return res.status(200).send(JSON.parse(parsedData));
       }
     } else {

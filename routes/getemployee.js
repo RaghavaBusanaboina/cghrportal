@@ -150,7 +150,9 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
     };
     async function calculateWorkingingHours(query) {
       const empattendance = await EmployeeAttendance.find(query);
+      console.log("check----------------------------------");
       console.log(empattendance);
+      console.log("finishhhhhhhhhhhhhhhhhhhh--------------");
       if (!empattendance)
         return res.status(404).send({ data: "no data found" });
       var hours = [];

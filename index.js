@@ -11,7 +11,7 @@ const getemployee = require("./routes/getemployee");
 const config = require("config");
 const redisset = require("./redis/redisset");
 const redisget = require("./redis/regisget");
-
+const path = require("path");
 const redis = require("redis");
 
 const client = redis.createClient({
@@ -47,7 +47,11 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "build")));
 
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 app.use("/api/admin/get", getadmin);
 app.use("/api/employee/get", getemployee);
 app.use(

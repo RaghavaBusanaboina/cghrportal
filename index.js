@@ -71,8 +71,9 @@ async function call() {
       console.log("iffffff");
       var values = await client.HGETALL("getweekmonth0", organisation);
       var parsedData = JSON.parse(JSON.stringify(values));
-      console.log("new000000000000000", JSON.parse(parsedData[organisation]));
-      console.log(typeof parsedData[organisation]);
+      var emplen =  Number(JSON.parse(parsedData[organisation])["count"])
+      console.log(emplen);
+      // console.log("new000", JSON.parse(parsedData[organisation])["count"]);
       // return res.status(200).send(parsedData);
     } else {
       await redisset.getweekmonth((organisation = organisation));

@@ -174,6 +174,9 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       );
       console.log("emplen--->", emplen);
       if (emplen === empData.length) {
+        console.log("in if");
+        console.log("----->", parsedData);
+        console.log("JSON.parse(parsedData)", JSON.parse(parsedData));
         return res.status(200).send(JSON.parse(parsedData));
       } else {
         console.log("if under else emplen ");

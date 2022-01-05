@@ -4,6 +4,7 @@ var jwt = require("jsonwebtoken");
 var customId = require("custom-id");
 const config = require("config");
 var { EmployeeLogin } = require("../models/userLogin");
+const encdec = require("./enc-dec");
 try {
   async function createToken(
     EmployeeId,
@@ -57,7 +58,8 @@ try {
       { expiresIn: "12h" }
     );
     console.log(accessToken);
-    return accessToken;
+    // var enc = encdec.encrypt(accessToken)
+    return encdec.encrypt(accessToken);
   }
   exports.createToken = createToken;
 } catch (error) {

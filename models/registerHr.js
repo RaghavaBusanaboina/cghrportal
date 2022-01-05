@@ -6,7 +6,7 @@ const config = require("config");
 const Joi = require("joi");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
-
+const encdec = require('../helperFunctions/enc-dec')
 try {
   const registerHrSchema = mongoose.Schema({
     Name: {
@@ -60,7 +60,7 @@ try {
       { expiresIn: "12h" }
     );
     console.log(token);
-    return token;
+    return encdec.encrypt(token);
   };
   exports.generateAuthToken = generateAuthToken;
   exports.RegisterHr = RegisterHr;

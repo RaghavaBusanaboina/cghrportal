@@ -1,13 +1,16 @@
 /** @format */
 const jwt = require("jsonwebtoken");
 var requestIp = require("request-ip");
+const encdec = require("../helperFunctions/enc-dec");
 
 const { EmployeeLogin } = require("../models/userLogin");
 const { TokenBlackList } = require("../models/blackListToken");
 const config = require("config");
 //MIDDLEWARE TO AUTHENTICTAE TOKEN BEFORE ACCESSING PROTECTED ROUTES
 async function blacklistToken(req, res, next) {
-  const token = req.headers["x-auth-token"];
+  var token = req.headers["x-auth-token"];
+  var token = encdec.decrypt(token);
+
   if (token == null) return res.sendStatus(401);
 
   TokenBlackList.findOne({ token: token }).then((found) => {

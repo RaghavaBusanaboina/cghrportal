@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
 var requestIp = require("request-ip");
+const encdec = require("../helperFunctions/enc-dec");
 
 const { EmployeeLogin } = require("../models/userLogin");
 const { TokenBlackList } = require("../models/blackListToken");
@@ -24,7 +25,9 @@ const { EmployeeTermination } = require("../models/employeeTermination");
 // };
 
 module.exports = async function (req, res, next) {
-  const token = req.headers["x-auth-token"];
+  var token = req.headers["x-auth-token"];
+  var token = encdec.decrypt(token);
+
   if (!token)
     return res.status(404).send("Access denied. No token providedae.");
 

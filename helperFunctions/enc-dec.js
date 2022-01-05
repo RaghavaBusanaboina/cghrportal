@@ -3,8 +3,8 @@
 const tige = require("tiger-balm");
 const config = require("config");
 
-// var pssd = config
-var salt = "thisishportalsaltthatisencrypted";
+var pssd = config.get("PaSSD");
+var salt = config.get("SaLt");
 module.exports = {
   encrypt: (value) => {
     try {
@@ -31,5 +31,5 @@ module.exports = {
   },
 };
 
-// // console.log(module.exports.encrypt("hei"));
-// // console.log(module.exports.decrypt("71f0acc17e4f67a94f7be6733ccff7fc"));
+// console.log(module.exports.encrypt("hei"));
+// console.log(module.exports.decrypt("71f0acc17e4f67a94f7be6733ccff7fc"));

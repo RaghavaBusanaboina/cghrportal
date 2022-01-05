@@ -75,7 +75,7 @@ module.exports = {
 
         ADate: {
           $gte: new Date(currentYear, currentMonth, currentDate - 8),
-          $lte: new Date(currentYear, currentMonth, currentDate - 1),
+          $lt: new Date(currentYear, currentMonth, currentDate),
         },
       };
       let monthquery = {

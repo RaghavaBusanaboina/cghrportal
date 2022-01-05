@@ -133,7 +133,7 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
       organisation: req.user.organisation,
       ADate: {
         $gte: new Date(currentYear, currentMonth, currentDate - 8),
-        $lt: new Date(currentYear, currentMonth, currentDate),
+        $lte: new Date(currentYear, currentMonth, currentDate - 1),
       },
     };
     const monthquery = {

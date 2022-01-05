@@ -131,6 +131,8 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
     const weekquery = {
       EmployeeId: req.user.EmployeeId,
       organisation: req.user.organisation,
+      inTime: { $nin: ["pending", "Holiday", "Leave"] },
+      outTime: { $nin: ["pending", "Holiday", "Leave"] },
       ADate: {
         $gte: new Date(currentYear, currentMonth, currentDate - 8),
         $lte: new Date(currentYear, currentMonth, currentDate - 1),
@@ -169,6 +171,14 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
     const lastWeekHours = await calculateWorkingingHours(weekquery);
     console.log(lastWeekHours);
     const lastMonthHours = await calculateWorkingingHours(monthquery);
+    console.log({
+      lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
+        lastWeekHours.split(":")[1]
+      } mins`,
+      lastMonthHours: `${lastMonthHours.split(":")[0]}hrs ${
+        lastMonthHours.split(":")[1]
+      } mins`,
+    });
     return res.status(200).send({
       lastWeekHours: `${lastWeekHours.split(":")[0]}hrs ${
         lastWeekHours.split(":")[1]

@@ -170,7 +170,7 @@ router.post("/productionhours/week&month", auth, async (req, res) => {
       var values = await client.HGET("getweekmonth0", req.user.organisation);
       console.log("values", values);
       var parsedData = JSON.parse(JSON.stringify(values));
-      console.log("----++++->", JSON.parse(parsedData));
+      console.log("----++++->", JSON.parse(parsedData)["count"]);
       var emplen = Number(
         JSON.parse(parsedData[req.user.organisation]["count"])
       );

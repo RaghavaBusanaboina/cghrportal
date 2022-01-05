@@ -139,7 +139,8 @@ router.post("/productionhours/week&month", authemp, async (req, res) => {
     const monthquery = {
       EmployeeId: req.user.EmployeeId,
       organisation: req.user.organisation,
-
+      inTime: { $nin: ["pending", "Holiday", "Leave"] },
+      outTime: { $nin: ["pending", "Holiday", "Leave"] },
       ADate: {
         $gte: new Date(currentYear, currentMonth - 1, 01),
         $lt: new Date(currentYear, currentMonth + 1, 01),

@@ -20,7 +20,7 @@ module.exports = {
       return error;
     }
   },
-  decryptarr: (str) => {
+  decryptarr: (value) => {
     try {
       return JSON.parseFloat(tige.decrypt(pssd, salt, value));
     } catch (error) {

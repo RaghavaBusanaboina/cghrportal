@@ -497,7 +497,6 @@
 //   organisation: "BGMII",
 // };
 
-
 //------------------tige-------------
 // const tige = require("tiger-balm");
 // const config = require("config");
@@ -532,5 +531,1198 @@
 
 // // console.log(module.exports.encrypt("hei"));
 // // console.log(module.exports.decrypt("71f0acc17e4f67a94f7be6733ccff7fc"));
-var d = "thisishportalsaltthatisencrypted"
+var d = "thisishportalsaltthatisencrypted";
 console.log(d.length);
+
+//-------------------------------------
+/** @format */
+
+// // reset password of admin
+// router.post(
+//   "/resetpwd",
+//   cs,
+//   [auth, admin],
+//   amw(async (req, res) => {
+//     if (req.user.type === 1) {
+//       const { lerror } = await validate.getenc(req.body);
+//       if (lerror) return res.status(400).send(error.details[0].message);
+//       const deusrobj = crypto.decryptobj(req.body.enc);
+//       if (deusrobj !== "tberror") {
+//         const admin = await AdminReg.findOne({ adminid: deusrobj.adminid });
+//         if (admin.length <= 0) return res.status(400).send("Admin not found");
+//         else {
+//           const salt1 = await bcrypt.genSalt(10);
+//           var npassword = await bcrypt.hash(deusrobj.newpassword, salt1);
+//           const upduser = await AdminReg.findOneAndUpdate(
+//             {
+//               adminid: admin.adminid,
+//             },
+
+//             { $set: { password: npassword } }
+//           );
+//           winston.info(
+//             "Admin : " +
+//               tige.decrypt(admin.email) +
+//               "password reset by " +
+//               req.user.email
+//           );
+
+//           await alert_Developers(
+//             "Admin : " + admin.name + "password reset by " + req.user.name
+//           );
+//           res.send(crypto.encryptobj({ success: deusrobj.newpassword }));
+//         }
+//       } else {
+//         //error while decrypting user
+//         return res.status(400).send("Invalid Parameter");
+//       }
+//     } else {
+//       return res.status(400).send("Invalid Admin Type!!");
+//     }
+//   })
+// );
+
+module.exports = router;
+
+//------------------superjs-------------
+// router.post(
+//   "/validateotp",
+//   ratecut,
+//   cs,
+//   amw(async (req, res) => {
+//     //validating data
+//     const { error } = await validate.getenc(req.body);
+//     if (error) return res.status(400).send(error.details[0].message);
+//     const otpdecryobj = cryp.decryptobj(req.body.enc);
+//     if (otpdecryobj !== "tberror") {
+//       const { error } = validate.validateotp(otpdecryobj);
+//       if (error) return res.status(400).send(error.details[0].message);
+//       //searching for otp
+
+//       var otpphn = tige.encrypt(otpdecryobj.phone);
+//       const userche = await Agent.findOne({ phone: otpphn });
+//       if (!userche) return res.status(400).send("Agent Not Found");
+//       else {
+//         if (userche.type === "SuperAgent") {
+//           const otpsrch = await Otp.findOne({ phone: otpphn });
+//           if (!otpsrch) return res.status(400).send("Otp request not found");
+//           // generating otp expiry time
+//           var stdate = new Date();
+//           var etdate = new Date(otpsrch.expirytime);
+//           var dif = stdate.getTime() - etdate.getTime();
+//           var diffm = Math.round(dif / 60000);
+//           if (diffm <= 2) {
+//             if (otpsrch.otp === otpdecryobj.otp) {
+//               // if otp is valid sending token
+//               await Otp.deleteMany({ phone: otpphn });
+
+//               res.send(
+//                 cryp.encryptobj({ success: "Otp Sumbitted succesfully" })
+//               );
+//             } else {
+//               //invalid otp
+//               res.status(400).send("Invalid Otp");
+//             }
+//           } else {
+//             await Otp.deleteMany({ phone: otpphn });
+//             //otp expired
+//             res.status(400).send("OTP Expired..");
+//           }
+//         } else {
+//           res.status(400).send("Invalid Agent type!!");
+//         }
+//       }
+//     } else {
+//       //error while decrypting user
+//       return res.status(400).send("Invalid Parameters");
+//     }
+//   })
+// );
+
+//super agent profile
+router.post(
+  "/supagprofile",
+  cs,
+  auth,
+  amw(async (req, res) => {
+    const user = await Agent.findOne({
+      agentid: req.user.agentid,
+      type: "SuperAgent",
+    });
+
+    if (!user) return res.status(400).send("SuperAgent not found");
+    else {
+      var agli = 0;
+      const supag = await Agent.find({
+        superagent: req.user.agentid,
+        type: "MasterAgent",
+      }).countDocuments();
+
+      const list = await Agent.find({
+        superagent: req.user.agentid,
+        type: "MasterAgent",
+      });
+      for (let i = 0; i < list.length; i++) {
+        const e = list[i];
+        const age = await Agent.find({
+          masteragent: e.agentid,
+          type: "Agent",
+        }).countDocuments();
+        agli = agli + age;
+      }
+
+      var obj = {
+        agentid: user.agentid,
+        date: user.date,
+        agentname: user.agentname,
+        email: tige.decrypt(user.email),
+        balance: user.balance,
+        status: user.status,
+        loginstatus: user.loginstatus,
+        transferstatus: user.transferstatus,
+        arena: user.arena,
+        type: user.type,
+        superagent: user.superagent,
+        masteragent: user.masteragent,
+        agent: user.agent,
+        referral: user.referral,
+        refname: user.refname,
+        transmin: user.transmin,
+        transmax: user.transmax,
+        mastercount: supag,
+        agentcount: agli,
+      };
+      res.send(cryp.encryptobj(obj));
+    }
+  })
+);
+//master agents under super agents
+router.post(
+  "/getmastagents",
+  cs,
+  auth,
+  amw(async (req, res) => {
+    const ag = await Agent.find({
+      superagent: req.user.agentid,
+      type: "MasterAgent",
+    }).sort({ _id: -1 });
+    if (ag && ag.length > 0) {
+      var ags = [];
+      await ag.forEach((user) => {
+        var obj = {
+          agentid: user.agentid,
+          date: user.date,
+          agentname: user.agentname,
+          email: tige.decrypt(user.email),
+          balance: user.balance,
+          status: user.status,
+          loginstatus: user.loginstatus,
+          transferstatus: user.transferstatus,
+          arena: user.arena,
+          type: user.type,
+          superagent: user.superagent,
+          masteragent: user.masteragent,
+          agent: user.agent,
+          referral: user.referral,
+          refname: user.refname,
+          transmin: user.transmin,
+          transmax: user.transmax,
+        };
+        ags.push(obj);
+      });
+      res.send(cryp.encryptobj(ags));
+    } else {
+      return res.status(400).send("Master Agents not found!");
+    }
+  })
+);
+//transfer to master agent
+router.post(
+  "/transtomastagent",
+  cs,
+  auth,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const datat = cryp.decryptobj(req.body.enc);
+      if (datat !== "tberror") {
+        const { error } = validate.transf(datat);
+        if (error) return res.status(400).send(error.details[0].message);
+        const userch = await Agent.findOne({
+          agentid: datat.agentid,
+          type: "MasterAgent",
+        });
+        if (!userch) return res.status(400).send("Agent Not Found");
+        else {
+          var sendagent = await Agent.findOne({
+            agentid: req.user.agentid,
+          });
+
+          if (datat.amount > 0) {
+            const prkey = await rediscon.redisExistCheck(
+              "AdminControls",
+              "AdminControls"
+            );
+            if (prkey > 0) {
+              const adm = await rediscon.redisGetData(
+                "AdminControls",
+                "AdminControls"
+              );
+              if (
+                adm.supertransfer === "Enable" &&
+                sendagent.transferstatus === "Enable"
+              ) {
+                if (
+                  adm.transmin <= datat.amount &&
+                  datat.amount <= adm.transmax
+                ) {
+                  if (sendagent.balance >= datat.amount) {
+                    var obj = {
+                      sender: req.user.agentid,
+                      receiver: userch.agentid,
+                      amount: datat.amount,
+                      comment: datat.comment,
+                      type: "Tranmast",
+                    };
+
+                    await rabitfunc.bullprocess(JSON.stringify(obj), 2);
+
+                    res.send(
+                      cryp.encryptobj({
+                        success: "Your request processed successfully",
+                      })
+                    );
+                  } else {
+                    res.status(400).send("Insufficient Funds!!");
+                  }
+                } else {
+                  res
+                    .status(400)
+                    .send(
+                      `Amount should be in between ${sendagent.transmin} & ${sendagent.transmax}!!`
+                    );
+                }
+              } else {
+                res
+                  .status(400)
+                  .send("Transfer Disabled, Please try again after!!");
+              }
+            }
+          } else {
+            res.status(400).send("Please enter valid amount");
+          }
+        }
+      }
+    }
+  })
+);
+
+// loginstatus change
+router.post(
+  "/malogstat",
+  ratecut,
+  cs,
+  auth,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const usr = await Agent.findOne({
+          agentid: data.agentid,
+        });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          if (usr.superagent === req.user.agentid) {
+            if (usr.loginstatus === data.loginstatus) {
+              return res
+                .status(400)
+                .send("Current user login status : " + `${usr.loginstatus}`);
+            } else {
+              await Agent.findOneAndUpdate(
+                { agentid: data.agentid },
+                { loginstatus: data.loginstatus }
+              );
+              winston.info(
+                "Login Status of MasterAgent: " +
+                  tige.decrypt(usr.email) +
+                  " Changed to: " +
+                  data.loginstatus +
+                  " By SuperAgent:" +
+                  req.user.email
+              );
+              await alert_Developers(
+                "Login Status of MasterAgent: " +
+                  usr.agentname +
+                  " Changed to: " +
+                  data.loginstatus +
+                  " By SuperAgent:" +
+                  req.user.agentname
+              );
+              res.send(
+                cryp.encryptobj({
+                  success: "Master Agent Login Status updated Successfully",
+                })
+              );
+            }
+          } else {
+            return res.status(400).send("You are not allowed to change!!");
+          }
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+router.post(
+  "/matrstat",
+  ratecut,
+  cs,
+  auth,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const usr = await Agent.findOne({
+          agentid: data.agentid,
+        });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          if (usr.superagent === req.user.agentid) {
+            if (usr.transferstatus === data.transferstatus) {
+              return res
+                .status(400)
+                .send("Current user transfer status : " + `${usr.loginstatus}`);
+            } else {
+              await Agent.findOneAndUpdate(
+                { agentid: data.agentid },
+                { transferstatus: data.transferstatus }
+              );
+              winston.info(
+                "Transfer Status of MasterAgent: " +
+                  tige.decrypt(usr.email) +
+                  " Changed to: " +
+                  data.transferstatus +
+                  " By SuperAgent:" +
+                  req.user.email
+              );
+              await alert_Developers(
+                "Transfer Status of MasterAgent: " +
+                  usr.agentname +
+                  " Changed to: " +
+                  data.transferstatus +
+                  " By SuperAgent:" +
+                  req.user.agentname
+              );
+              res.send(
+                cryp.encryptobj({
+                  success: "Master Agent Transfer Status updated Successfully",
+                })
+              );
+            }
+          } else {
+            return res.status(400).send("You are not allowed to change!!");
+          }
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+
+//super agent change pwd of master
+router.post(
+  "/masuppwd",
+  cs,
+  auth,
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const { error } = validate.pwdup(data);
+        if (error) return res.status(400).send(error.details[0].message);
+        const ag = await Agent.findOne({
+          agentid: data.agentid,
+          type: "MasterAgent",
+          superagent: req.user.agentid,
+        });
+        if (!ag) return res.status(400).send("MasterAgent not Found");
+        //password hashing
+        const salt = await bcrypt.genSalt(10);
+        var nwpwd = await bcrypt.hash(data.password, salt);
+
+        //updating new password
+        await Agent.updateOne(
+          { agentid: data.agentid },
+
+          { $set: { password: nwpwd } }
+        );
+        res.send(cryp.encryptobj({ success: "Password Updated Successfully" }));
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+//update profile of master
+router.post(
+  "/msagnted",
+  auth,
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const { error } = validate.edit(data);
+        if (error) return res.status(400).send(error.details[0].message);
+        data.email = tige.encrypt(data.email);
+
+        const ag = await Agent.findOne({
+          agentid: data.agentid,
+          type: "MasterAgent",
+          superagent: req.user.agentid,
+        });
+        if (!ag) return res.status(400).send("MasterAgent not Found");
+        await Agent.findOneAndUpdate(
+          { agentid: data.agentid },
+          {
+            $set: {
+              agentname: data.agentname,
+              email: data.email,
+            },
+          }
+        );
+        res.send(cryp.encryptobj({ success: "Updated Successfully" }));
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+
+//cashout to admin
+router.post(
+  "/casousup",
+  auth,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const datat = cryp.decryptobj(req.body.enc);
+      if (datat !== "tberror") {
+        const { error } = validate.caadmsu(datat);
+        if (error) return res.status(400).send(error.details[0].message);
+        else {
+          var sendagent = await Agent.findOne({
+            agentid: req.user.agentid,
+            type: "SuperAgent",
+          });
+          if (sendagent) {
+            if (datat.amount > 0) {
+              const prkey = await rediscon.redisExistCheck(
+                "AdminControls",
+                "AdminControls"
+              );
+              if (prkey > 0) {
+                const adm = await rediscon.redisGetData(
+                  "AdminControls",
+                  "AdminControls"
+                );
+                if (
+                  adm.supertransfer === "Enable" &&
+                  sendagent.transferstatus === "Enable"
+                ) {
+                  if (
+                    adm.transmin <= datat.amount &&
+                    datat.amount <= adm.transmax
+                  ) {
+                    if (sendagent.balance >= datat.amount) {
+                      var obj = {
+                        sender: req.user.agentid,
+                        amount: datat.amount,
+                        comment: datat.comment,
+                        type: "Cashousuper",
+                      };
+
+                      await rabitfunc.bullprocess(JSON.stringify(obj), 3);
+
+                      res.send(
+                        cryp.encryptobj({
+                          success: "Your request processed successfully",
+                        })
+                      );
+                    } else {
+                      res.status(400).send("Insufficient Funds!!");
+                    }
+                  } else {
+                    res
+                      .status(400)
+                      .send(
+                        `Amount should be in between ${sendagent.transmin} & ${sendagent.transmax}!!`
+                      );
+                  }
+                } else {
+                  res
+                    .status(400)
+                    .send("Transfer Disabled, Please try again after!!");
+                }
+              }
+            } else {
+              res.status(400).send("Please enter valid amount");
+            }
+          } else {
+            return res.status(400).send("You are not allowed to Transfer!!");
+          }
+        }
+      }
+    }
+  })
+);
+//cashout history
+router.post(
+  "/cashhist",
+  cs,
+  auth,
+  amw(async (req, res) => {
+    const trhist = await Cashout.find({
+      agentid: req.user.agentid,
+    })
+      .sort({ date: -1 })
+      .select({ _id: 0, __v: 0 });
+
+    if (trhist.length <= 0)
+      return res.status(400).send("Cashout history Not Found");
+    else {
+      res.send(cryp.encryptobj(trhist));
+    }
+  })
+);
+
+//----------------admin auth--------------------
+// const AWS = require("aws-sdk");
+// const s3buckname = config.get("s3buckname");
+// const s3 = new AWS.S3({
+//   accessKeyId: config.get("s3bukkey"),
+//   secretAccessKey: config.get("s3seckey"),
+// });
+
+// Add Admin controls
+router.post("/addcontrols", async (req, res) => {
+  const data = req.body;
+  const obj = {
+    register: "Enable",
+    userlogin: "Enable",
+    superlogin: "Enable",
+    masterlogin: "Enable",
+    agentlogin: "Enable",
+    bet: "Enable",
+    usertransfer: "Enable",
+    supertransfer: "Enable",
+    masterransfer: "Enable",
+    agenttransfer: "Enable",
+    kycmandatory: "True",
+    gameadd: "Enable",
+    operatorcomm: 5,
+    supercomm: 1,
+    mastercomm: 1,
+    agentcomm: 1,
+    betmin: 10,
+    betmax: 5000,
+    tansmin: 1000,
+    transmax: 1000000,
+  };
+  const admincont = await new Admicontrol(obj);
+  await admincont.save();
+
+  await rediscon.AdminControls();
+  res.send("Admin controls added");
+});
+//get admin controls
+router.post(
+  "/getadmcntl",
+  cs,
+  [auth, admin],
+  amw(async (req, res) => {
+    if (req.user.type === 1) {
+      const admin = await Admicontrol.findOne({}).select({ _id: 0, __v: 0 });
+      if (!admin) return res.status(400).send("Admin Controls not found");
+      else {
+        res.send(cryp.encryptobj({ success: admin }));
+      }
+    } else {
+      res.status(400).send("Invalid User Type..");
+    }
+  })
+);
+
+//edit admin controls
+router.post(
+  "/endis",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    if (req.user.type === 1) {
+      const { error } = await validate.getenc(req.body);
+      if (error) return res.status(400).send(error.details[0].message);
+      else {
+        const data = cryp.decryptobj(req.body.enc);
+        if (data !== "tberror") {
+          var upd = await Admicontrol.updateOne({
+            [`${data.name}`]: data.value,
+          });
+
+          await rediscon.AdminControls();
+
+          winston.info(
+            `${data.name}` + " : " + data.value + " By " + req.user.email
+          );
+          await alert_Developers(
+            `${data.name}` + " : " + data.value + " Changed By " + req.user.name
+          );
+
+          res.send(cryp.encryptobj({ success: "Success" }));
+        }
+      }
+    } else {
+      res.status(400).send("Invalid User Type..");
+    }
+  })
+);
+//get all user list
+router.post(
+  "/getusers",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const users = await Register.find({})
+          .select({
+            __v: 0,
+            _id: 0,
+          })
+          .sort({ date: -1 });
+        const skip = Number(data.skip);
+        if (users.length <= skip) {
+          var arr = [];
+          res.status(200).send(cryp.encryptobj({ success: arr }));
+        } else {
+          const usersn = await Register.find({})
+            .limit(100)
+            .skip(skip)
+            .sort({ _id: -1 });
+          if (usersn.length <= 0)
+            return res.status(400).send("Users Not Found");
+          else {
+            var usrs = [];
+            await usersn.forEach((ele) => {
+              var obj = {
+                date: ele.date,
+                userid: ele.userid,
+                username: ele.username,
+                balance: ele.balance,
+                betstatus: ele.betstatus,
+                status: ele.status,
+                loginstatus: ele.loginstatus,
+                transferstatus: ele.transferstatus,
+                usertype: ele.usertype,
+                info: ele.info,
+                kycstatus: ele.kycstatus,
+                referral: ele.referral,
+                refname: ele.refname,
+                agent: ele.agent,
+                masteragent: ele.masteragent,
+              };
+              usrs.push(obj);
+            });
+            res.send(cryp.encryptobj(usrs));
+          }
+        }
+      }
+    }
+  })
+);
+//get single user by userid/username
+router.post(
+  "/userget",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const user = await Register.findOne({
+          $or: [{ userid: data.userid }, { username: data.userid }],
+        }).select({
+          __v: 0,
+          _id: 0,
+        });
+        if (user) {
+          var obj = {
+            date: user.date,
+            userid: user.userid,
+            username: user.username,
+            balance: user.balance,
+            betstatus: user.betstatus,
+            loginstatus: user.loginstatus,
+            transferstatus: user.transferstatus,
+            status: user.status,
+            usertype: user.usertype,
+            refname: user.refname,
+            referral: user.referral,
+            agent: user.agent,
+            kycstatus: user.kycstatus,
+            info: user.info,
+            masteragent: user.masteragent,
+          };
+          res.send(cryp.encryptobj(obj));
+        } else {
+          return res.status(400).send("User Not Found");
+        }
+      }
+    }
+  })
+);
+
+// delete user by userid
+router.post(
+  "/delusr",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const usr = await Register.findOne({ userid: data.userid });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          await Register.deleteOne({ userid: data.userid });
+          await History.deleteMany({ userid: data.userid });
+          winston.info(
+            "User: " + usr.username + " Deleted By Admin:" + req.user.email
+          );
+          await alert_Developers(
+            "User: " + usr.username + " Deleted By Admin:" + req.user.name
+          );
+          res.send(cryp.encryptobj({ success: "User Deleted Successfully" }));
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+
+// change user loginstatus
+router.post(
+  "/userstat",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const usr = await Register.findOne({ userid: data.userid });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          if (usr.loginstatus === data.loginstatus) {
+            return res
+              .status(400)
+              .send("Current user login status : " + `${usr.loginstatus}`);
+          } else {
+            await Register.findOneAndUpdate(
+              { userid: data.userid },
+              { loginstatus: data.loginstatus }
+            );
+            winston.info(
+              "Login status of user: " +
+                usr.username +
+                " Changed to: " +
+                data.loginstatus +
+                " By Admin:" +
+                req.user.email
+            );
+            await alert_Developers(
+              "Login status of user: " +
+                usr.username +
+                " Changed to: " +
+                data.loginstatus +
+                " By Admin:" +
+                req.user.name
+            );
+            res.send(
+              cryp.encryptobj({
+                success: "User Login Status updated Successfully",
+              })
+            );
+          }
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+// change user transfer status
+router.post(
+  "/usertrans",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const usr = await Register.findOne({ userid: data.userid });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          if (usr.transferstatus === data.transferstatus) {
+            return res
+              .status(400)
+              .send(
+                "Current user transfer status : " + `${usr.transferstatus}`
+              );
+          } else {
+            await Register.findOneAndUpdate(
+              { userid: data.userid },
+              { transferstatus: data.transferstatus }
+            );
+            winston.info(
+              "User: " +
+                usr.username +
+                " Transfer Status Changed to: " +
+                data.transferstatus +
+                " By Admin:" +
+                req.user.email
+            );
+            await alert_Developers(
+              "User: " +
+                usr.username +
+                " Transfer Status Changed to: " +
+                data.transferstatus +
+                " By Admin:" +
+                req.user.name
+            );
+            res.send(
+              cryp.encryptobj({
+                success: "User Transfer Status updated Successfully",
+              })
+            );
+          }
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+//change user bet status
+router.post(
+  "/userbetstat",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const usr = await Register.findOne({ userid: data.userid });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          if (usr.betstatus === data.betstatus) {
+            return res
+              .status(400)
+              .send("Current user transfer status : " + `${usr.betstatus}`);
+          } else {
+            await Register.findOneAndUpdate(
+              { userid: data.userid },
+              { betstatus: data.betstatus }
+            );
+            winston.info(
+              "User: " +
+                usr.username +
+                " Bet Status Changed to: " +
+                data.betstatus +
+                " By Admin:" +
+                req.user.email
+            );
+            await alert_Developers(
+              "User: " +
+                usr.username +
+                " Bet Status Changed to: " +
+                data.betstatus +
+                " By Admin:" +
+                req.user.name
+            );
+            res.send(
+              cryp.encryptobj({
+                success: "User Bet Status updated Successfully",
+              })
+            );
+          }
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+
+// get adminlist
+router.post("/adminlist", cs, [auth, admin], ratecut, async (req, res) => {
+  if (req.user.type === 1) {
+    const ad = await AdminReg.find({}).sort({ _id: -1 }).select({
+      __v: 0,
+      password: 0,
+      _id: 0,
+    });
+    if (ad.length <= 0) return res.status(400).send("Admins Not Found");
+    var list = [];
+    await ad.forEach((ele) => {
+      var obj = {
+        date: ele.date,
+        adminid: ele.adminid,
+        name: ele.name,
+        email: tige.decrypt(ele.email),
+        type: ele.type,
+        status: ele.status,
+      };
+      list.push(obj);
+    });
+    res.send(cryp.encryptobj(list));
+  } else {
+    res.status(400).send("Invalid Admin Type");
+  }
+});
+
+// get operatorlist
+router.post("/operlist", cs, [auth, admin], ratecut, async (req, res) => {
+  if (req.user.type === 1) {
+    const ad = await Operator.find({}).sort({ date: -1 }).select({
+      __v: 0,
+      password: 0,
+      _id: 0,
+    });
+    if (ad.length <= 0) return res.status(400).send("Operator Not Found");
+    var list = [];
+    await ad.forEach((ele) => {
+      var obj = {
+        date: ele.date,
+        opid: ele.opid,
+        name: ele.name,
+        email: tige.decrypt(ele.email),
+        type: ele.type,
+        status: ele.status,
+        arenaid: ele.arenaid,
+        arenaname: ele.arenaname,
+      };
+      list.push(obj);
+    });
+    res.send(cryp.encryptobj(list));
+  } else {
+    res.status(400).send("Invalid Admin Type");
+  }
+});
+//delete admin
+router.post(
+  "/deladmin",
+  cs,
+  [auth, admin],
+  ratecut,
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+
+      if (data !== "tberror") {
+        const usr = await AdminReg.findOne({ adminid: data.adminid });
+        if (!usr) return res.status(400).send("No User Found");
+        else {
+          await AdminReg.deleteOne({ adminid: data.adminid });
+          winston.info(
+            "Admin: " +
+              tige.decrypt(usr.email) +
+              " Deleted By Admin:" +
+              req.user.email
+          );
+          await alert_Developers(
+            "Admin: " + usr.name + " Deleted By Admin:" + req.user.name
+          );
+          res.send(cryp.encryptobj({ success: "Admin Deleted Successfully" }));
+        }
+      } else {
+        return res.status(400).send("Invalid Parameters");
+      }
+    }
+  })
+);
+//stats
+router.post(
+  "/getstat",
+  cs,
+  [auth, admin],
+  amw(async (req, res) => {
+    var sta = await Stat.find({}).sort({ _id: -1 }).select({
+      _id: 0,
+      __v: 0,
+    });
+    if (sta.length > 0) {
+      res.send(cryp.encryptobj(sta));
+    } else {
+      res.status(400).send("Stats Not Found");
+    }
+  })
+);
+//pending kyc applications
+router.post(
+  "/pendkyclist",
+  cs,
+  [auth, admin],
+  amw(async (req, res) => {
+    const users = await Register.find({ kycstatus: "Under-Approval" })
+      .select({
+        userid: 1,
+        username: 1,
+        kycstatus: 1,
+        info: 1,
+      })
+      .sort({ _id: -1 });
+    if (users.length > 0) {
+      res.send(cryp.encryptobj(users));
+    } else {
+      return res.status(400).send("No Users Found");
+    }
+  })
+);
+// user kyc apporve
+router.post(
+  "/kycaprv",
+  cs,
+  [auth, admin],
+  amw(async (req, res) => {
+    const { error } = await validate.getenc(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    else {
+      const data = cryp.decryptobj(req.body.enc);
+      if (data !== "tberror") {
+        const user = await Register.findOne({ userid: data.userid });
+        if (!user) return res.status(400).send("User not found");
+        else {
+          if (data.kycstatus === "Verified") {
+            await Register.findOneAndUpdate(
+              { userid: data.userid },
+              { kycstatus: "Verified" }
+            );
+            winston.info(
+              "KYC Status of user:" +
+                data.userid +
+                " Verified By Admin:" +
+                req.user.email
+            );
+            res.send(cryp.encryptobj({ success: "Kyc approved succesfully" }));
+          } else {
+            await Register.findOneAndUpdate(
+              { userid: data.userid },
+              { info: {}, kycstatus: "Rejected" }
+            );
+            winston.info(
+              "KYC Status of user:" +
+                data.userid +
+                " Rejected By Admin:" +
+                req.user.email
+            );
+            res.send(cryp.encryptobj({ success: "Kyc rejected succesfully" }));
+          }
+        }
+      }
+    }
+  })
+);
+router.post(
+  "/linkuplod",
+  [auth, admin],
+  amw(async (req, res) => {
+    if (req.user.type === 1) {
+      const { error } = await validate.getenc(req.body);
+      if (error) return res.status(400).send(error.details[0].message);
+      else {
+        const data = cryp.decryptobj(req.body.enc);
+        if (data !== "tberror") {
+          if (data.linkurl) {
+            await rediscon.linkupload(data.linkurl);
+            res.send(
+              cryp.encryptobj({
+                success: "Live Video Link Uploded Successfully",
+              })
+            );
+          } else {
+            res.status(400).send("Please Upload Video Link!!");
+          }
+        }
+      }
+    } else {
+      res.status(400).send("Invalid Admin Type");
+    }
+  })
+);
+router.post("/upredis", async (req, res) => {
+  await rediscon.getGames();
+  await rediscon.AdminControls();
+  await rediscon.Arena();
+  await rediscon.Sabong();
+  await rediscon.lastfight();
+  await rediscon.queue();
+  const users = await Register.find({});
+  await users.forEach(async (e) => {
+    await rediscon.userprofile(e.username);
+    await rediscon.userBets(e.userid);
+  });
+  setTimeout(() => {
+    res.send("Success");
+  }, 5000);
+});
+
+module.exports = router;
+
+//-----------env
+db =
+  "mongodb+srv://Sarimonak:Sarimonak@sarimonak.xexwg.mongodb.net/Sarimonak?retryWrites=true&w=majority";
+DBUSERNAME = "Sarimonak";
+DBPASSWORD = "Sarimonak";
+DBCOLLECTION = "Sarimonak";
+CRYPTOPASS = "thisisSaRIMONAKpassdcantbedecrypted";
+CRYPTOSALT = "thisiSaRIMONAKsalthatisencrypted";
+JWTPRIVATEKEY = "PrivateKeySARIMONAK";
+PORT = 4000;
+REDIS_URL = "redis://redis-16653.c8.us-east-1-3.ec2.cloud.redislabs.com:16653";
+REDIS_PASSWORD = "p8myZUhiyAOj0pZg4KrVLTKy3BTFkl8E";
